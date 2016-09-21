@@ -1,0 +1,4 @@
+*.pyc
+
+/smartfighter/settings.py
+
