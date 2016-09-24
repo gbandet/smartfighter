@@ -1,7 +1,7 @@
 from django.conf.urls import url
 
-from smartfighter.front.views import GameListView
+from smartfighter.front.views import IndexView
 
 urlpatterns = [
-    url(r'^$', GameListView.as_view(), name='game-list'),
+    url(r'^$', IndexView.as_view(), name='index'),
 ]
