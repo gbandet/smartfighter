@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models.signals import post_save
+
+from smartfighter.apps.ranking.elo import Elo
 
 
 class MatchResult(object):
@@ -18,6 +21,7 @@ class MatchResult(object):
 class Player(models.Model):
     card_id = models.CharField(max_length=8, primary_key=True)
     name = models.CharField(max_length=255)
+    elo_rating = models.IntegerField(default=1000)
 
     def __str__(self):
         return self.name
@@ -32,6 +36,30 @@ class Game(models.Model):
     @property
     def rounds(self):
         return self.round_set.order_by('order')
+
+    def update_player_ratings(self):
+        p1_score, p2_score = self._get_player_scores()
+        p1_rating = Elo.get_new_rating(p1_score, self.player1.elo_rating, self.player2.elo_rating)
+        p2_rating = Elo.get_new_rating(p2_score, self.player2.elo_rating, self.player1.elo_rating)
+        self.player1.elo_rating = p1_rating
+        self.player2.elo_rating = p2_rating
+        self.player1.save()
+        self.player2.save()
+
+    def _get_player_scores(self):
+        if self.result == MatchResult.Player1:
+            return (1, 0)
+        if self.result == MatchResult.Player2:
+            return (0, 1)
+        if self.result == MatchResult.Draw:
+            return (.5, .5)
+        raise RuntimeError('Invalid result value: %s' % self.result)
+
+
+def game_post_save(sender, instance, created, **kwargs):
+    if created:
+        instance.update_player_ratings()
+post_save.connect(game_post_save, Game)
 
 
 class RoundResult(object):
