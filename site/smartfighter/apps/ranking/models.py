@@ -20,8 +20,8 @@ class MatchResult(object):
 
 class Player(models.Model):
     card_id = models.CharField(max_length=8, primary_key=True)
-    name = models.CharField(max_length=255)
-    elo_rating = models.IntegerField(default=1000)
+    name = models.CharField(max_length=255, db_index=True)
+    elo_rating = models.IntegerField(default=1000, db_index=True)
 
     def __str__(self):
         return self.name
@@ -32,6 +32,7 @@ class Game(models.Model):
     player1 = models.ForeignKey(Player, related_name="games_as_first_player")
     player2 = models.ForeignKey(Player, related_name="games_as_second_player")
     result = models.IntegerField(choices=MatchResult.choices)
+    date = models.DateTimeField(db_index=True)
 
     @property
     def rounds(self):
