@@ -7,6 +7,7 @@ using System.Windows.Forms;
 namespace SmartFighter {
     public static class Config {
         public static string apiUrl;
+        public static string nfcReaderName;
 
         public static void load() {
             var data = new Dictionary<string, string>();
@@ -20,6 +21,9 @@ namespace SmartFighter {
             if (data.ContainsKey("apiurl")) {
                 apiUrl = data["apiurl"];
             }
+            if (data.ContainsKey("nfcreader")) {
+                nfcReaderName = data["nfcreader"];
+            }
         }
 
         public static void save() {
@@ -30,6 +34,8 @@ namespace SmartFighter {
                 var tuple = parseLine(line);
                 if (tuple.Item1 == "apiurl") {
                     newLine = string.Format("apiurl={0}", apiUrl);
+                } else if (tuple.Item1 == "nfcreader") {
+                    newLine = string.Format("nfcreader={0}", nfcReaderName);
                 }
                 configLines.Add(newLine);
             }
@@ -73,10 +79,12 @@ namespace SmartFighter {
 
         public static void initDialog(ConfigDialog dlg) {
             dlg.apiText.Text = apiUrl;
+            dlg.nfcCombo.Text = nfcReaderName;
         }
 
         public static void updateFromDialog(ConfigDialog dlg) {
             apiUrl = dlg.apiText.Text;
+            nfcReaderName = dlg.nfcCombo.Text;
             save();
         }
     }

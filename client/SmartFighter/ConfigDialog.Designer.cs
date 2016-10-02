@@ -29,6 +29,8 @@ namespace SmartFighter {
             this.actionLayout = new System.Windows.Forms.FlowLayoutPanel();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
+            this.nfcLabel = new System.Windows.Forms.Label();
+            this.nfcCombo = new System.Windows.Forms.ComboBox();
             this.layout.SuspendLayout();
             this.actionLayout.SuspendLayout();
             this.SuspendLayout();
@@ -40,16 +42,18 @@ namespace SmartFighter {
             this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.layout.Controls.Add(this.apiLabel, 0, 0);
             this.layout.Controls.Add(this.apiText, 1, 0);
-            this.layout.Controls.Add(this.actionLayout, 0, 2);
+            this.layout.Controls.Add(this.actionLayout, 0, 3);
+            this.layout.Controls.Add(this.nfcLabel, 0, 1);
+            this.layout.Controls.Add(this.nfcCombo, 1, 1);
             this.layout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layout.Location = new System.Drawing.Point(0, 0);
             this.layout.Name = "layout";
-            this.layout.RowCount = 3;
+            this.layout.RowCount = 4;
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.layout.Size = new System.Drawing.Size(332, 91);
+            this.layout.Size = new System.Drawing.Size(332, 191);
             this.layout.TabIndex = 0;
             // 
             // apiLabel
@@ -65,7 +69,7 @@ namespace SmartFighter {
             // apiText
             // 
             this.apiText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.apiText.Location = new System.Drawing.Point(61, 3);
+            this.apiText.Location = new System.Drawing.Point(75, 3);
             this.apiText.Name = "apiText";
             this.apiText.Size = new System.Drawing.Size(268, 20);
             this.apiText.TabIndex = 2;
@@ -77,7 +81,7 @@ namespace SmartFighter {
             this.actionLayout.Controls.Add(this.okButton);
             this.actionLayout.Controls.Add(this.cancelButton);
             this.actionLayout.Dock = System.Windows.Forms.DockStyle.Right;
-            this.actionLayout.Location = new System.Drawing.Point(167, 59);
+            this.actionLayout.Location = new System.Drawing.Point(181, 159);
             this.actionLayout.Name = "actionLayout";
             this.actionLayout.Size = new System.Drawing.Size(162, 29);
             this.actionLayout.TabIndex = 3;
@@ -102,11 +106,30 @@ namespace SmartFighter {
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
+            // nfcLabel
+            // 
+            this.nfcLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nfcLabel.AutoSize = true;
+            this.nfcLabel.Location = new System.Drawing.Point(3, 44);
+            this.nfcLabel.Name = "nfcLabel";
+            this.nfcLabel.Size = new System.Drawing.Size(66, 13);
+            this.nfcLabel.TabIndex = 4;
+            this.nfcLabel.Text = "NFC Reader";
+            // 
+            // nfcCombo
+            // 
+            this.nfcCombo.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.nfcCombo.FormattingEnabled = true;
+            this.nfcCombo.Location = new System.Drawing.Point(75, 40);
+            this.nfcCombo.Name = "nfcCombo";
+            this.nfcCombo.Size = new System.Drawing.Size(121, 21);
+            this.nfcCombo.TabIndex = 5;
+            // 
             // ConfigDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 91);
+            this.ClientSize = new System.Drawing.Size(332, 191);
             this.Controls.Add(this.layout);
             this.Name = "ConfigDialog";
             this.Text = "ConfigDialog";
@@ -125,5 +148,7 @@ namespace SmartFighter {
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
         public System.Windows.Forms.TextBox apiText;
+        private System.Windows.Forms.Label nfcLabel;
+        public System.Windows.Forms.ComboBox nfcCombo;
     }
 }
