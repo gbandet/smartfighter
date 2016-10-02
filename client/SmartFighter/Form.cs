@@ -7,7 +7,13 @@ namespace SmartFighter {
     public partial class App : Form {
         private Connector connector;
         private BackgroundWorker apiWorker;
-        private BackgroundWorker hookWorker;
+        private BackgroundWorker connectorWorker;
+
+        private enum WorkerState {
+            Stopped,
+            Running,
+            Stopping,
+        };
 
         public App() {
             InitializeComponent();
@@ -17,30 +23,30 @@ namespace SmartFighter {
             Config.load();
 
             connector = new Connector();
-            hookWorker = new BackgroundWorker();
-            hookWorker.WorkerSupportsCancellation = true;
-            hookWorker.DoWork += connector.run;
-            hookWorker.RunWorkerCompleted += (sender, args) => onConnectorExit((bool)args.Result);
-            connectorLabel.Text = "Running";
-            hookWorker.RunWorkerAsync();
+            connectorWorker = new BackgroundWorker();
+            connectorWorker.WorkerSupportsCancellation = true;
+            connectorWorker.DoWork += connector.run;
+            connectorWorker.RunWorkerCompleted += (sender, args) => onConnectorExit((bool)args.Result);
+            updateWorkerState(WorkerState.Running, connectorButton, connectorLabel);
+            connectorWorker.RunWorkerAsync();
 
             apiWorker = new BackgroundWorker();
             apiWorker.WorkerSupportsCancellation = true;
             apiWorker.DoWork += ApiQueue.run;
             apiWorker.RunWorkerCompleted += (sender, args) => onApiQueueExit();
-            apiLabel.Text = "Running";
+            updateWorkerState(WorkerState.Running, apiButton, apiLabel);
             apiWorker.RunWorkerAsync();
         }
 
         private void onConnectorExit(bool isSuccess) {
-            connectorLabel.Text = "Stopped";
+            updateWorkerState(WorkerState.Stopped, connectorButton, connectorLabel);
             if (!isSuccess) {
                 appendToLogs("Connector ended with errors.");
             }
         }
 
         private void onApiQueueExit() {
-            apiLabel.Text = "Stopped";
+            updateWorkerState(WorkerState.Stopped, apiButton, apiLabel);
         }
 
         public void appendToLogs(string message) {
@@ -52,26 +58,42 @@ namespace SmartFighter {
         }
 
         private void connectorButton_Click(object sender, EventArgs e) {
-            if (hookWorker.CancellationPending) {
-                connectorLabel.Text = "Stopping...";
-            } else if (hookWorker.IsBusy) {
-                connectorLabel.Text = "Stopping...";
-                hookWorker.CancelAsync();
-            } else {
-                connectorLabel.Text = "Running";
-                hookWorker.RunWorkerAsync();
-            }
+            toggleWorkerState(connectorWorker, connectorButton, connectorLabel);
         }
 
         private void apiButton_Click(object sender, EventArgs e) {
-            if (apiWorker.CancellationPending) {
-                apiLabel.Text = "Stopping...";
-            } else if (apiWorker.IsBusy) {
-                apiLabel.Text = "Stopping...";
-                apiWorker.CancelAsync();
-            } else {
-                apiLabel.Text = "Running";
-                apiWorker.RunWorkerAsync();
+            toggleWorkerState(apiWorker, apiButton, apiLabel);
+        }
+
+        private void toggleWorkerState(BackgroundWorker worker, Button button, Label label) {
+            if (!worker.CancellationPending) {
+                if (worker.IsBusy) {
+                    updateWorkerState(WorkerState.Stopping, button, label);
+                    worker.CancelAsync();
+                } else {
+                    updateWorkerState(WorkerState.Running, button, label);
+                    worker.RunWorkerAsync();
+                }
+            }
+        }
+
+        private void updateWorkerState(WorkerState state, Button button, Label label) {
+            switch (state) {
+                case WorkerState.Running:
+                    button.Text = "Stop";
+                    button.Enabled = true;
+                    label.Text = "Running";
+                    break;
+                case WorkerState.Stopping:
+                    button.Text = "Stop";
+                    button.Enabled = false;
+                    label.Text = "Stopping...";
+                    break;
+                case WorkerState.Stopped:
+                    button.Text = "Start";
+                    button.Enabled = true;
+                    label.Text = "Stopped";
+                    break;
             }
         }
 
