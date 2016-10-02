@@ -1,0 +1,5 @@
+*.snk
+/.vs
+/bin/
+/packages/
+obj/
