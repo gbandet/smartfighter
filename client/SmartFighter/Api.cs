@@ -7,7 +7,7 @@ using System.Net;
 namespace SmartFighter {
     public static class Api {
         private static string getApiUrl() {
-            string url = Config.apiUrl;
+            string url = Config.Instance.apiUrl;
             if (!url.EndsWith("/")) {
                 url += "/";
             }

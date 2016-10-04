@@ -116,9 +116,9 @@ namespace SmartFighter {
         private void configurationMenuItem_Click(object sender, EventArgs e) {
             ConfigDialog dlg = new ConfigDialog();
             dlg.Owner = this;
-            Config.initDialog(dlg);
+            Config.Instance.initDialog(dlg);
             if (dlg.ShowDialog() == DialogResult.OK) {
-                Config.updateFromDialog(dlg);
+                Config.Instance.updateFromDialog(dlg);
             }
         }
     }

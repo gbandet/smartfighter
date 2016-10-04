@@ -17,11 +17,14 @@ namespace SmartFighter {
 
         public static void run(object sender, DoWorkEventArgs args) {
             BackgroundWorker worker = sender as BackgroundWorker;
+            if (Config.Instance.nfcReaderName == "") {
+                return;
+            }
 
             while (!worker.CancellationPending) {
                 using (var monitor = new SCardMonitor(contextFactory, SCardScope.System)) {
                     monitor.CardInserted += cardInserted;
-                    monitor.Start(Config.nfcReaderName);
+                    monitor.Start(Config.Instance.nfcReaderName);
                     while (!worker.CancellationPending) {
                         Thread.Sleep(500);
                     }
