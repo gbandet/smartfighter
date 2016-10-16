@@ -25,6 +25,10 @@ namespace SmartFighter {
         private void InitializeComponent() {
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.layout = new System.Windows.Forms.TableLayoutPanel();
+            this.nfcBox = new System.Windows.Forms.GroupBox();
+            this.nfcPanel = new System.Windows.Forms.Panel();
+            this.nfcButton = new System.Windows.Forms.Button();
+            this.nfcLabel = new System.Windows.Forms.Label();
             this.apiBox = new System.Windows.Forms.GroupBox();
             this.apiPanel = new System.Windows.Forms.Panel();
             this.apiButton = new System.Windows.Forms.Button();
@@ -37,25 +41,27 @@ namespace SmartFighter {
             this.smartFighterMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.nfcBox = new System.Windows.Forms.GroupBox();
-            this.nfcPanel = new System.Windows.Forms.Panel();
-            this.nfcButton = new System.Windows.Forms.Button();
-            this.nfcLabel = new System.Windows.Forms.Label();
+            this.inputBox = new System.Windows.Forms.GroupBox();
+            this.inputPanel = new System.Windows.Forms.Panel();
+            this.inputButton = new System.Windows.Forms.Button();
+            this.inputLabel = new System.Windows.Forms.Label();
             this.layout.SuspendLayout();
+            this.nfcBox.SuspendLayout();
+            this.nfcPanel.SuspendLayout();
             this.apiBox.SuspendLayout();
             this.apiPanel.SuspendLayout();
             this.connectorBox.SuspendLayout();
             this.connectorPanel.SuspendLayout();
             this.menu.SuspendLayout();
-            this.nfcBox.SuspendLayout();
-            this.nfcPanel.SuspendLayout();
+            this.inputBox.SuspendLayout();
+            this.inputPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // logBox
             // 
-            this.layout.SetColumnSpan(this.logBox, 3);
+            this.layout.SetColumnSpan(this.logBox, 2);
             this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logBox.Location = new System.Drawing.Point(3, 63);
+            this.logBox.Location = new System.Drawing.Point(3, 123);
             this.logBox.Name = "logBox";
             this.logBox.Size = new System.Drawing.Size(480, 434);
             this.logBox.TabIndex = 5;
@@ -63,30 +69,72 @@ namespace SmartFighter {
             // 
             // layout
             // 
-            this.layout.ColumnCount = 3;
-            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.layout.Controls.Add(this.nfcBox, 2, 0);
+            this.layout.ColumnCount = 2;
+            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.layout.Controls.Add(this.inputBox, 1, 1);
+            this.layout.Controls.Add(this.nfcBox, 0, 1);
             this.layout.Controls.Add(this.apiBox, 1, 0);
-            this.layout.Controls.Add(this.logBox, 0, 1);
+            this.layout.Controls.Add(this.logBox, 0, 2);
             this.layout.Controls.Add(this.connectorBox, 0, 0);
             this.layout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layout.Location = new System.Drawing.Point(0, 24);
             this.layout.Name = "layout";
-            this.layout.RowCount = 2;
+            this.layout.RowCount = 3;
+            this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layout.Size = new System.Drawing.Size(486, 500);
             this.layout.TabIndex = 6;
             // 
+            // nfcBox
+            // 
+            this.nfcBox.Controls.Add(this.nfcPanel);
+            this.nfcBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nfcBox.Location = new System.Drawing.Point(3, 63);
+            this.nfcBox.Name = "nfcBox";
+            this.nfcBox.Size = new System.Drawing.Size(237, 54);
+            this.nfcBox.TabIndex = 7;
+            this.nfcBox.TabStop = false;
+            this.nfcBox.Text = "NFC Reader";
+            // 
+            // nfcPanel
+            // 
+            this.nfcPanel.Controls.Add(this.nfcButton);
+            this.nfcPanel.Controls.Add(this.nfcLabel);
+            this.nfcPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.nfcPanel.Location = new System.Drawing.Point(3, 16);
+            this.nfcPanel.Name = "nfcPanel";
+            this.nfcPanel.Size = new System.Drawing.Size(231, 35);
+            this.nfcPanel.TabIndex = 3;
+            // 
+            // nfcButton
+            // 
+            this.nfcButton.Location = new System.Drawing.Point(7, 7);
+            this.nfcButton.Name = "nfcButton";
+            this.nfcButton.Size = new System.Drawing.Size(75, 23);
+            this.nfcButton.TabIndex = 2;
+            this.nfcButton.Text = "Start";
+            this.nfcButton.UseVisualStyleBackColor = true;
+            this.nfcButton.Click += new System.EventHandler(this.nfcButton_Click);
+            // 
+            // nfcLabel
+            // 
+            this.nfcLabel.AutoSize = true;
+            this.nfcLabel.Location = new System.Drawing.Point(88, 12);
+            this.nfcLabel.Name = "nfcLabel";
+            this.nfcLabel.Size = new System.Drawing.Size(47, 13);
+            this.nfcLabel.TabIndex = 3;
+            this.nfcLabel.Text = "Running";
+            // 
             // apiBox
             // 
             this.apiBox.Controls.Add(this.apiPanel);
             this.apiBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.apiBox.Location = new System.Drawing.Point(164, 3);
+            this.apiBox.Location = new System.Drawing.Point(246, 3);
             this.apiBox.Name = "apiBox";
-            this.apiBox.Size = new System.Drawing.Size(155, 54);
+            this.apiBox.Size = new System.Drawing.Size(237, 54);
             this.apiBox.TabIndex = 5;
             this.apiBox.TabStop = false;
             this.apiBox.Text = "API Queue";
@@ -98,7 +146,7 @@ namespace SmartFighter {
             this.apiPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.apiPanel.Location = new System.Drawing.Point(3, 16);
             this.apiPanel.Name = "apiPanel";
-            this.apiPanel.Size = new System.Drawing.Size(149, 35);
+            this.apiPanel.Size = new System.Drawing.Size(231, 35);
             this.apiPanel.TabIndex = 3;
             // 
             // apiButton
@@ -126,7 +174,7 @@ namespace SmartFighter {
             this.connectorBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.connectorBox.Location = new System.Drawing.Point(3, 3);
             this.connectorBox.Name = "connectorBox";
-            this.connectorBox.Size = new System.Drawing.Size(155, 54);
+            this.connectorBox.Size = new System.Drawing.Size(237, 54);
             this.connectorBox.TabIndex = 6;
             this.connectorBox.TabStop = false;
             this.connectorBox.Text = "SFV Connector";
@@ -138,7 +186,7 @@ namespace SmartFighter {
             this.connectorPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.connectorPanel.Location = new System.Drawing.Point(3, 16);
             this.connectorPanel.Name = "connectorPanel";
-            this.connectorPanel.Size = new System.Drawing.Size(149, 35);
+            this.connectorPanel.Size = new System.Drawing.Size(231, 35);
             this.connectorPanel.TabIndex = 3;
             // 
             // connectorButton
@@ -192,45 +240,45 @@ namespace SmartFighter {
             this.quitMenuItem.Size = new System.Drawing.Size(148, 22);
             this.quitMenuItem.Text = "Quit";
             // 
-            // nfcBox
+            // inputBox
             // 
-            this.nfcBox.Controls.Add(this.nfcPanel);
-            this.nfcBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.nfcBox.Location = new System.Drawing.Point(325, 3);
-            this.nfcBox.Name = "nfcBox";
-            this.nfcBox.Size = new System.Drawing.Size(158, 54);
-            this.nfcBox.TabIndex = 7;
-            this.nfcBox.TabStop = false;
-            this.nfcBox.Text = "NFC Reader";
+            this.inputBox.Controls.Add(this.inputPanel);
+            this.inputBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputBox.Location = new System.Drawing.Point(246, 63);
+            this.inputBox.Name = "inputBox";
+            this.inputBox.Size = new System.Drawing.Size(237, 54);
+            this.inputBox.TabIndex = 8;
+            this.inputBox.TabStop = false;
+            this.inputBox.Text = "Input";
             // 
-            // nfcPanel
+            // inputPanel
             // 
-            this.nfcPanel.Controls.Add(this.nfcButton);
-            this.nfcPanel.Controls.Add(this.nfcLabel);
-            this.nfcPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.nfcPanel.Location = new System.Drawing.Point(3, 16);
-            this.nfcPanel.Name = "nfcPanel";
-            this.nfcPanel.Size = new System.Drawing.Size(152, 35);
-            this.nfcPanel.TabIndex = 3;
+            this.inputPanel.Controls.Add(this.inputButton);
+            this.inputPanel.Controls.Add(this.inputLabel);
+            this.inputPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputPanel.Location = new System.Drawing.Point(3, 16);
+            this.inputPanel.Name = "inputPanel";
+            this.inputPanel.Size = new System.Drawing.Size(231, 35);
+            this.inputPanel.TabIndex = 3;
             // 
-            // nfcButton
+            // inputButton
             // 
-            this.nfcButton.Location = new System.Drawing.Point(7, 7);
-            this.nfcButton.Name = "nfcButton";
-            this.nfcButton.Size = new System.Drawing.Size(75, 23);
-            this.nfcButton.TabIndex = 2;
-            this.nfcButton.Text = "Start";
-            this.nfcButton.UseVisualStyleBackColor = true;
-            this.nfcButton.Click += new System.EventHandler(this.nfcButton_Click);
+            this.inputButton.Location = new System.Drawing.Point(7, 7);
+            this.inputButton.Name = "inputButton";
+            this.inputButton.Size = new System.Drawing.Size(75, 23);
+            this.inputButton.TabIndex = 2;
+            this.inputButton.Text = "Start";
+            this.inputButton.UseVisualStyleBackColor = true;
+            this.inputButton.Click += new System.EventHandler(this.inputButton_Click);
             // 
-            // nfcLabel
+            // inputLabel
             // 
-            this.nfcLabel.AutoSize = true;
-            this.nfcLabel.Location = new System.Drawing.Point(88, 12);
-            this.nfcLabel.Name = "nfcLabel";
-            this.nfcLabel.Size = new System.Drawing.Size(47, 13);
-            this.nfcLabel.TabIndex = 3;
-            this.nfcLabel.Text = "Running";
+            this.inputLabel.AutoSize = true;
+            this.inputLabel.Location = new System.Drawing.Point(88, 12);
+            this.inputLabel.Name = "inputLabel";
+            this.inputLabel.Size = new System.Drawing.Size(47, 13);
+            this.inputLabel.TabIndex = 3;
+            this.inputLabel.Text = "Running";
             // 
             // App
             // 
@@ -243,6 +291,9 @@ namespace SmartFighter {
             this.Name = "App";
             this.Text = "SmartFighter";
             this.layout.ResumeLayout(false);
+            this.nfcBox.ResumeLayout(false);
+            this.nfcPanel.ResumeLayout(false);
+            this.nfcPanel.PerformLayout();
             this.apiBox.ResumeLayout(false);
             this.apiPanel.ResumeLayout(false);
             this.apiPanel.PerformLayout();
@@ -251,9 +302,9 @@ namespace SmartFighter {
             this.connectorPanel.PerformLayout();
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
-            this.nfcBox.ResumeLayout(false);
-            this.nfcPanel.ResumeLayout(false);
-            this.nfcPanel.PerformLayout();
+            this.inputBox.ResumeLayout(false);
+            this.inputPanel.ResumeLayout(false);
+            this.inputPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -279,6 +330,10 @@ namespace SmartFighter {
         private System.Windows.Forms.Panel nfcPanel;
         private System.Windows.Forms.Button nfcButton;
         private System.Windows.Forms.Label nfcLabel;
+        private System.Windows.Forms.GroupBox inputBox;
+        private System.Windows.Forms.Panel inputPanel;
+        private System.Windows.Forms.Button inputButton;
+        private System.Windows.Forms.Label inputLabel;
     }
 }
 

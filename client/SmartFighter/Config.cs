@@ -3,6 +3,11 @@ using System.IO;
 
 
 namespace SmartFighter {
+    public class JoystickButton {
+        public string joystickGuid;
+        public int buttonNumber;
+    }
+
     public class Config {
         private static Config instance;
 
@@ -19,15 +24,28 @@ namespace SmartFighter {
 
         public string apiUrl = "";
         public string nfcReaderName = "";
+        public string player1Joystick = "";
+        public int player1Button;
+        public string player2Joystick = "";
+        public int player2Button;
 
         public void initDialog(ConfigDialog dlg) {
             dlg.apiText.Text = apiUrl;
             dlg.nfcCombo.Text = nfcReaderName;
+            dlg.player1JoystickButton.joystickGuid = player1Joystick;
+            dlg.player2JoystickButton.joystickGuid = player2Joystick;
+            dlg.player1JoystickButton.buttonNumber = player1Button;
+            dlg.player2JoystickButton.buttonNumber = player2Button;
+            dlg.refresh();
         }
 
         public void updateFromDialog(ConfigDialog dlg) {
             apiUrl = dlg.apiText.Text;
             nfcReaderName = dlg.nfcCombo.Text;
+            player1Joystick = dlg.player1JoystickButton.joystickGuid;
+            player2Joystick = dlg.player2JoystickButton.joystickGuid;
+            player1Button = dlg.player1JoystickButton.buttonNumber;
+            player2Button = dlg.player2JoystickButton.buttonNumber;
             save();
         }
 

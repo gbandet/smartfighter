@@ -9,6 +9,7 @@ namespace SmartFighter {
         private BackgroundWorker apiWorker;
         private BackgroundWorker connectorWorker;
         private BackgroundWorker nfcWorker;
+        private BackgroundWorker inputWorker;
 
         private enum WorkerState {
             Stopped,
@@ -44,6 +45,13 @@ namespace SmartFighter {
             nfcWorker.RunWorkerCompleted += (sender, args) => onNfcExit();
             updateWorkerState(WorkerState.Running, nfcButton, nfcLabel);
             nfcWorker.RunWorkerAsync();
+
+            inputWorker = new BackgroundWorker();
+            inputWorker.WorkerSupportsCancellation = true;
+            inputWorker.DoWork += Input.run;
+            inputWorker.RunWorkerCompleted += (sender, args) => onInputExit();
+            updateWorkerState(WorkerState.Running, inputButton, inputLabel);
+            inputWorker.RunWorkerAsync();
         }
 
         private void onConnectorExit(bool isSuccess) {
@@ -59,6 +67,10 @@ namespace SmartFighter {
 
         private void onNfcExit() {
             updateWorkerState(WorkerState.Stopped, nfcButton, nfcLabel);
+        }
+
+        private void onInputExit() {
+            updateWorkerState(WorkerState.Stopped, inputButton, inputLabel);
         }
 
         public void appendToLogs(string message) {
@@ -79,6 +91,10 @@ namespace SmartFighter {
 
         private void nfcButton_Click(object sender, EventArgs e) {
             toggleWorkerState(nfcWorker, nfcButton, nfcLabel);
+        }
+
+        private void inputButton_Click(object sender, EventArgs e) {
+            toggleWorkerState(inputWorker, inputButton, inputLabel);
         }
 
         private void toggleWorkerState(BackgroundWorker worker, Button button, Label label) {
