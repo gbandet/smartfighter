@@ -73,9 +73,14 @@ namespace SmartFighter {
 
         public void setMatchResults(int result) {
             if (isGameStarted()) {
-                Logger.Instance.log("SET MATCH {0} --> {1}", gameID, result);
-                ApiQueue.registerGame(gameID, result, DateTime.UtcNow);
-                currentResult = result;
+                if (player1Id != null && player2Id != null) {
+                    Logger.Instance.log("SET MATCH {0} --> {1} ({2} vs. {3})", gameID, result, player1Id, player2Id);
+                    ApiQueue.registerGame(gameID, player1Id, player2Id, result, DateTime.UtcNow);
+                    currentResult = result;
+                } else {
+                    currentResult = MatchResult.Unknown;
+                    gameID = null;
+                }
                 gameStarted = false;
             }
         }

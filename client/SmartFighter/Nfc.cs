@@ -39,7 +39,7 @@ namespace SmartFighter {
         private void cardInserted(object sender, CardStatusEventArgs args) {
             var uid = readUID(args.ReaderName);
             Logger.Instance.log("Card UID: {0}", uid);
-            NfcCardEvent(uid);
+            NfcCardEvent(uid.Replace("-", "").ToLower());
         }
 
         private string readUID(string readerName) {

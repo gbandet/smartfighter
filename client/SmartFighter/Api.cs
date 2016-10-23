@@ -14,13 +14,13 @@ namespace SmartFighter {
             return url;
         }
 
-        public static bool createGame(string id, int result, DateTime date) {
+        public static bool createGame(string id, string player1Id, string player2Id, int result, DateTime date) {
             try {
                 using (var response = makeRequest(
                         getApiUrl() + "game/", "POST", new {
                             id = id,
-                            player1 = "00000001",
-                            player2 = "00000002",
+                            player1 = player1Id,
+                            player2 = player2Id,
                             result = result,
                             date = date.ToString("o")
                         })) {
