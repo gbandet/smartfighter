@@ -48,6 +48,8 @@ namespace SmartFighter {
         public int versusMode = 0;
         public int roundCount = 0;
         public int roundTimer = 0;
+        public string player1Id;
+        public string player2Id;
 
         private int currentResult = MatchResult.Unknown;
         private bool gameStarted;

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 
 namespace SmartFighter {
     public partial class App : Form {
+        private GameState gameState;
         private Connector connector;
         private BackgroundWorker apiWorker;
         private BackgroundWorker connectorWorker;
@@ -12,6 +13,8 @@ namespace SmartFighter {
         private BackgroundWorker nfcWorker;
         private Input inputReader;
         private BackgroundWorker inputWorker;
+        private Overlay overlay;
+        private int? playerSelection = null;
 
         private enum WorkerState {
             Stopped,
@@ -26,14 +29,8 @@ namespace SmartFighter {
             logger.LogEvent += appendToLogs;
 
             Config.load();
-
-            connector = new Connector();
-            connectorWorker = new BackgroundWorker();
-            connectorWorker.WorkerSupportsCancellation = true;
-            connectorWorker.DoWork += connector.run;
-            connectorWorker.RunWorkerCompleted += (sender, args) => onConnectorExit((bool)args.Result);
-            updateWorkerState(WorkerState.Running, connectorButton, connectorLabel);
-            connectorWorker.RunWorkerAsync();
+            overlay = new Overlay();
+            overlay.Owner = this;
 
             apiWorker = new BackgroundWorker();
             apiWorker.WorkerSupportsCancellation = true;
@@ -60,18 +57,77 @@ namespace SmartFighter {
             inputWorker.RunWorkerCompleted += (sender, args) => onInputExit();
             updateWorkerState(WorkerState.Running, inputButton, inputLabel);
             inputWorker.RunWorkerAsync();
+
+            gameState = new GameState();
+            connector = new Connector(gameState);
+            connectorWorker = new BackgroundWorker();
+            connectorWorker.WorkerSupportsCancellation = true;
+            connectorWorker.DoWork += connector.run;
+            connectorWorker.RunWorkerCompleted += (sender, args) => onConnectorExit((bool)args.Result);
+            updateWorkerState(WorkerState.Running, connectorButton, connectorLabel);
+            connectorWorker.RunWorkerAsync();
         }
 
         private void onPlayer1Button() {
-
+            if (InvokeRequired) {
+                Invoke(new Action(onPlayer1Button));
+                return;
+            }
+            if (overlay.Visible && playerSelection == 1) {
+                gameState.player1Id = null;
+                overlay.player1Name.Text = "";
+            }
+            playerSelection = 1;
+            overlay.setPlayerSelection(1, gameState.player1Id != null);
+            overlay.Show();
         }
 
         private void onPlayer2Button() {
-
+            if (InvokeRequired) {
+                Invoke(new Action(onPlayer2Button));
+                return;
+            }
+            if (overlay.Visible && playerSelection == 2) {
+                gameState.player2Id = null;
+                overlay.player2Name.Text = "";
+            }
+            playerSelection = 2;
+            overlay.setPlayerSelection(2, gameState.player2Id != null);
+            overlay.Show();
         }
 
         private void onCardRead(string uid) {
-
+            if (InvokeRequired) {
+                Invoke(new Action<string>(onCardRead), uid);
+                return;
+            }
+            if (overlay.Visible) {
+                if (playerSelection == 1) {
+                    gameState.player1Id = uid;
+                    overlay.player1Name.Text = uid;
+                    if (gameState.player2Id == null) {
+                        playerSelection = 2;
+                        overlay.setPlayerSelection(2, gameState.player2Id != null);
+                    } else {
+                        playerSelection = null;
+                        overlay.setReady();
+                    }
+                } else if (playerSelection == 2) {
+                    gameState.player2Id = uid;
+                    overlay.player2Name.Text = uid;
+                    if (gameState.player1Id == null) {
+                        playerSelection = 1;
+                        overlay.setPlayerSelection(1, gameState.player1Id != null);
+                    } else {
+                        playerSelection = null;
+                        overlay.setReady();
+                    }
+                }
+            } else {
+                playerSelection = null;
+                overlay.setNoSelection();
+                overlay.Show();
+            }
         }
 
         private void onConnectorExit(bool isSuccess) {

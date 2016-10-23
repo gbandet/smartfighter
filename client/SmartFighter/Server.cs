@@ -5,8 +5,8 @@ namespace SmartFighter {
     class SmartFighterServer : SmartFighterInterface {
         private GameState game;
 
-        public SmartFighterServer() {
-            game = new GameState();
+        public SmartFighterServer(GameState game) {
+            this.game = game;
         }
 
         public override void writeLog(string message) {

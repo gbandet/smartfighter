@@ -10,8 +10,9 @@ namespace SmartFighter {
     class Connector {
         private string channelName = null;
 
-        public Connector() {
-            RemoteHooking.IpcCreateServer<SmartFighterServer>(ref channelName, WellKnownObjectMode.Singleton);
+        public Connector(GameState game) {
+            SmartFighterServer server = new SmartFighterServer(game);
+            RemoteHooking.IpcCreateServer<SmartFighterServer>(ref channelName, WellKnownObjectMode.Singleton, server);
         }
 
         public void run(object sender, DoWorkEventArgs args) {
