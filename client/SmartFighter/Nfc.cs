@@ -6,7 +6,11 @@ using System.Threading;
 
 
 namespace SmartFighter {
+    public delegate void NfcCardHandler(string uid);
+
     class Nfc {
+        public event NfcCardHandler NfcCardEvent;
+
         private static readonly IContextFactory contextFactory = ContextFactory.Instance;
 
         public static string[] GetReaderNames() {
@@ -15,7 +19,7 @@ namespace SmartFighter {
             }
         }
 
-        public static void run(object sender, DoWorkEventArgs args) {
+        public void run(object sender, DoWorkEventArgs args) {
             BackgroundWorker worker = sender as BackgroundWorker;
             if (Config.Instance.nfcReaderName == "") {
                 return;
@@ -32,12 +36,13 @@ namespace SmartFighter {
             }
         }
 
-        private static void cardInserted(object sender, CardStatusEventArgs args) {
+        private void cardInserted(object sender, CardStatusEventArgs args) {
             var uid = readUID(args.ReaderName);
             Logger.Instance.log("Card UID: {0}", uid);
+            NfcCardEvent(uid);
         }
 
-        private static string readUID(string readerName) {
+        private string readUID(string readerName) {
             using (var context = contextFactory.Establish(SCardScope.System)) {
                 using (var reader = new SCardReader(context)) {
                     var status = reader.Connect(readerName, SCardShareMode.Shared, SCardProtocol.Any);

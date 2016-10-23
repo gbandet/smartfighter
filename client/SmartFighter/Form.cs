@@ -8,7 +8,9 @@ namespace SmartFighter {
         private Connector connector;
         private BackgroundWorker apiWorker;
         private BackgroundWorker connectorWorker;
+        private Nfc nfcReader;
         private BackgroundWorker nfcWorker;
+        private Input inputReader;
         private BackgroundWorker inputWorker;
 
         private enum WorkerState {
@@ -19,6 +21,7 @@ namespace SmartFighter {
 
         public App() {
             InitializeComponent();
+
             Logger logger = Logger.Instance;
             logger.setApp(this);
 
@@ -39,19 +42,36 @@ namespace SmartFighter {
             updateWorkerState(WorkerState.Running, apiButton, apiLabel);
             apiWorker.RunWorkerAsync();
 
+            nfcReader = new Nfc();
+            nfcReader.NfcCardEvent += onCardRead;
             nfcWorker = new BackgroundWorker();
             nfcWorker.WorkerSupportsCancellation = true;
-            nfcWorker.DoWork += Nfc.run;
+            nfcWorker.DoWork += nfcReader.run;
             nfcWorker.RunWorkerCompleted += (sender, args) => onNfcExit();
             updateWorkerState(WorkerState.Running, nfcButton, nfcLabel);
             nfcWorker.RunWorkerAsync();
 
+            inputReader = new Input();
+            inputReader.Player1ButtonEvent += onPlayer1Button;
+            inputReader.Player2ButtonEvent += onPlayer2Button;
             inputWorker = new BackgroundWorker();
             inputWorker.WorkerSupportsCancellation = true;
-            inputWorker.DoWork += Input.run;
+            inputWorker.DoWork += inputReader.run;
             inputWorker.RunWorkerCompleted += (sender, args) => onInputExit();
             updateWorkerState(WorkerState.Running, inputButton, inputLabel);
             inputWorker.RunWorkerAsync();
+        }
+
+        private void onPlayer1Button() {
+
+        }
+
+        private void onPlayer2Button() {
+
+        }
+
+        private void onCardRead(string uid) {
+
         }
 
         private void onConnectorExit(bool isSuccess) {

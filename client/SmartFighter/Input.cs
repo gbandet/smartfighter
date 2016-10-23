@@ -5,8 +5,14 @@ using System.Threading;
 
 
 namespace SmartFighter {
-    static class Input {
-        public static void run(object sender, DoWorkEventArgs args) {
+    public delegate void Player1ButtonHandler();
+    public delegate void Player2ButtonHandler();
+
+    class Input {
+        public event Player1ButtonHandler Player1ButtonEvent;
+        public event Player2ButtonHandler Player2ButtonEvent;
+
+        public void run(object sender, DoWorkEventArgs args) {
             BackgroundWorker worker = sender as BackgroundWorker;
 
             if (Config.Instance.player1Joystick == null || Config.Instance.player1Joystick == "" ||
@@ -34,6 +40,11 @@ namespace SmartFighter {
                     if (joystickState.Buttons[buttons[i]]) {
                         if (!isPressed[i]) {
                             Logger.Instance.log("Joystick {0} has been pushed.", i);
+                            if (i == 0) {
+                                Player1ButtonEvent();
+                            } else {
+                                Player2ButtonEvent();
+                            }
                             isPressed[i] = true;
                         }
                     } else {
