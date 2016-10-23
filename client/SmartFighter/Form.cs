@@ -23,7 +23,7 @@ namespace SmartFighter {
             InitializeComponent();
 
             Logger logger = Logger.Instance;
-            logger.setApp(this);
+            logger.LogEvent += appendToLogs;
 
             Config.load();
 

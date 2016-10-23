@@ -16,14 +16,11 @@ namespace SmartFighter {
             }
         }
 
-        private App app;
-
-        public void setApp(App app) {
-            this.app = app;
-        }
+        public delegate void LogHandler(string message);
+        public event LogHandler LogEvent;
 
         public void log(string message) {
-            app.appendToLogs(message + "\n");
+            LogEvent(message + "\n");
         }
 
         public void log(string message, params object[] args) {
