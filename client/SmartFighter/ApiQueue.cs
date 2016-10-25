@@ -37,6 +37,8 @@ namespace SmartFighter {
                     }
                     if (success) {
                         queue.Dequeue();
+                    } else {
+                        break;
                     }
                 }
                 for (int i = 0; i < 5; i++) {
