@@ -1,5 +1,5 @@
 using System;
-
+using System.Collections.Generic;
 
 namespace SmartFighter {
     public static class GameMode {
@@ -94,20 +94,30 @@ namespace SmartFighter {
                     return;
                 }
 
-                Api.Round[] rounds = new Api.Round[player1.Length];
-
+                List<Api.Round> rounds = new List<Api.Round>();
                 Logger.Instance.log("*** Match {0} ***", gameID);
                 Logger.Instance.log("- Winner: {0}", getWinnerString());
                 Logger.Instance.log("- Rounds:");
+                int score1 = 0;
+                int score2 = 0;
+                int scoreMax = roundCount / 2 + 1;
                 for (int index = 0; index < player1.Length; index++) {
                     int status1 = player1[index];
                     int status2 = player2[index];
+                    if (status1 != RoundResult.Unknown && status1 != RoundResult.Loss) {
+                        score1++;
+                    }
+                    if (status2 != RoundResult.Unknown && status2 != RoundResult.Loss) {
+                        score2++;
+                    }
                     Logger.Instance.log(" * {0} | {1}", getRoundCode(status1), getRoundCode(status2));
-
-                    rounds[index] = new Api.Round(getRoundResult(status1, status2), status1, status2);
+                    rounds.Add(new Api.Round(getRoundResult(status1, status2) + 1, status1, status2));
+                    if (score1 >= scoreMax || score2 >= scoreMax) {
+                        break;
+                    }
                 }
 
-                ApiQueue.registerRounds(gameID, rounds);
+                ApiQueue.registerRounds(gameID, rounds.ToArray());
                 gameID = null;
             }
         }
