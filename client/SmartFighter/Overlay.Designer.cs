@@ -50,7 +50,7 @@
             this.layout.RowCount = 2;
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.layout.Size = new System.Drawing.Size(364, 69);
+            this.layout.Size = new System.Drawing.Size(350, 50);
             this.layout.TabIndex = 0;
             // 
             // player1layout
@@ -60,7 +60,7 @@
             this.player1layout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.player1layout.Location = new System.Drawing.Point(3, 3);
             this.player1layout.Name = "player1layout";
-            this.player1layout.Size = new System.Drawing.Size(176, 28);
+            this.player1layout.Size = new System.Drawing.Size(169, 19);
             this.player1layout.TabIndex = 2;
             // 
             // player1Label
@@ -87,9 +87,9 @@
             this.player2Layout.Controls.Add(this.player2Label);
             this.player2Layout.Controls.Add(this.player2Name);
             this.player2Layout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.player2Layout.Location = new System.Drawing.Point(185, 3);
+            this.player2Layout.Location = new System.Drawing.Point(178, 3);
             this.player2Layout.Name = "player2Layout";
-            this.player2Layout.Size = new System.Drawing.Size(176, 28);
+            this.player2Layout.Size = new System.Drawing.Size(169, 19);
             this.player2Layout.TabIndex = 3;
             // 
             // player2Label
@@ -113,7 +113,7 @@
             // 
             this.infoLabel.AutoSize = true;
             this.layout.SetColumnSpan(this.infoLabel, 2);
-            this.infoLabel.Location = new System.Drawing.Point(3, 34);
+            this.infoLabel.Location = new System.Drawing.Point(3, 25);
             this.infoLabel.Name = "infoLabel";
             this.infoLabel.Size = new System.Drawing.Size(0, 13);
             this.infoLabel.TabIndex = 4;
@@ -122,10 +122,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(364, 69);
+            this.ClientSize = new System.Drawing.Size(350, 50);
+            this.ControlBox = false;
             this.Controls.Add(this.layout);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Location = new System.Drawing.Point(785, 0);
             this.Name = "Overlay";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Overlay";
+            this.TopMost = true;
             this.layout.ResumeLayout(false);
             this.layout.PerformLayout();
             this.player1layout.ResumeLayout(false);
