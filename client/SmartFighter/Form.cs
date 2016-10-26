@@ -14,6 +14,7 @@ namespace SmartFighter {
         private Input inputReader;
         private BackgroundWorker inputWorker;
         private Overlay overlay;
+        private Timer overlayTimer;
         private int? playerSelection = null;
 
         private enum WorkerState {
@@ -31,6 +32,9 @@ namespace SmartFighter {
             Config.load();
             overlay = new Overlay();
             overlay.Owner = this;
+            overlayTimer = new Timer();
+            overlayTimer.Interval = 10000;
+            overlayTimer.Tick += (sender, args) => hideOverlay();
 
             apiWorker = new BackgroundWorker();
             apiWorker.WorkerSupportsCancellation = true;
@@ -79,7 +83,7 @@ namespace SmartFighter {
             }
             playerSelection = 1;
             overlay.setPlayerSelection(1, gameState.player1Id != null);
-            overlay.Show();
+            showOverlay();
         }
 
         private void onPlayer2Button() {
@@ -93,7 +97,7 @@ namespace SmartFighter {
             }
             playerSelection = 2;
             overlay.setPlayerSelection(2, gameState.player2Id != null);
-            overlay.Show();
+            showOverlay();
         }
 
         private void onCardRead(string uid) {
@@ -126,8 +130,18 @@ namespace SmartFighter {
             } else {
                 playerSelection = null;
                 overlay.setNoSelection();
-                overlay.Show();
+                showOverlay();
             }
+        }
+
+        private void showOverlay() {
+            overlay.Show();
+            overlayTimer.Start();
+        }
+
+        private void hideOverlay() {
+            overlayTimer.Stop();
+            overlay.Hide();
         }
 
         private void onConnectorExit(bool isSuccess) {
