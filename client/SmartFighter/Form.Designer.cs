@@ -25,6 +25,10 @@ namespace SmartFighter {
         private void InitializeComponent() {
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.layout = new System.Windows.Forms.TableLayoutPanel();
+            this.inputBox = new System.Windows.Forms.GroupBox();
+            this.inputPanel = new System.Windows.Forms.Panel();
+            this.inputButton = new System.Windows.Forms.Button();
+            this.inputLabel = new System.Windows.Forms.Label();
             this.nfcBox = new System.Windows.Forms.GroupBox();
             this.nfcPanel = new System.Windows.Forms.Panel();
             this.nfcButton = new System.Windows.Forms.Button();
@@ -41,11 +45,10 @@ namespace SmartFighter {
             this.smartFighterMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configurationMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inputBox = new System.Windows.Forms.GroupBox();
-            this.inputPanel = new System.Windows.Forms.Panel();
-            this.inputButton = new System.Windows.Forms.Button();
-            this.inputLabel = new System.Windows.Forms.Label();
+            this.registerAPlayerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.layout.SuspendLayout();
+            this.inputBox.SuspendLayout();
+            this.inputPanel.SuspendLayout();
             this.nfcBox.SuspendLayout();
             this.nfcPanel.SuspendLayout();
             this.apiBox.SuspendLayout();
@@ -53,8 +56,6 @@ namespace SmartFighter {
             this.connectorBox.SuspendLayout();
             this.connectorPanel.SuspendLayout();
             this.menu.SuspendLayout();
-            this.inputBox.SuspendLayout();
-            this.inputPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // logBox
@@ -87,6 +88,46 @@ namespace SmartFighter {
             this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.layout.Size = new System.Drawing.Size(486, 500);
             this.layout.TabIndex = 6;
+            // 
+            // inputBox
+            // 
+            this.inputBox.Controls.Add(this.inputPanel);
+            this.inputBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputBox.Location = new System.Drawing.Point(246, 63);
+            this.inputBox.Name = "inputBox";
+            this.inputBox.Size = new System.Drawing.Size(237, 54);
+            this.inputBox.TabIndex = 8;
+            this.inputBox.TabStop = false;
+            this.inputBox.Text = "Input";
+            // 
+            // inputPanel
+            // 
+            this.inputPanel.Controls.Add(this.inputButton);
+            this.inputPanel.Controls.Add(this.inputLabel);
+            this.inputPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.inputPanel.Location = new System.Drawing.Point(3, 16);
+            this.inputPanel.Name = "inputPanel";
+            this.inputPanel.Size = new System.Drawing.Size(231, 35);
+            this.inputPanel.TabIndex = 3;
+            // 
+            // inputButton
+            // 
+            this.inputButton.Location = new System.Drawing.Point(7, 7);
+            this.inputButton.Name = "inputButton";
+            this.inputButton.Size = new System.Drawing.Size(75, 23);
+            this.inputButton.TabIndex = 2;
+            this.inputButton.Text = "Start";
+            this.inputButton.UseVisualStyleBackColor = true;
+            this.inputButton.Click += new System.EventHandler(this.inputButton_Click);
+            // 
+            // inputLabel
+            // 
+            this.inputLabel.AutoSize = true;
+            this.inputLabel.Location = new System.Drawing.Point(88, 12);
+            this.inputLabel.Name = "inputLabel";
+            this.inputLabel.Size = new System.Drawing.Size(47, 13);
+            this.inputLabel.TabIndex = 3;
+            this.inputLabel.Text = "Running";
             // 
             // nfcBox
             // 
@@ -222,6 +263,7 @@ namespace SmartFighter {
             // 
             this.smartFighterMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.configurationMenuItem,
+            this.registerAPlayerToolStripMenuItem,
             this.quitMenuItem});
             this.smartFighterMenuItem.Name = "smartFighterMenuItem";
             this.smartFighterMenuItem.Size = new System.Drawing.Size(87, 20);
@@ -230,55 +272,22 @@ namespace SmartFighter {
             // configurationMenuItem
             // 
             this.configurationMenuItem.Name = "configurationMenuItem";
-            this.configurationMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.configurationMenuItem.Size = new System.Drawing.Size(160, 22);
             this.configurationMenuItem.Text = "Configuration";
             this.configurationMenuItem.Click += new System.EventHandler(this.configurationMenuItem_Click);
             // 
             // quitMenuItem
             // 
             this.quitMenuItem.Name = "quitMenuItem";
-            this.quitMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.quitMenuItem.Size = new System.Drawing.Size(160, 22);
             this.quitMenuItem.Text = "Quit";
             // 
-            // inputBox
+            // registerAPlayerToolStripMenuItem
             // 
-            this.inputBox.Controls.Add(this.inputPanel);
-            this.inputBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.inputBox.Location = new System.Drawing.Point(246, 63);
-            this.inputBox.Name = "inputBox";
-            this.inputBox.Size = new System.Drawing.Size(237, 54);
-            this.inputBox.TabIndex = 8;
-            this.inputBox.TabStop = false;
-            this.inputBox.Text = "Input";
-            // 
-            // inputPanel
-            // 
-            this.inputPanel.Controls.Add(this.inputButton);
-            this.inputPanel.Controls.Add(this.inputLabel);
-            this.inputPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.inputPanel.Location = new System.Drawing.Point(3, 16);
-            this.inputPanel.Name = "inputPanel";
-            this.inputPanel.Size = new System.Drawing.Size(231, 35);
-            this.inputPanel.TabIndex = 3;
-            // 
-            // inputButton
-            // 
-            this.inputButton.Location = new System.Drawing.Point(7, 7);
-            this.inputButton.Name = "inputButton";
-            this.inputButton.Size = new System.Drawing.Size(75, 23);
-            this.inputButton.TabIndex = 2;
-            this.inputButton.Text = "Start";
-            this.inputButton.UseVisualStyleBackColor = true;
-            this.inputButton.Click += new System.EventHandler(this.inputButton_Click);
-            // 
-            // inputLabel
-            // 
-            this.inputLabel.AutoSize = true;
-            this.inputLabel.Location = new System.Drawing.Point(88, 12);
-            this.inputLabel.Name = "inputLabel";
-            this.inputLabel.Size = new System.Drawing.Size(47, 13);
-            this.inputLabel.TabIndex = 3;
-            this.inputLabel.Text = "Running";
+            this.registerAPlayerToolStripMenuItem.Name = "registerAPlayerToolStripMenuItem";
+            this.registerAPlayerToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.registerAPlayerToolStripMenuItem.Text = "Register a player";
+            this.registerAPlayerToolStripMenuItem.Click += new System.EventHandler(this.registerAPlayerToolStripMenuItem_Click);
             // 
             // App
             // 
@@ -291,6 +300,9 @@ namespace SmartFighter {
             this.Name = "App";
             this.Text = "SmartFighter";
             this.layout.ResumeLayout(false);
+            this.inputBox.ResumeLayout(false);
+            this.inputPanel.ResumeLayout(false);
+            this.inputPanel.PerformLayout();
             this.nfcBox.ResumeLayout(false);
             this.nfcPanel.ResumeLayout(false);
             this.nfcPanel.PerformLayout();
@@ -302,9 +314,6 @@ namespace SmartFighter {
             this.connectorPanel.PerformLayout();
             this.menu.ResumeLayout(false);
             this.menu.PerformLayout();
-            this.inputBox.ResumeLayout(false);
-            this.inputPanel.ResumeLayout(false);
-            this.inputPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -334,6 +343,7 @@ namespace SmartFighter {
         private System.Windows.Forms.Panel inputPanel;
         private System.Windows.Forms.Button inputButton;
         private System.Windows.Forms.Label inputLabel;
+        private System.Windows.Forms.ToolStripMenuItem registerAPlayerToolStripMenuItem;
     }
 }
 

@@ -69,6 +69,28 @@ namespace SmartFighter {
             return false;
         }
 
+        public static bool createPlayer(string cardId, string name) {
+            try {
+                using (var response = makeRequest(
+                        getApiUrl() + "player/", "POST", new {
+                            card_id = cardId,
+                            name = name,
+                        })) {
+                    if (response.StatusCode == HttpStatusCode.Created) {
+                        Logger.Instance.log("API [createPlayer]: Player {0} created", cardId);
+                        return true;
+                    }
+                    using (var streamReader = new StreamReader(response.GetResponseStream())) {
+                        var message = streamReader.ReadToEnd();
+                        Logger.Instance.log("API Error [createPlayer]: {0}", message);
+                    }
+                }
+            } catch (WebException error) {
+                Logger.Instance.log("API request exception: {0}", error);
+            }
+            return false;
+        }
+
         public static HttpWebResponse makeRequest(string url, string method, object data = null) {
             Logger.Instance.log("Request: {0} {1}", method, url);
             var request = (HttpWebRequest)WebRequest.Create(url);

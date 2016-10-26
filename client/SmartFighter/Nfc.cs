@@ -8,7 +8,7 @@ using System.Threading;
 namespace SmartFighter {
     public delegate void NfcCardHandler(string uid);
 
-    class Nfc {
+    public class Nfc {
         public event NfcCardHandler NfcCardEvent;
 
         private static readonly IContextFactory contextFactory = ContextFactory.Instance;
@@ -38,8 +38,13 @@ namespace SmartFighter {
 
         private void cardInserted(object sender, CardStatusEventArgs args) {
             var uid = readUID(args.ReaderName);
-            Logger.Instance.log("Card UID: {0}", uid);
-            NfcCardEvent(uid.Replace("-", "").ToLower());
+            if (uid == null) {
+                Logger.Instance.log("Card ID not read.");
+            } else {
+                uid = uid.Replace("-", "").ToLower();
+                Logger.Instance.log("Card ID: {0}", uid);
+                NfcCardEvent(uid);
+            }
         }
 
         private string readUID(string readerName) {

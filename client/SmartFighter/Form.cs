@@ -227,5 +227,15 @@ namespace SmartFighter {
                 Config.Instance.updateFromDialog(dlg);
             }
         }
+
+        private void registerAPlayerToolStripMenuItem_Click(object sender, EventArgs e) {
+            RegisterDialog dlg = new RegisterDialog(nfcReader);
+            dlg.Owner = this;
+            if (dlg.ShowDialog() == DialogResult.OK) {
+                if (Api.createPlayer(dlg.cardId, dlg.nameValue.Text)) {
+                    Logger.Instance.log("Player {0} registered.", dlg.nameValue.Text);
+                }
+            }
+        }
     }
 }
