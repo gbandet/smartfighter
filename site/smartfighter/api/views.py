@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import GenericViewSet
 
-from smartfighter.apps.ranking.models import Game
-from smartfighter.apps.ranking.serializers import GameSerializer, RoundSerializer
+from smartfighter.apps.ranking.models import Game, Player
+from smartfighter.apps.ranking.serializers import GameSerializer, PlayerSerializer, RoundSerializer
 
 
 class CreateListRetrieveViewSet(mixins.CreateModelMixin,
@@ -43,3 +43,8 @@ class GameViewSet(CreateListRetrieveViewSet):
             for order, serializer in enumerate(serializers):
                 serializer.save(game=game, order=order)
         return Response({'status': 'OK'})
+
+
+class PlayerViewSet(CreateListRetrieveViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
