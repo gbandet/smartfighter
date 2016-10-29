@@ -25,7 +25,7 @@ namespace SmartFighter {
             BackgroundWorker worker = sender as BackgroundWorker;
             while (!worker.CancellationPending) {
                 while (queue.Count > 0 && !worker.CancellationPending) {
-                    object[] values = (object[])queue.Peek();
+                    object[] values = (object[])queue.Dequeue();
                     bool success = true;
                     switch ((EntryType)values[0]) {
                         case EntryType.CreateGame:
@@ -35,17 +35,15 @@ namespace SmartFighter {
                             success = Api.updateRounds((string)values[1], (Api.Round[]) values[2]);
                             break;
                     }
-                    if (success) {
-                        queue.Dequeue();
-                    } else {
+                    if (!success) {
                         break;
                     }
                 }
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 20; i++) {
                     if (worker.CancellationPending) {
                         return;
                     }
-                    Thread.Sleep(1000);
+                    Thread.Sleep(250);
                 }
             }
         }
