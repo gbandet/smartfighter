@@ -117,7 +117,7 @@ namespace SmartFighter {
             }
 
             if (overlay.Visible) {
-                Player player = Api.getPlayer(uid);
+                Api.Player player = Api.getPlayer(uid);
                 if (player == null) {
                     return;
                 }

@@ -5,13 +5,25 @@ using System.Net;
 
 
 namespace SmartFighter {
-    public class Player {
-        public string card_id;
-        public string name;
-        public int elo_rating;
-    }
-
     public static class Api {
+        public class Player {
+            public string card_id;
+            public string name;
+            public int elo_rating;
+        }
+
+        public class Round {
+            public int result;
+            public int player1;
+            public int player2;
+
+            public Round(int result, int player1, int player2) {
+                this.result = result;
+                this.player1 = player1;
+                this.player2 = player2;
+            }
+        }
+
         private static string getApiUrl() {
             string url = Config.Instance.apiUrl;
             if (!url.EndsWith("/")) {
@@ -34,28 +46,14 @@ namespace SmartFighter {
                         Logger.Instance.log("API [createGame]: Match {0} created", id);
                         return true;
                     }
-                    using (var streamReader = new StreamReader(response.GetResponseStream())) {
-                        var message = streamReader.ReadToEnd();
-                        Logger.Instance.log("API Error [createGame]: {0}", message);
-                    }
+                    reportError("createGame", response);
                 }
             } catch (WebException error) {
-                Logger.Instance.log("API request exception: {0}", error);
+                reportError("createGame", (HttpWebResponse)error.Response);
             }
             return false;
         }
 
-        public class Round {
-            public int result;
-            public int player1;
-            public int player2;
-
-            public Round(int result, int player1, int player2) {
-                this.result = result;
-                this.player1 = player1;
-                this.player2 = player2;
-            }
-        }
 
         public static bool updateRounds(string id, Round[] rounds) {
             try {
@@ -64,13 +62,10 @@ namespace SmartFighter {
                         Logger.Instance.log("API [updateRounds]: Rounds of match {0} updated", id);
                         return true;
                     }
-                    using (var streamReader = new StreamReader(response.GetResponseStream())) {
-                        var message = streamReader.ReadToEnd();
-                        Logger.Instance.log("API Error [updateRounds]: {0}", message);
-                    }
+                    reportError("updateRounds", response);
                 }
             } catch (WebException error) {
-                Logger.Instance.log("API request exception: {0}", error);
+                reportError("updateRounds", (HttpWebResponse)error.Response);
             }
             return false;
         }
@@ -86,13 +81,10 @@ namespace SmartFighter {
                         Logger.Instance.log("API [createPlayer]: Player {0} created", cardId);
                         return true;
                     }
-                    using (var streamReader = new StreamReader(response.GetResponseStream())) {
-                        var message = streamReader.ReadToEnd();
-                        Logger.Instance.log("API Error [createPlayer]: {0}", message);
-                    }
+                    reportError("createPlayer", response);
                 }
             } catch (WebException error) {
-                Logger.Instance.log("API request exception: {0}", error);
+                reportError("createPlayer", (HttpWebResponse)error.Response);
             }
             return false;
         }
@@ -100,21 +92,21 @@ namespace SmartFighter {
         public static Player getPlayer(string cardId) {
             try {
                 using (var response = makeRequest(getApiUrl() + "player/" + cardId, "GET")) {
-                    using (var streamReader = new StreamReader(response.GetResponseStream())) {
-                        var json = streamReader.ReadToEnd();
+                    if (response.StatusCode == HttpStatusCode.OK) {
+                        var json = readResponse(response);
                         try {
-                            Player player = JsonConvert.DeserializeObject<Player>(json);
-                            return player;
-                        } catch (JsonReaderException exc) {
-                            Logger.Instance.log("API Error [getPlayer]: Player cannot be decoded. {0}", exc.Message);
+                            return JsonConvert.DeserializeObject<Player>(json);
+                        } catch (JsonReaderException) {
+                            Logger.Instance.log("API Error [getPlayer]: Player cannot be decoded. {0}", json);
                             return null;
                         }
                     }
+                    reportError("getPlayer", response);
                 }
             } catch (WebException error) {
-                Logger.Instance.log("API request exception: {0}", error);
-                return null;
+                reportError("getPlayer", (HttpWebResponse)error.Response);
             }
+            return null;
         }
 
         public static HttpWebResponse makeRequest(string url, string method, object data = null) {
@@ -130,6 +122,20 @@ namespace SmartFighter {
                 }
             }
             return (HttpWebResponse)request.GetResponse();
+        }
+
+        public static string readResponse(HttpWebResponse response) {
+            using (var streamReader = new StreamReader(response.GetResponseStream())) {
+                return streamReader.ReadToEnd();
+            }
+        }
+
+        private static void reportError(string apiName, HttpWebResponse response) {
+            if (response != null) {
+                Logger.Instance.log("API Error [{0}]: {1} {2}", apiName, response.StatusCode, readResponse(response));
+            } else {
+                Logger.Instance.log("API Error [{0}]: No response received.", apiName);
+            }
         }
     }
 }
