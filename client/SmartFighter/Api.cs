@@ -5,6 +5,12 @@ using System.Net;
 
 
 namespace SmartFighter {
+    public class Player {
+        public string card_id;
+        public string name;
+        public int elo_rating;
+    }
+
     public static class Api {
         private static string getApiUrl() {
             string url = Config.Instance.apiUrl;
@@ -89,6 +95,26 @@ namespace SmartFighter {
                 Logger.Instance.log("API request exception: {0}", error);
             }
             return false;
+        }
+
+        public static Player getPlayer(string cardId) {
+            try {
+                using (var response = makeRequest(getApiUrl() + "player/" + cardId, "GET")) {
+                    using (var streamReader = new StreamReader(response.GetResponseStream())) {
+                        var json = streamReader.ReadToEnd();
+                        try {
+                            Player player = JsonConvert.DeserializeObject<Player>(json);
+                            return player;
+                        } catch (JsonReaderException exc) {
+                            Logger.Instance.log("API Error [getPlayer]: Player cannot be decoded. {0}", exc.Message);
+                            return null;
+                        }
+                    }
+                }
+            } catch (WebException error) {
+                Logger.Instance.log("API request exception: {0}", error);
+                return null;
+            }
         }
 
         public static HttpWebResponse makeRequest(string url, string method, object data = null) {
