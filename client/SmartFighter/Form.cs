@@ -15,6 +15,7 @@ namespace SmartFighter {
         private BackgroundWorker inputWorker;
         private Overlay overlay;
         private Timer overlayTimer;
+        private bool overlayEnabled = true;
         private int? playerSelection = null;
 
         private enum WorkerState {
@@ -77,6 +78,9 @@ namespace SmartFighter {
                 Invoke(new Action(onPlayer1Button));
                 return;
             }
+            if (!overlayEnabled) {
+                return;
+            }
             if (overlay.Visible && playerSelection == 1) {
                 gameState.player1Id = null;
                 overlay.player1Name.Text = "";
@@ -91,6 +95,9 @@ namespace SmartFighter {
                 Invoke(new Action(onPlayer2Button));
                 return;
             }
+            if (!overlayEnabled) {
+                return;
+            }
             if (overlay.Visible && playerSelection == 2) {
                 gameState.player2Id = null;
                 overlay.player2Name.Text = "";
@@ -103,6 +110,9 @@ namespace SmartFighter {
         private void onCardRead(string uid) {
             if (InvokeRequired) {
                 Invoke(new Action<string>(onCardRead), uid);
+                return;
+            }
+            if (!overlayEnabled) {
                 return;
             }
             if (overlay.Visible) {
@@ -231,11 +241,13 @@ namespace SmartFighter {
         private void registerAPlayerToolStripMenuItem_Click(object sender, EventArgs e) {
             RegisterDialog dlg = new RegisterDialog(nfcReader);
             dlg.Owner = this;
+            overlayEnabled = false;
             if (dlg.ShowDialog() == DialogResult.OK) {
                 if (Api.createPlayer(dlg.cardId, dlg.nameValue.Text)) {
                     Logger.Instance.log("Player {0} registered.", dlg.nameValue.Text);
                 }
             }
+            overlayEnabled = true;
         }
     }
 }
