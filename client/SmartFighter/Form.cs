@@ -115,13 +115,12 @@ namespace SmartFighter {
             if (!overlayEnabled) {
                 return;
             }
-
             if (overlay.Visible) {
                 Api.Player player = Api.getPlayer(uid);
                 if (player == null) {
                     return;
                 }
-                if (playerSelection == 1) {
+                if (playerSelection == 1 && gameState.player2Id != uid) {
                     gameState.player1Id = uid;
                     overlay.player1Name.Text = player.name;
                     if (gameState.player2Id == null) {
@@ -131,7 +130,7 @@ namespace SmartFighter {
                         playerSelection = null;
                         overlay.setReady();
                     }
-                } else if (playerSelection == 2) {
+                } else if (playerSelection == 2 && gameState.player1Id != uid) {
                     gameState.player2Id = uid;
                     overlay.player2Name.Text = player.name;
                     if (gameState.player1Id == null) {
