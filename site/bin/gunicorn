@@ -1,0 +1,17 @@
+#!/bin/bash
+
+ROOT="$(readlink -m "$0/../..")"
+
+PORT="$1"
+if [ "$PORT" == "" ]; then
+    echo "Usage: $0 port_number"
+    exit -1
+fi
+
+PYTHONPATH="$ROOT" exec gunicorn \
+    --pythonpath="$ROOT" \
+    --bind="0.0.0.0:$PORT" \
+    --pid="$ROOT/run/gunicorn.pid" \
+    --access-logfile="$ROOT/log/gunicorn.access_log" \
+    --error-logfile="$ROOT/log/gunicorn.error_log" \
+    "smartfighter.wsgi:application"

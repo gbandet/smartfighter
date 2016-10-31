@@ -1,4 +1,8 @@
 *.pyc
 
+/log/*
+!/log/.keep
+/run/*
+!/run/.keep
 /smartfighter/settings.py
 
