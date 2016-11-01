@@ -1,5 +1,6 @@
 <!doctype html>
 {% load static %}
+{% load ranking %}
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -20,12 +21,14 @@
             <th class="col-md-1">Rank</th>
             <th>Name</th>
             <th class="col-md-1">Score</th>
+            <th class="col-md-2">Win %</th>
           </tr>
           {% for player in ranking %}
           <tr>
             <td>{% ifchanged player.elo_rating %}{{ forloop.counter }}{% else %}-{% endifchanged %}</td>
             <td>{{ player.name }}</td>
             <td>{{ player.elo_rating }}</td>
+            <td>{{ player | win_percentage }}</td>
           </tr>
           {% endfor %}
         </table>
