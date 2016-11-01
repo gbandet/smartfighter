@@ -44,6 +44,23 @@ namespace SmartFighter {
     }
 
     public class GameState {
+        private class Game {
+            public string id;
+            public int roundCount;
+            public int roundTimer;
+            public string player1;
+            public string player2;
+            public int result = MatchResult.Unknown;
+
+            public Game(string id, string player1, string player2, int rounds, int timer) {
+                this.id = id;
+                this.player1 = player1;
+                this.player2 = player2;
+                roundCount = rounds;
+                roundTimer = timer;
+            }
+        }
+
         public int gameMode = 0;
         public int versusMode = 0;
         public int roundCount = 0;
@@ -51,9 +68,8 @@ namespace SmartFighter {
         public string player1Id;
         public string player2Id;
 
-        private int currentResult = MatchResult.Unknown;
+        private Game currentGame;
         private bool gameStarted;
-        private string gameID;
 
         public bool isInVersus() {
             return gameMode == GameMode.Versus && versusMode == VersusMode.PvP;
@@ -65,21 +81,19 @@ namespace SmartFighter {
 
         public void startGame() {
             if (isInVersus()) {
-                currentResult = MatchResult.Unknown;
-                gameID = Guid.NewGuid().ToString("N");
+                currentGame = new Game(Guid.NewGuid().ToString("N"), player1Id, player2Id, roundCount, roundTimer);
                 gameStarted = true;
             }
         }
 
         public void setMatchResults(int result) {
             if (isGameStarted()) {
-                if (player1Id != null && player2Id != null) {
-                    Logger.Instance.log("SET MATCH {0} --> {1} ({2} vs. {3})", gameID, result, player1Id, player2Id);
-                    ApiQueue.registerGame(gameID, player1Id, player2Id, result + 1, DateTime.UtcNow);
-                    currentResult = result;
+                if (currentGame.player1 != null && currentGame.player2 != null) {
+                    currentGame.result = result;
+                    Logger.Instance.log("SET MATCH {0} --> {1} ({2} vs. {3})", currentGame.id, result, currentGame.player1, currentGame.player2);
+                    ApiQueue.registerGame(currentGame.id, currentGame.player1, currentGame.player2, result + 1, DateTime.UtcNow);
                 } else {
-                    currentResult = MatchResult.Unknown;
-                    gameID = null;
+                    currentGame = null;
                 }
                 gameStarted = false;
             }
@@ -89,14 +103,14 @@ namespace SmartFighter {
             if (player1.Length != player2.Length) {
                 return;
             }
-            if (isInVersus() && gameID != null) {
-                if (currentResult == MatchResult.Unknown) {
+            if (isInVersus() && currentGame != null) {
+                if (currentGame.result == MatchResult.Unknown) {
                     return;
                 }
 
                 List<Api.Round> rounds = new List<Api.Round>();
-                Logger.Instance.log("*** Match {0} ***", gameID);
-                Logger.Instance.log("- Winner: {0}", getWinnerString());
+                Logger.Instance.log("*** Match {0} ***", currentGame.id);
+                Logger.Instance.log("- Winner: {0}", getWinnerString(currentGame.result));
                 Logger.Instance.log("- Rounds:");
                 int score1 = 0;
                 int score2 = 0;
@@ -117,8 +131,8 @@ namespace SmartFighter {
                     }
                 }
 
-                ApiQueue.registerRounds(gameID, rounds.ToArray());
-                gameID = null;
+                ApiQueue.registerRounds(currentGame.id, rounds.ToArray());
+                currentGame = null;
             }
         }
 
@@ -132,14 +146,14 @@ namespace SmartFighter {
             return MatchResult.Player1;
         }
 
-        private string getWinnerString() {
-            if (currentResult == MatchResult.Player1) {
+        private string getWinnerString(int result) {
+            if (result == MatchResult.Player1) {
                 return "Player 1";
             }
-            if (currentResult == MatchResult.Player2) {
+            if (result == MatchResult.Player2) {
                 return "Player 2";
             }
-            if (currentResult == MatchResult.Draw) {
+            if (result == MatchResult.Draw) {
                 return "Draw";
             }
             return "Unknonw";
