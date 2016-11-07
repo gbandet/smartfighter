@@ -7,9 +7,9 @@ from smartfighter.apps.ranking.elo import Elo
 
 
 class MatchResult(object):
-    Player1 = 1
-    Player2 = 2
-    Draw = 0
+    Player1 = 0
+    Player2 = 1
+    Draw = -1
 
     choices = (
         (Player1, 'Player1'),

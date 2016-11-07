@@ -38,8 +38,8 @@
         <table class="table">
           {% for game in games %}
           <tr>
-            <td class="col-md-4{% if game.result == 1 %} bg-success{% endif %}">{{ game.player1 }}</td>
-            <td class="col-md-2{% if game.result == 1 %} bg-success{% endif %}">
+            <td class="col-md-4{% if game.result == 0 %} bg-success{% endif %}">{{ game.player1 }}</td>
+            <td class="col-md-2{% if game.result == 0 %} bg-success{% endif %}">
               {% for round in game.rounds %}
               {% if round.player1 == 1 %}
               <span class="label label-default">&nbsp;</span>
@@ -60,7 +60,7 @@
               {% endif %}
               {% endfor %}
             </td>
-            <td class="col-md-2{% if game.result == 2 %} bg-success{% endif %}">
+            <td class="col-md-2{% if game.result == 1 %} bg-success{% endif %}">
               {% for round in game.rounds %}
               {% if round.player2 == 1 %}
               <span class="label label-default">&nbsp;</span>
@@ -81,7 +81,7 @@
               {% endif %}
               {% endfor %}
             </td>
-            <td class="col-md-4{% if game.result == 2 %} bg-success{% endif %}">{{ game.player2 }}</td>
+            <td class="col-md-4{% if game.result == 1 %} bg-success{% endif %}">{{ game.player2 }}</td>
           </tr>
           {% endfor %}
         </table>
