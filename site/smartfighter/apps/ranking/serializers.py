@@ -25,7 +25,3 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-
-    def create(self, validated_data):
-        print(validated_data)
-        return super(GameSerializer, self).create(validated_data)
