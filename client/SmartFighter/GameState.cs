@@ -91,7 +91,7 @@ namespace SmartFighter {
                 if (currentGame.player1 != null && currentGame.player2 != null) {
                     currentGame.result = result;
                     Logger.Instance.log("SET MATCH {0} --> {1} ({2} vs. {3})", currentGame.id, result, currentGame.player1, currentGame.player2);
-                    ApiQueue.registerGame(currentGame.id, currentGame.player1, currentGame.player2, result + 1, DateTime.UtcNow);
+                    ApiQueue.registerGame(currentGame.id, currentGame.player1, currentGame.player2, result, DateTime.UtcNow);
                 } else {
                     currentGame = null;
                 }
@@ -125,7 +125,7 @@ namespace SmartFighter {
                         score2++;
                     }
                     Logger.Instance.log(" * {0} | {1}", getRoundCode(status1), getRoundCode(status2));
-                    rounds.Add(new Api.Round(getRoundResult(status1, status2) + 1, status1, status2));
+                    rounds.Add(new Api.Round(getRoundResult(status1, status2), status1, status2));
                     if (score1 >= scoreMax || score2 >= scoreMax) {
                         break;
                     }
