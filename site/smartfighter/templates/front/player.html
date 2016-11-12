@@ -31,7 +31,7 @@
         </tr>
         {% for opponent in opponents %}
         <tr>
-          <td>{{ opponent.player.name }}</td>
+          <td><a href="/player/{{ opponent.player.name }}">{{ opponent.player.name }}</a></td>
           <td class="text-center active">{{ opponent.total }}</td>
           <td class="text-center active">{{ opponent.win }}</td>
           <td class="text-center active">{{ opponent.draw }}</td>
