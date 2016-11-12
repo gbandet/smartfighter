@@ -5,71 +5,71 @@
   <div class="header clearfix">
     <h1 class="text-muted">{{ player.name }}</h1>
     <h3>
-      <span class="label label-success">Score&nbsp;<span class="badge">{{ player.elo_rating }}</span></span>
-      <span class="label label-success">Win rate&nbsp;<span class="badge">{{ win_rate | floatformat:0 }}%</span></span>
+      <span class="label label-primary">Score&nbsp;<span class="badge">{{ player.elo_rating }}</span></span>
+      <span class="label label-primary">Win rate&nbsp;<span class="badge">{{ win_rate | floatformat:0 }}%</span></span>
     </h3>
   </div>
   <div class="row">
     <div class="col-md-12">
-      <table class="table">
+      <table class="table table-condensed">
         <tr>
-          <th class="col-md-2">Opponent</th>
-          <th class="col-md-4" colspan="4">Games</th>
-          <th class="col-md-6" colspan="5">Rounds</th>
+          <th class="col-md-2"></th>
+          <th class="col-md-4 text-center active" colspan="4">Games</th>
+          <th class="col-md-6 text-center" colspan="5">Rounds</th>
         </tr>
         <tr>
           <th class="col-md-2">Opponent</th>
-          <th class="col-md-1">Played</th>
-          <th class="col-md-1">Win</th>
-          <th class="col-md-1">Draw</th>
-          <th class="col-md-1">Lose</th>
-          <th class="col-md-1">Played</th>
-          <th class="col-md-1">Win</th>
-          <th class="col-md-1">Draw</th>
-          <th class="col-md-1">Lose</th>
-          <th class="col-md-2">Tags</th>
+          <th class="col-md-1 text-center active">Played</th>
+          <th class="col-md-1 text-center active">Win</th>
+          <th class="col-md-1 text-center active">Draw</th>
+          <th class="col-md-1 text-center active">Lose</th>
+          <th class="col-md-1 text-center">Played</th>
+          <th class="col-md-1 text-center">Win</th>
+          <th class="col-md-1 text-center">Draw</th>
+          <th class="col-md-1 text-center">Lose</th>
+          <th class="col-md-2 text-center"></th>
         </tr>
         {% for opponent in opponents %}
         <tr>
           <td>{{ opponent.player.name }}</td>
-          <td>{{ opponent.total }}</td>
-          <td>{{ opponent.win }}</td>
-          <td>{{ opponent.draw }}</td>
-          <td>{{ opponent.lose }}</td>
-          <td>{{ opponent.round_total }}</td>
-          <td>{{ opponent.round_win }}</td>
-          <td>{{ opponent.round_draw }}</td>
-          <td>{{ opponent.round_lose }}</td>
+          <td class="text-center active">{{ opponent.total }}</td>
+          <td class="text-center active">{{ opponent.win }}</td>
+          <td class="text-center active">{{ opponent.draw }}</td>
+          <td class="text-center active">{{ opponent.lose }}</td>
+          <td class="text-center">{{ opponent.round_total }}</td>
+          <td class="text-center">{{ opponent.round_win }}</td>
+          <td class="text-center">{{ opponent.round_draw }}</td>
+          <td class="text-center">{{ opponent.round_lose }}</td>
           <td>
-            {% if opponent.round_P %}<span class="label label-danger">P&nbsp;<span class="badge">{{ opponent.round_P }}</span></span>{% endif %}
-            {% if opponent.round_CA %}<span class="label label-warning">CA&nbsp;<span class="badge">{{ opponent.round_CA }}</span></span>{% endif %}
-            {% if opponent.round_EX %}<span class="label label-primary">EX&nbsp;<span class="badge">{{ opponent.round_EX }}</span></span>{% endif %}
-            {% if opponent.round_V %}<span class="label label-success">V&nbsp;<span class="badge">{{ opponent.round_V }}</span></span>{% endif %}
-            {% if opponent.round_C %}<span class="label label-default">C&nbsp;<span class="badge">{{ opponent.round_C }}</span></span>{% endif %}
-            {% if opponent.round_T %}<span class="label label-default">T&nbsp;<span class="badge">{{ opponent.round_T }}</span></span>{% endif %}
-            {% if opponent.round_D %}<span class="label label-info">D&nbsp;<span class="badge">{{ opponent.round_D }}</span></span>{% endif %}
+            {% if opponent.round_P %}<span class="label label-danger">P&nbsp;{{ opponent.round_P }}</span>{% endif %}
+            {% if opponent.round_CA %}<span class="label label-warning">CA&nbsp;{{ opponent.round_CA }}</span>{% endif %}
+            {% if opponent.round_EX %}<span class="label label-primary">EX&nbsp;{{ opponent.round_EX }}</span>{% endif %}
+            {% if opponent.round_V %}<span class="label label-success">V&nbsp;{{ opponent.round_V }}</span>{% endif %}
+            {% if opponent.round_C %}<span class="label label-default">C&nbsp;{{ opponent.round_C }}</span>{% endif %}
+            {% if opponent.round_T %}<span class="label label-default">T&nbsp;{{ opponent.round_T }}</span>{% endif %}
+            {% if opponent.round_D %}<span class="label label-info">D&nbsp;{{ opponent.round_D }}</span>{% endif %}
           </td>
         </tr>
         {% endfor %}
         <tr>
           <td><strong>Total</strong></td>
-          <td><strong>{{ totals.total }}</strong></td>
-          <td><strong>{{ totals.win }}</strong></td>
-          <td><strong>{{ totals.draw }}</strong></td>
-          <td><strong>{{ totals.lose }}</strong></td>
-          <td><strong>{{ totals.round_total }}</strong></td>
-          <td><strong>{{ totals.round_win }}</strong></td>
-          <td><strong>{{ totals.round_draw }}</strong></td>
-          <td><strong>{{ totals.round_lose }}</strong></td>
+          <td class="text-center active"><strong>{{ totals.total }}</strong></td>
+          <td class="text-center active"><strong>{{ totals.win }}</strong></td>
+          <td class="text-center active"><strong>{{ totals.draw }}</strong></td>
+          <td class="text-center active"><strong>{{ totals.lose }}</strong></td>
+          <td class="text-center"><strong>{{ totals.round_total }}</strong></td>
+          <td class="text-center"><strong>{{ totals.round_win }}</strong></td>
+          <td class="text-center"><strong>{{ totals.round_draw }}</strong></td>
+          <td class="text-center"><strong>{{ totals.round_lose }}</strong></td>
           <td>
             <strong>
-              {% if totals.round_P %}<span class="label label-danger">P&nbsp;<span class="badge">{{ totals.round_P }}</span></span>{% endif %}
-              {% if totals.round_CA %}<span class="label label-warning">CA&nbsp;<span class="badge">{{ totals.round_CA }}</span></span>{% endif %}
-              {% if totals.round_EX %}<span class="label label-primary">EX&nbsp;<span class="badge">{{ totals.round_EX }}</span></span>{% endif %}
-              {% if totals.round_V %}<span class="label label-success">V&nbsp;<span class="badge">{{ totals.round_V }}</span></span>{% endif %}
-              {% if totals.round_C %}<span class="label label-default">C&nbsp;<span class="badge">{{ totals.round_C }}</span></span>{% endif %}
-              {% if totals.round_T %}<span class="label label-default">T&nbsp;<span class="badge">{{ totals.round_T }}</span></span>{% endif %}
-              {% if totals.round_D %}<span class="label label-info">D&nbsp;<span class="badge">{{ totals.round_D }}</span></span>{% endif %}
+              {% if totals.round_P %}<span class="label label-danger">P&nbsp;{{ totals.round_P }}</span>{% endif %}
+              {% if totals.round_CA %}<span class="label label-warning">CA&nbsp;{{ totals.round_CA }}</span>{% endif %}
+              {% if totals.round_EX %}<span class="label label-primary">EX&nbsp;{{ totals.round_EX }}</span>{% endif %}
+              {% if totals.round_V %}<span class="label label-success">V&nbsp;{{ totals.round_V }}</span>{% endif %}
+              {% if totals.round_C %}<span class="label label-default">C&nbsp;{{ totals.round_C }}</span>{% endif %}
+              {% if totals.round_T %}<span class="label label-default">T&nbsp;{{ totals.round_T }}</span>{% endif %}
+              {% if totals.round_D %}<span class="label label-info">D&nbsp;{{ totals.round_D }}</span>{% endif %}
             </strong>
           </td>
         </tr>

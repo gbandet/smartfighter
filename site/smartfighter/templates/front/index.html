@@ -8,28 +8,28 @@
     <h1 class="text-muted">SmartFighter</h1>
   </div>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-5">
       <h4>Ranking</h4>
-      <table class="table">
+      <table class="table table-condensed table-striped">
         <tr>
           <th class="col-md-1">Rank</th>
           <th>Name</th>
-          <th class="col-md-1">Score</th>
-          <th class="col-md-2">Win %</th>
+          <th class="col-md-1 text-center">Score</th>
+          <th class="col-md-3 text-center">Win rate</th>
         </tr>
         {% for player in ranking %}
         <tr>
           <td>{% ifchanged player.elo_rating %}{{ forloop.counter }}{% else %}-{% endifchanged %}</td>
           <td><a href="/player/{{ player.name }}">{{ player.name }}</a></td>
-          <td>{{ player.elo_rating }}</td>
-          <td>{{ player | win_percentage }}</td>
+          <td class="text-center">{{ player.elo_rating }}</td>
+          <td class="text-center">{{ player | win_percentage }}%</td>
         </tr>
         {% endfor %}
       </table>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    <div class="col-md-6 col-md-offset-1">
       <h4>Last Games</h4>
-      <table class="table">
+      <table class="table table-condensed">
         {% for game in games %}
         <tr>
           <td class="col-md-4{% if game.result == 0 %} bg-success{% endif %}">{{ game.player1 }}</td>
@@ -54,7 +54,7 @@
             {% endif %}
             {% endfor %}
           </td>
-          <td class="col-md-2{% if game.result == 1 %} bg-success{% endif %}">
+          <td class="col-md-2 text-right{% if game.result == 1 %} bg-success{% endif %}">
             {% for round in game.rounds %}
             {% if round.player2 == 1 %}
             <span class="label label-default">&nbsp;</span>
@@ -75,7 +75,7 @@
             {% endif %}
             {% endfor %}
           </td>
-          <td class="col-md-4{% if game.result == 1 %} bg-success{% endif %}">{{ game.player2 }}</td>
+          <td class="col-md-4 text-right{% if game.result == 1 %} bg-success{% endif %}">{{ game.player2 }}</td>
         </tr>
         {% endfor %}
       </table>
