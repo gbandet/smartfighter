@@ -1,0 +1,81 @@
+{% extends "front/base.html" %}
+{% block instructions_tab_class %}active{% endblock %}
+{%block body %}
+<div class="container">
+  <div class="header clearfix">
+    <h1 class="text-muted">{{ player.name }}</h1>
+    <h3>
+      <span class="label label-success">Score&nbsp;<span class="badge">{{ player.elo_rating }}</span></span>
+      <span class="label label-success">Win rate&nbsp;<span class="badge">{{ win_rate | floatformat:0 }}%</span></span>
+    </h3>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table">
+        <tr>
+          <th class="col-md-2">Opponent</th>
+          <th class="col-md-4" colspan="4">Games</th>
+          <th class="col-md-6" colspan="5">Rounds</th>
+        </tr>
+        <tr>
+          <th class="col-md-2">Opponent</th>
+          <th class="col-md-1">Played</th>
+          <th class="col-md-1">Win</th>
+          <th class="col-md-1">Draw</th>
+          <th class="col-md-1">Lose</th>
+          <th class="col-md-1">Played</th>
+          <th class="col-md-1">Win</th>
+          <th class="col-md-1">Draw</th>
+          <th class="col-md-1">Lose</th>
+          <th class="col-md-2">Tags</th>
+        </tr>
+        {% for opponent in opponents %}
+        <tr>
+          <td>{{ opponent.player.name }}</td>
+          <td>{{ opponent.total }}</td>
+          <td>{{ opponent.win }}</td>
+          <td>{{ opponent.draw }}</td>
+          <td>{{ opponent.lose }}</td>
+          <td>{{ opponent.round_total }}</td>
+          <td>{{ opponent.round_win }}</td>
+          <td>{{ opponent.round_draw }}</td>
+          <td>{{ opponent.round_lose }}</td>
+          <td>
+            {% if opponent.round_P %}<span class="label label-danger">P&nbsp;<span class="badge">{{ opponent.round_P }}</span></span>{% endif %}
+            {% if opponent.round_CA %}<span class="label label-warning">CA&nbsp;<span class="badge">{{ opponent.round_CA }}</span></span>{% endif %}
+            {% if opponent.round_EX %}<span class="label label-primary">EX&nbsp;<span class="badge">{{ opponent.round_EX }}</span></span>{% endif %}
+            {% if opponent.round_V %}<span class="label label-success">V&nbsp;<span class="badge">{{ opponent.round_V }}</span></span>{% endif %}
+            {% if opponent.round_C %}<span class="label label-default">C&nbsp;<span class="badge">{{ opponent.round_C }}</span></span>{% endif %}
+            {% if opponent.round_T %}<span class="label label-default">T&nbsp;<span class="badge">{{ opponent.round_T }}</span></span>{% endif %}
+            {% if opponent.round_D %}<span class="label label-info">D&nbsp;<span class="badge">{{ opponent.round_D }}</span></span>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td><strong>Total</strong></td>
+          <td><strong>{{ totals.total }}</strong></td>
+          <td><strong>{{ totals.win }}</strong></td>
+          <td><strong>{{ totals.draw }}</strong></td>
+          <td><strong>{{ totals.lose }}</strong></td>
+          <td><strong>{{ totals.round_total }}</strong></td>
+          <td><strong>{{ totals.round_win }}</strong></td>
+          <td><strong>{{ totals.round_draw }}</strong></td>
+          <td><strong>{{ totals.round_lose }}</strong></td>
+          <td>
+            <strong>
+              {% if totals.round_P %}<span class="label label-danger">P&nbsp;<span class="badge">{{ totals.round_P }}</span></span>{% endif %}
+              {% if totals.round_CA %}<span class="label label-warning">CA&nbsp;<span class="badge">{{ totals.round_CA }}</span></span>{% endif %}
+              {% if totals.round_EX %}<span class="label label-primary">EX&nbsp;<span class="badge">{{ totals.round_EX }}</span></span>{% endif %}
+              {% if totals.round_V %}<span class="label label-success">V&nbsp;<span class="badge">{{ totals.round_V }}</span></span>{% endif %}
+              {% if totals.round_C %}<span class="label label-default">C&nbsp;<span class="badge">{{ totals.round_C }}</span></span>{% endif %}
+              {% if totals.round_T %}<span class="label label-default">T&nbsp;<span class="badge">{{ totals.round_T }}</span></span>{% endif %}
+              {% if totals.round_D %}<span class="label label-info">D&nbsp;<span class="badge">{{ totals.round_D }}</span></span>{% endif %}
+            </strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

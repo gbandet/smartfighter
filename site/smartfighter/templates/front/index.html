@@ -20,7 +20,7 @@
         {% for player in ranking %}
         <tr>
           <td>{% ifchanged player.elo_rating %}{{ forloop.counter }}{% else %}-{% endifchanged %}</td>
-          <td>{{ player.name }}</td>
+          <td><a href="/player/{{ player.name }}">{{ player.name }}</a></td>
           <td>{{ player.elo_rating }}</td>
           <td>{{ player | win_percentage }}</td>
         </tr>
