@@ -58,6 +58,8 @@ class PlayerResults(models.Model):
     player = models.ForeignKey(Player, related_name="season_results")
     season = models.ForeignKey(Season, related_name="player_results")
     elo_rating = models.IntegerField(default=1000, db_index=True)
+    min_rating = models.IntegerField(null=True)
+    max_rating = models.IntegerField(null=True)
 
     class Meta:
         unique_together = (('season', 'player'),)
@@ -70,6 +72,8 @@ class Game(models.Model):
     player1 = models.ForeignKey(Player, related_name="games_as_first_player")
     player2 = models.ForeignKey(Player, related_name="games_as_second_player")
     result = models.IntegerField(choices=MatchResult.choices)
+    player1_rating_change = models.IntegerField(null=True, blank=True)
+    player2_rating_change = models.IntegerField(null=True, blank=True)
     date = models.DateTimeField(db_index=True)
 
     @property
@@ -81,12 +85,21 @@ class Game(models.Model):
             p1_score, p2_score = self._get_player_scores()
             p1_results, dummy = self.season.player_results.get_or_create(player=self.player1)
             p2_results, dummy = self.season.player_results.get_or_create(player=self.player2)
-            p1_rating = Elo.get_new_rating(p1_score, p1_results.elo_rating, p2_results.elo_rating)
-            p2_rating = Elo.get_new_rating(p2_score, p2_results.elo_rating, p1_results.elo_rating)
-            p1_results.elo_rating = p1_rating
-            p2_results.elo_rating = p2_rating
-            p1_results.save()
-            p2_results.save()
+            self.player1_rating_change = self._update_player_rating(p1_results, p1_score, p1_results.elo_rating, p2_results.elo_rating)
+            self.player2_rating_change = self._update_player_rating(p2_results, p2_score, p2_results.elo_rating, p1_results.elo_rating)
+            self.save()
+
+    def _update_player_rating(self, result, score, old_rating, opponent_rating):
+        new_rating = Elo.get_new_rating(score, old_rating, opponent_rating)
+        result.elo_rating = new_rating
+
+        if Game.objects.filter(
+                season=result.season, phase=GamePhase.Ranked).filter(
+                    models.Q(player1=result.player)|models.Q(player2=result.player)).count() >= 15:
+            result.min_rating = min(result.min_rating, new_rating) if result.min_rating is not None else new_rating
+            result.max_rating = max(result.max_rating, new_rating) if result.max_rating is not None else new_rating
+        result.save()
+        return new_rating - old_rating
 
     def _get_player_scores(self):
         if self.result == MatchResult.Player1:

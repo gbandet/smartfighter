@@ -24,4 +24,4 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
-        read_only_fields = ('season', 'phase')
+        read_only_fields = ('season', 'phase', 'player1_rating_change', 'player2_rating_change')
