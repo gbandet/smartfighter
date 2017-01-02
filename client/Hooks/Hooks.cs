@@ -53,6 +53,7 @@ namespace SmartFighter.Hooks
                     player2.Add(result2);
                 }
             }
+            Communication.Interface.writeLog("Round result: {0} {1}", String.Join("/", player1.ToArray()), String.Join("/", player2.ToArray()));
             Communication.Interface.setRoundResults(player1.ToArray(), player2.ToArray());
             return ret;
         }

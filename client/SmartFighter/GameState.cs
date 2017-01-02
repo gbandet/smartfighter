@@ -11,11 +11,12 @@ namespace SmartFighter {
         public const int Ranked = 7;
         public const int Training = 8;
         public const int CFN = 9;
-        public const int BattleSettings = 14;
+        public const int BattleSettings = 10;
         public const int Shop = 11;
         public const int Options = 12;
         public const int Challenge = 13;
         public const int Log = 14;
+        public const int Informations = 15;
     }
 
     public static class VersusMode {
