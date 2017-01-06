@@ -34,8 +34,9 @@ namespace SmartFighter {
             overlay = new Overlay();
             overlay.Owner = this;
             overlayTimer = new Timer();
-            overlayTimer.Interval = 10000;
-            overlayTimer.Tick += (sender, args) => hideOverlay();
+            overlayTimer.Interval = 5000;
+            overlayTimer.Tick += (sender, args) => stopOverlayDisconnect();
+            overlay.Show();
 
             apiWorker = new BackgroundWorker();
             apiWorker.WorkerSupportsCancellation = true;
@@ -81,13 +82,18 @@ namespace SmartFighter {
             if (!overlayEnabled) {
                 return;
             }
-            if (overlay.Visible && playerSelection == 1) {
+            if (playerSelection == 1) {
                 gameState.player1Id = null;
                 overlay.player1Name.Text = "";
             }
             playerSelection = 1;
-            overlay.setPlayerSelection(1, gameState.player1Id != null);
-            showOverlay();
+            if (gameState.player1Id != null) {
+                overlay.setDisconnectPlayer1();
+                overlayTimer.Start();
+            } else {
+                overlayTimer.Stop();
+                overlay.setScanPlayer1();
+            }
         }
 
         private void onPlayer2Button() {
@@ -98,13 +104,18 @@ namespace SmartFighter {
             if (!overlayEnabled) {
                 return;
             }
-            if (overlay.Visible && playerSelection == 2) {
+            if (playerSelection == 2) {
                 gameState.player2Id = null;
                 overlay.player2Name.Text = "";
             }
             playerSelection = 2;
-            overlay.setPlayerSelection(2, gameState.player2Id != null);
-            showOverlay();
+            if (gameState.player2Id != null) {
+                overlay.setDisconnectPlayer2();
+                overlayTimer.Start();
+            } else {
+                overlayTimer.Stop();
+                overlay.setScanPlayer2();
+            }
         }
 
         private void onCardRead(string uid) {
@@ -115,47 +126,35 @@ namespace SmartFighter {
             if (!overlayEnabled) {
                 return;
             }
-            if (overlay.Visible) {
-                Api.Player player = Api.getPlayer(uid);
-                if (player == null) {
-                    return;
+            Api.Player player = Api.getPlayer(uid);
+            if (player == null) {
+                return;
+            }
+            if (playerSelection == 1 && gameState.player2Id != uid) {
+                gameState.player1Id = uid;
+                overlay.player1Name.Text = player.name;
+                if (gameState.player2Id == null) {
+                    playerSelection = 2;
+                    overlay.setScanPlayer2();
+                } else {
+                    stopOverlayDisconnect();
                 }
-                if (playerSelection == 1 && gameState.player2Id != uid) {
-                    gameState.player1Id = uid;
-                    overlay.player1Name.Text = player.name;
-                    if (gameState.player2Id == null) {
-                        playerSelection = 2;
-                        overlay.setPlayerSelection(2, gameState.player2Id != null);
-                    } else {
-                        playerSelection = null;
-                        overlay.setReady();
-                    }
-                } else if (playerSelection == 2 && gameState.player1Id != uid) {
-                    gameState.player2Id = uid;
-                    overlay.player2Name.Text = player.name;
-                    if (gameState.player1Id == null) {
-                        playerSelection = 1;
-                        overlay.setPlayerSelection(1, gameState.player1Id != null);
-                    } else {
-                        playerSelection = null;
-                        overlay.setReady();
-                    }
+            } else if (playerSelection == 2 && gameState.player1Id != uid) {
+                gameState.player2Id = uid;
+                overlay.player2Name.Text = player.name;
+                if (gameState.player1Id == null) {
+                    playerSelection = 1;
+                    overlay.setScanPlayer1();
+                } else {
+                    stopOverlayDisconnect();
                 }
-            } else {
-                playerSelection = null;
-                overlay.setNoSelection();
-                showOverlay();
             }
         }
 
-        private void showOverlay() {
-            overlay.Show();
-            overlayTimer.Start();
-        }
-
-        private void hideOverlay() {
+        private void stopOverlayDisconnect() {
             overlayTimer.Stop();
-            overlay.Hide();
+            playerSelection = null;
+            overlay.hideInfoLabels();
         }
 
         private void onConnectorExit(bool isSuccess) {

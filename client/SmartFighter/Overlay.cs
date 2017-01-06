@@ -14,20 +14,46 @@ namespace SmartFighter {
             InitializeComponent();
         }
 
-        public void setPlayerSelection(int player, bool hasCard) {
-            if (!hasCard) {
-                infoLabel.Text = String.Format("Player {0}: Scan your card.", player);
-            } else {
-                infoLabel.Text = String.Format("Player {0}: To disconnect push the button again or scan another card.", player);
-            }
+        private const string MSG_SCAN = "Scan your card";
+        private const string MSG_DISCONNECT = "Confirm disconnection or scan another card.";
+
+        public void setScanPlayer1() {
+            player1Info.Text = MSG_SCAN;
+            player1Name.Hide();
+            player1Info.Show();
+            player2Name.Show();
+            player2Info.Hide();
         }
 
-        public void setNoSelection() {
-            infoLabel.Text = "Push a button to select a player.";
+        public void setScanPlayer2() {
+            player2Info.Text = MSG_SCAN;
+            player1Name.Show();
+            player1Info.Hide();
+            player2Name.Hide();
+            player2Info.Show();
         }
 
-        public void setReady() {
-            infoLabel.Text = "Match ready.";
+        public void setDisconnectPlayer1() {
+            player1Info.Text = MSG_DISCONNECT;
+            player1Name.Hide();
+            player1Info.Show();
+            player2Name.Show();
+            player2Info.Hide();
+        }
+
+        public void setDisconnectPlayer2() {
+            player2Info.Text = MSG_DISCONNECT;
+            player1Name.Show();
+            player1Info.Hide();
+            player2Name.Hide();
+            player2Info.Show();
+        }
+
+        public void hideInfoLabels() {
+            player1Info.Hide();
+            player2Info.Hide();
+            player1Name.Show();
+            player2Name.Show();
         }
     }
 }

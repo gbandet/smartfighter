@@ -23,135 +23,102 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.layout = new System.Windows.Forms.TableLayoutPanel();
-            this.player1layout = new System.Windows.Forms.FlowLayoutPanel();
-            this.player1Label = new System.Windows.Forms.Label();
             this.player1Name = new System.Windows.Forms.Label();
-            this.player2Layout = new System.Windows.Forms.FlowLayoutPanel();
-            this.player2Label = new System.Windows.Forms.Label();
             this.player2Name = new System.Windows.Forms.Label();
-            this.infoLabel = new System.Windows.Forms.Label();
-            this.layout.SuspendLayout();
-            this.player1layout.SuspendLayout();
-            this.player2Layout.SuspendLayout();
+            this.panel = new System.Windows.Forms.Panel();
+            this.player2Info = new System.Windows.Forms.Label();
+            this.player1Info = new System.Windows.Forms.Label();
+            this.panel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // layout
-            // 
-            this.layout.ColumnCount = 2;
-            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.layout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.layout.Controls.Add(this.player1layout, 0, 0);
-            this.layout.Controls.Add(this.player2Layout, 1, 0);
-            this.layout.Controls.Add(this.infoLabel, 0, 1);
-            this.layout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.layout.Location = new System.Drawing.Point(0, 0);
-            this.layout.Name = "layout";
-            this.layout.RowCount = 2;
-            this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.layout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.layout.Size = new System.Drawing.Size(350, 50);
-            this.layout.TabIndex = 0;
-            // 
-            // player1layout
-            // 
-            this.player1layout.Controls.Add(this.player1Label);
-            this.player1layout.Controls.Add(this.player1Name);
-            this.player1layout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.player1layout.Location = new System.Drawing.Point(3, 3);
-            this.player1layout.Name = "player1layout";
-            this.player1layout.Size = new System.Drawing.Size(169, 19);
-            this.player1layout.TabIndex = 2;
-            // 
-            // player1Label
-            // 
-            this.player1Label.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.player1Label.AutoSize = true;
-            this.player1Label.Location = new System.Drawing.Point(3, 0);
-            this.player1Label.Name = "player1Label";
-            this.player1Label.Size = new System.Drawing.Size(45, 13);
-            this.player1Label.TabIndex = 0;
-            this.player1Label.Text = "Player1:";
             // 
             // player1Name
             // 
-            this.player1Name.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.player1Name.AutoSize = true;
-            this.player1Name.Location = new System.Drawing.Point(54, 0);
+            this.player1Name.BackColor = System.Drawing.Color.Transparent;
+            this.player1Name.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.player1Name.ForeColor = System.Drawing.Color.White;
+            this.player1Name.Location = new System.Drawing.Point(15, 3);
             this.player1Name.Name = "player1Name";
-            this.player1Name.Size = new System.Drawing.Size(0, 13);
-            this.player1Name.TabIndex = 1;
-            // 
-            // player2Layout
-            // 
-            this.player2Layout.Controls.Add(this.player2Label);
-            this.player2Layout.Controls.Add(this.player2Name);
-            this.player2Layout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.player2Layout.Location = new System.Drawing.Point(178, 3);
-            this.player2Layout.Name = "player2Layout";
-            this.player2Layout.Size = new System.Drawing.Size(169, 19);
-            this.player2Layout.TabIndex = 3;
-            // 
-            // player2Label
-            // 
-            this.player2Label.AutoSize = true;
-            this.player2Label.Location = new System.Drawing.Point(3, 0);
-            this.player2Label.Name = "player2Label";
-            this.player2Label.Size = new System.Drawing.Size(45, 13);
-            this.player2Label.TabIndex = 1;
-            this.player2Label.Text = "Player2:";
+            this.player1Name.Size = new System.Drawing.Size(300, 24);
+            this.player1Name.TabIndex = 0;
             // 
             // player2Name
             // 
-            this.player2Name.AutoSize = true;
-            this.player2Name.Location = new System.Drawing.Point(54, 0);
+            this.player2Name.BackColor = System.Drawing.Color.Transparent;
+            this.player2Name.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.player2Name.ForeColor = System.Drawing.Color.White;
+            this.player2Name.Location = new System.Drawing.Point(485, 3);
             this.player2Name.Name = "player2Name";
-            this.player2Name.Size = new System.Drawing.Size(0, 13);
-            this.player2Name.TabIndex = 2;
+            this.player2Name.Size = new System.Drawing.Size(300, 24);
+            this.player2Name.TabIndex = 1;
+            this.player2Name.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // infoLabel
+            // panel
             // 
-            this.infoLabel.AutoSize = true;
-            this.layout.SetColumnSpan(this.infoLabel, 2);
-            this.infoLabel.Location = new System.Drawing.Point(3, 25);
-            this.infoLabel.Name = "infoLabel";
-            this.infoLabel.Size = new System.Drawing.Size(0, 13);
-            this.infoLabel.TabIndex = 4;
+            this.panel.BackColor = System.Drawing.Color.Transparent;
+            this.panel.BackgroundImage = global::SmartFighter.Properties.Resources.smartfighter_bar;
+            this.panel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel.Controls.Add(this.player2Info);
+            this.panel.Controls.Add(this.player1Info);
+            this.panel.Controls.Add(this.player1Name);
+            this.panel.Controls.Add(this.player2Name);
+            this.panel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel.Location = new System.Drawing.Point(0, 0);
+            this.panel.Name = "panel";
+            this.panel.Size = new System.Drawing.Size(800, 30);
+            this.panel.TabIndex = 2;
+            // 
+            // player2Info
+            // 
+            this.player2Info.BackColor = System.Drawing.Color.Transparent;
+            this.player2Info.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player2Info.ForeColor = System.Drawing.Color.White;
+            this.player2Info.Location = new System.Drawing.Point(485, 3);
+            this.player2Info.Name = "player2Info";
+            this.player2Info.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.player2Info.Size = new System.Drawing.Size(300, 24);
+            this.player2Info.TabIndex = 3;
+            this.player2Info.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // player1Info
+            // 
+            this.player1Info.BackColor = System.Drawing.Color.Transparent;
+            this.player1Info.Font = new System.Drawing.Font("Tahoma", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.player1Info.ForeColor = System.Drawing.Color.White;
+            this.player1Info.Location = new System.Drawing.Point(15, 3);
+            this.player1Info.Name = "player1Info";
+            this.player1Info.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
+            this.player1Info.Size = new System.Drawing.Size(300, 24);
+            this.player1Info.TabIndex = 2;
             // 
             // Overlay
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(350, 50);
+            this.BackColor = System.Drawing.Color.Thistle;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ClientSize = new System.Drawing.Size(800, 30);
             this.ControlBox = false;
-            this.Controls.Add(this.layout);
+            this.Controls.Add(this.panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Location = new System.Drawing.Point(785, 0);
+            this.Location = new System.Drawing.Point(560, 0);
             this.Name = "Overlay";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Overlay";
             this.TopMost = true;
-            this.layout.ResumeLayout(false);
-            this.layout.PerformLayout();
-            this.player1layout.ResumeLayout(false);
-            this.player1layout.PerformLayout();
-            this.player2Layout.ResumeLayout(false);
-            this.player2Layout.PerformLayout();
+            this.TransparencyKey = System.Drawing.Color.Thistle;
+            this.panel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel layout;
-        private System.Windows.Forms.Label player1Label;
-        private System.Windows.Forms.Label player2Label;
-        private System.Windows.Forms.FlowLayoutPanel player1layout;
-        private System.Windows.Forms.FlowLayoutPanel player2Layout;
-        public System.Windows.Forms.Label infoLabel;
         public System.Windows.Forms.Label player1Name;
         public System.Windows.Forms.Label player2Name;
+        private System.Windows.Forms.Panel panel;
+        public System.Windows.Forms.Label player1Info;
+        public System.Windows.Forms.Label player2Info;
     }
 }
