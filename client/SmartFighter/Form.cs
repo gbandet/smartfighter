@@ -36,7 +36,6 @@ namespace SmartFighter {
             overlayTimer = new Timer();
             overlayTimer.Interval = 5000;
             overlayTimer.Tick += (sender, args) => stopOverlayDisconnect();
-            overlay.Show();
 
             apiWorker = new BackgroundWorker();
             apiWorker.WorkerSupportsCancellation = true;
@@ -66,6 +65,7 @@ namespace SmartFighter {
 
             gameState = new GameState();
             connector = new Connector(gameState);
+            connector.server.GameModeChangedEvent += onGameModeChanged;
             connectorWorker = new BackgroundWorker();
             connectorWorker.WorkerSupportsCancellation = true;
             connectorWorker.DoWork += connector.run;
@@ -148,6 +148,23 @@ namespace SmartFighter {
                 } else {
                     stopOverlayDisconnect();
                 }
+            }
+        }
+
+        private void onGameModeChanged() {
+            if (InvokeRequired) {
+                Invoke(new Action(onGameModeChanged));
+                return;
+            }
+            if (gameState.isInVersus()) {
+                overlay.Show();
+            } else {
+                gameState.player1Id = null;
+                gameState.player2Id = null;
+                overlay.player1Name.Text = "";
+                overlay.player2Name.Text = "";
+                playerSelection = null;
+                overlay.Hide();
             }
         }
 

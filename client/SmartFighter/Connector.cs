@@ -9,9 +9,10 @@ using System.Threading;
 namespace SmartFighter {
     class Connector {
         private string channelName = null;
+        public SmartFighterServer server;
 
         public Connector(GameState game) {
-            SmartFighterServer server = new SmartFighterServer(game);
+            server = new SmartFighterServer(game);
             RemoteHooking.IpcCreateServer<SmartFighterServer>(ref channelName, WellKnownObjectMode.Singleton, server);
         }
 

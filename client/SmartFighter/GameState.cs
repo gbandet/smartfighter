@@ -62,8 +62,8 @@ namespace SmartFighter {
             }
         }
 
-        public int gameMode = 0;
-        public int versusMode = 0;
+        public int gameMode = -1;
+        public int versusMode = -1;
         public int roundCount = 0;
         public int roundTimer = 0;
         public string player1Id;

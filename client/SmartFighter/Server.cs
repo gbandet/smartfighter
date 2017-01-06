@@ -2,8 +2,12 @@ using SmartFighter.Common;
 
 
 namespace SmartFighter {
+    public delegate void GameModeChangedHandler();
+
     class SmartFighterServer : SmartFighterInterface {
         private GameState game;
+
+        public event GameModeChangedHandler GameModeChangedEvent;
 
         public SmartFighterServer(GameState game) {
             this.game = game;
@@ -19,10 +23,13 @@ namespace SmartFighter {
 
         public override void setGameMode(int mode) {
             game.gameMode = mode;
+            game.versusMode = -1;
+            GameModeChangedEvent();
         }
 
         public override void setVersusMode(int mode) {
             game.versusMode = mode;
+            GameModeChangedEvent();
         }
 
         public override void setRoundCount(int rounds) {
