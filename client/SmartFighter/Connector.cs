@@ -4,12 +4,18 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Threading;
+using System.Windows.Automation;
 
 
 namespace SmartFighter {
+    public delegate void SFVFocusChangedHandler(bool hasFocus);
+
     class Connector {
         private string channelName = null;
+        private int sfvProcessId;
         public SmartFighterServer server;
+
+        public event SFVFocusChangedHandler SFVFocusChangedEvent;
 
         public Connector(GameState game) {
             server = new SmartFighterServer(game);
@@ -19,11 +25,12 @@ namespace SmartFighter {
         public void run(object sender, DoWorkEventArgs args) {
             BackgroundWorker worker = sender as BackgroundWorker;
             args.Result = false;
-            int processId = getSFVProcessId();
-            if (processId == 0) {
+            sfvProcessId = getSFVProcessId();
+            if (sfvProcessId == 0) {
                 return;
             }
-            injectHookLibrary(processId, "Hooks.dll");
+            injectHookLibrary(sfvProcessId, "Hooks.dll");
+            Automation.AddAutomationFocusChangedEventHandler(onFocusChanged);
             while (!worker.CancellationPending) {
                 Thread.Sleep(500);
             }
@@ -46,6 +53,14 @@ namespace SmartFighter {
             Logger.Instance.log("Injecting library...");            
             RemoteHooking.Inject(processId, InjectionOptions.DoNotRequireStrongName, library, library, channelName);
             Logger.Instance.log("Injection finished.");
+        }
+
+        private void onFocusChanged(object src, AutomationFocusChangedEventArgs args) {
+             AutomationElement element = src as AutomationElement;
+             if (element != null) {
+                int processId = element.Current.ProcessId;
+                SFVFocusChangedEvent(processId == sfvProcessId);
+             }
         }
     }
 }

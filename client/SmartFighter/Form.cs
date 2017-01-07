@@ -17,6 +17,7 @@ namespace SmartFighter {
         private Timer overlayTimer;
         private bool overlayEnabled = true;
         private int? playerSelection = null;
+        private bool sfvHasFocus = true;
 
         private enum WorkerState {
             Stopped,
@@ -66,6 +67,7 @@ namespace SmartFighter {
             gameState = new GameState();
             connector = new Connector(gameState);
             connector.server.GameModeChangedEvent += onGameModeChanged;
+            connector.SFVFocusChangedEvent += onFocusChanged;
             connectorWorker = new BackgroundWorker();
             connectorWorker.WorkerSupportsCancellation = true;
             connectorWorker.DoWork += connector.run;
@@ -156,14 +158,29 @@ namespace SmartFighter {
                 Invoke(new Action(onGameModeChanged));
                 return;
             }
-            if (gameState.isInVersus()) {
-                overlay.Show();
-            } else {
+            if (!gameState.isInVersus()) {
                 gameState.player1Id = null;
                 gameState.player2Id = null;
                 overlay.player1Name.Text = "";
                 overlay.player2Name.Text = "";
                 playerSelection = null;
+            }
+            updateOverlayVisibility();
+        }
+
+        private void onFocusChanged(bool hasFocus) {
+            if (InvokeRequired) {
+                Invoke(new Action<bool>(onFocusChanged), hasFocus);
+                return;
+            }
+            sfvHasFocus = hasFocus;
+            updateOverlayVisibility();
+        }
+
+        private void updateOverlayVisibility() {
+            if (sfvHasFocus && gameState.isInVersus()) {
+                overlay.Show();
+            } else {
                 overlay.Hide();
             }
         }
