@@ -1,7 +1,7 @@
 from collections import defaultdict
 from operator import itemgetter
 
-from django.db.models import Count, Q
+from django.db.models import Count, F, Q
 from django.views.generic import TemplateView
 from django.http import Http404
 
@@ -13,10 +13,15 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(TemplateView, self).get_context_data(**kwargs)
         context['games'] = Game.objects.all().select_related().order_by('-date')[:20]
-        context['ranking'] =  Player.objects.annotate(
-            first=Count('games_as_first_player')).annotate(second=Count('games_as_second_player')).filter(
-                Q(first__gt=0)|Q(second__gt=0)).prefetch_related(
-                    'games_as_first_player', 'games_as_second_player').order_by('-elo_rating')
+        context['ranking'] = []
+        context['placement'] = []
+        for player in Player.objects.prefetch_related(
+                'games_as_first_player', 'games_as_second_player').order_by('-elo_rating'):
+            games_played = player.games_as_first_player.count() + player.games_as_second_player.count()
+            if games_played >= 15:
+                context['ranking'].append(player)
+            elif games_played > 0:
+                 context['placement'].append(player)
         return context
 
 
