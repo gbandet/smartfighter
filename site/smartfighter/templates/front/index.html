@@ -6,11 +6,12 @@
 <div class="container">
   <div class="header clearfix">
     <h1 class="text-muted">SmartFighter</h1>
+    <h4>Season 1 - Qualifications until January 31st</h4>
   </div>
   <div class="row">
     <div class="col-md-5">
       <h4>Ranking</h4>
-      <table class="table table-condensed table-striped">
+      <table class="table table-condensed">
         <tr>
           <th class="col-md-1">Rank</th>
           <th>Name</th>
@@ -18,7 +19,7 @@
           <th class="col-md-3 text-center">Win rate</th>
         </tr>
         {% for player in ranking %}
-        <tr>
+        <tr{% if forloop.counter < 9 %} class="bg-info"{% endif %}>
           <td>{% ifchanged player.elo_rating %}{{ forloop.counter }}{% else %}-{% endifchanged %}</td>
           <td><a href="/player/{{ player.name }}">{{ player.name }}</a></td>
           <td class="text-center">{{ player.elo_rating }}</td>
@@ -27,7 +28,7 @@
         {% endfor %}
       </table>
       <h4>Unranked (15 games need to be played)</h4>
-      <table class="table table-condensed table-striped">
+      <table class="table table-condensed">
         <tr>
           <th>Name</th>
           <th class="col-md-1 text-center">Played</th>
