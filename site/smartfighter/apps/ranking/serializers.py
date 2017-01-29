@@ -7,7 +7,6 @@ from smartfighter.apps.ranking.models import Game, Player, Round
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        read_only_fields = ('elo_rating',)
 
 
 class RoundSerializer(serializers.ModelSerializer):
@@ -25,3 +24,4 @@ class GameSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Game
+        read_only_fields = ('season', 'phase')

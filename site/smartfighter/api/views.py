@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import GenericViewSet
 
-from smartfighter.apps.ranking.models import Game, Player
+from smartfighter.apps.ranking.models import Game, GamePhase, Player, Season
 from smartfighter.apps.ranking.serializers import GameSerializer, PlayerSerializer, RoundSerializer
 
 
@@ -19,6 +19,15 @@ class CreateListRetrieveViewSet(mixins.CreateModelMixin,
 class GameViewSet(CreateListRetrieveViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
+
+    def perform_create(self, serializer):
+        season = Season.get_current_season()
+        if season:
+            serializer.validated_data['season'] = season
+            serializer.validated_data['phase'] = GamePhase.Ranked
+        else:
+            serializer.validated_data['phase'] = GamePhase.Unranked
+        return super(GameViewSet, self).perform_create(serializer)
 
     @detail_route(methods=['post'])
     def rounds(self, request, pk=None):
