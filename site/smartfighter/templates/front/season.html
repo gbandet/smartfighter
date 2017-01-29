@@ -1,0 +1,107 @@
+{% extends "front/base.html" %}
+{% load static %}
+{% load ranking %}
+{% block ranking_tab_class %}active{% endblock %}
+{%block body %}
+<div class="container">
+  <div class="header clearfix">
+    <h1 class="text-muted">SmartFighter</h1>
+    <h4>{{ season.name }} - Qualifications from {{ season.start_date|date }} to {{ season.end_date|date }}</h4>
+  </div>
+  <div class="row">
+    <div class="col-md-5">
+      <h4>Ranking</h4>
+      <table class="table table-condensed">
+        <tr>
+          <th class="col-md-1">Rank</th>
+          <th>Name</th>
+          <th class="col-md-1 text-center">Score</th>
+          <th class="col-md-3 text-center">Win rate</th>
+        </tr>
+        {% for results in ranking %}
+        {% with player=results.player %}
+        <tr{% if forloop.counter < 9 %} class="bg-info"{% endif %}>
+          <td>{% ifchanged results.elo_rating %}{{ forloop.counter }}{% else %}-{% endifchanged %}</td>
+          <td><a href="/player/{{ player.name }}">{{ player.name }}</a></td>
+          <td class="text-center">{{ results.elo_rating }}</td>
+          <td class="text-center">{{ player | win_percentage }}%</td>
+        </tr>
+        {% endwith %}
+        {% endfor %}
+      </table>
+      <h4>Unranked (15 games need to be played)</h4>
+      <table class="table table-condensed">
+        <tr>
+          <th>Name</th>
+          <th class="col-md-1 text-center">Played</th>
+          <th class="col-md-1 text-center">Score</th>
+          <th class="col-md-3 text-center">Win rate</th>
+        </tr>
+        {% for results in placement %}
+        {% with player=results.player %}
+        <tr>
+          <td><a href="/player/{{ player.name }}">{{ player.name }}</a></td>
+          <td class="text-center">{{ player.games_as_first_player.count|add:player.games_as_second_player.count }}</td>
+          <td class="text-center">{{ results.elo_rating }}</td>
+          <td class="text-center">{{ player | win_percentage }}%</td>
+        </tr>
+        {% endwith %}
+        {% endfor %}
+      </table>
+    </div>
+    <div class="col-md-6 col-md-offset-1">
+      <h4>Last Games</h4>
+      <table class="table table-condensed">
+        {% for game in games %}
+        <tr>
+          <td class="col-md-4{% if game.result == 0 %} bg-success{% endif %}">{{ game.player1 }}</td>
+          <td class="col-md-2{% if game.result == 0 %} bg-success{% endif %}">
+            {% for round in game.rounds %}
+            {% if round.player1 == 1 %}
+            <span class="label label-default">&nbsp;</span>
+            {% elif round.player1 == 2 %}
+            <span class="label label-success">V</span>
+            {% elif round.player1 == 3 %}
+            <span class="label label-warning">CA</span>
+            {% elif round.player1 == 4 %}
+            <span class="label label-primary">EX</span>
+            {% elif round.player1 == 5 %}
+            <span class="label label-default">C</span>
+            {% elif round.player1 == 6 %}
+            <span class="label label-danger">P</span>
+            {% elif round.player1 == 7 %}
+            <span class="label label-default">T</span>
+            {% elif round.player1 == 8 %}
+            <span class="label label-info">D</span>
+            {% endif %}
+            {% endfor %}
+          </td>
+          <td class="col-md-2 text-right{% if game.result == 1 %} bg-success{% endif %}">
+            {% for round in game.rounds %}
+            {% if round.player2 == 1 %}
+            <span class="label label-default">&nbsp;</span>
+            {% elif round.player2 == 2 %}
+            <span class="label label-success">V</span>
+            {% elif round.player2 == 3 %}
+            <span class="label label-warning">CA</span>
+            {% elif round.player2 == 4 %}
+            <span class="label label-primary">EX</span>
+            {% elif round.player2 == 5 %}
+            <span class="label label-default">C</span>
+            {% elif round.player2 == 6 %}
+            <span class="label label-danger">P</span>
+            {% elif round.player2 == 7 %}
+            <span class="label label-default">T</span>
+            {% elif round.player2 == 8 %}
+            <span class="label label-info">D</span>
+            {% endif %}
+            {% endfor %}
+          </td>
+          <td class="col-md-4 text-right{% if game.result == 1 %} bg-success{% endif %}">{{ game.player2 }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

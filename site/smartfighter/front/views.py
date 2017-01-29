@@ -1,27 +1,57 @@
 from collections import defaultdict
 from operator import itemgetter
 
-from django.db.models import Count, F, Q
-from django.views.generic import TemplateView
-from django.http import Http404
+from django.db.models import Count, F, Prefetch, Q
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.views.generic import RedirectView, TemplateView
 
-from smartfighter.apps.ranking.models import Game, MatchResult, Player, Round, RoundResult
+from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Player, PlayerResults, Round, RoundResult, Season
 
-class IndexView(TemplateView):
-    template_name = 'front/index.html'
+
+class IndexView(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        season = Season.get_current_season()
+        if season:
+            return reverse('season', kwargs={'season_id': season.pk})
+        else:
+            return reverse('unranked')
+
+
+class SeasonView(TemplateView):
+    template_name = 'front/season.html'
+
+    def get_context_data(self, season_id, **kwargs):
+        context = super(TemplateView, self).get_context_data(**kwargs)
+        season = get_object_or_404(Season, pk=season_id)
+
+        context['season'] = season
+        context['games'] = Game.objects.filter(
+            season=season, phase=GamePhase.Ranked).select_related().order_by('-date')[:20]
+        context['ranking'] = []
+        context['placement'] = []
+
+        for results in PlayerResults.objects.filter(season=season).select_related(
+            'player').prefetch_related(
+                Prefetch('player__games_as_first_player',
+                         queryset=Game.objects.filter(season=season)),
+                Prefetch('player__games_as_second_player',
+                         queryset=Game.objects.filter(season=season))).order_by('-elo_rating'):
+            games_played = results.player.games_as_first_player.count() + results.player.games_as_second_player.count()
+            if games_played >= 15:
+                context['ranking'].append(results)
+            elif games_played > 0:
+                context['placement'].append(results)
+        return context
+
+
+class UnrankedView(TemplateView):
+    template_name = 'front/unranked.html'
 
     def get_context_data(self, **kwargs):
         context = super(TemplateView, self).get_context_data(**kwargs)
-        context['games'] = Game.objects.all().select_related().order_by('-date')[:20]
-        context['ranking'] = []
-        context['placement'] = []
-        for player in Player.objects.prefetch_related(
-                'games_as_first_player', 'games_as_second_player').order_by('-elo_rating'):
-            games_played = player.games_as_first_player.count() + player.games_as_second_player.count()
-            if games_played >= 15:
-                context['ranking'].append(player)
-            elif games_played > 0:
-                 context['placement'].append(player)
+        context['games'] = Game.objects.filter(
+            phase=GamePhase.Unranked).select_related().order_by('-date')[:20]
         return context
 
 
@@ -30,10 +60,7 @@ class PlayerView(TemplateView):
 
     def get_context_data(self, name, **kwargs):
         context = super(TemplateView, self).get_context_data(**kwargs)
-        try:
-            player = Player.objects.get(name=name)
-        except Player.DoesNotExist:
-            raise Http404("Player %s does not exists." % name)
+        player = get_object_or_404(Player, name=name)
 
         opponents = {}
         def get_opponent(player):

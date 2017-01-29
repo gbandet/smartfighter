@@ -5,47 +5,10 @@
 {%block body %}
 <div class="container">
   <div class="header clearfix">
-    <h1 class="text-muted">SmartFighter</h1>
-    <h4>Season 1 - Qualifications until January 31st</h4>
+    <h1 class="text-muted">Unranked games</h1>
   </div>
   <div class="row">
-    <div class="col-md-5">
-      <h4>Ranking</h4>
-      <table class="table table-condensed">
-        <tr>
-          <th class="col-md-1">Rank</th>
-          <th>Name</th>
-          <th class="col-md-1 text-center">Score</th>
-          <th class="col-md-3 text-center">Win rate</th>
-        </tr>
-        {% for player in ranking %}
-        <tr{% if forloop.counter < 9 %} class="bg-info"{% endif %}>
-          <td>{% ifchanged player.elo_rating %}{{ forloop.counter }}{% else %}-{% endifchanged %}</td>
-          <td><a href="/player/{{ player.name }}">{{ player.name }}</a></td>
-          <td class="text-center">{{ player.elo_rating }}</td>
-          <td class="text-center">{{ player | win_percentage }}%</td>
-        </tr>
-        {% endfor %}
-      </table>
-      <h4>Unranked (15 games need to be played)</h4>
-      <table class="table table-condensed">
-        <tr>
-          <th>Name</th>
-          <th class="col-md-1 text-center">Played</th>
-          <th class="col-md-1 text-center">Score</th>
-          <th class="col-md-3 text-center">Win rate</th>
-        </tr>
-        {% for player in placement %}
-        <tr>
-          <td><a href="/player/{{ player.name }}">{{ player.name }}</a></td>
-          <td class="text-center">{{ player.games_as_first_player.count|add:player.games_as_second_player.count }}</td>
-          <td class="text-center">{{ player.elo_rating }}</td>
-          <td class="text-center">{{ player | win_percentage }}%</td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-    <div class="col-md-6 col-md-offset-1">
+    <div class="col-md-6">
       <h4>Last Games</h4>
       <table class="table table-condensed">
         {% for game in games %}
