@@ -5,15 +5,24 @@
   <meta charset="utf-8">
   <title>SmartFighter</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </head>
 <body>
   <nav class="navbar navbar-inverse">
     <div class="container">
       <div class="navbar-header">
+        <a class="navbar-brand" href="/">SmartFighter</a>
         <ul class="nav navbar-nav">
-          <li class="{% block ranking_tab_class %}{% endblock %}">
-            <a href="{% url 'ranking' %}">Ranking</a>
+          <li class="dropdown {% block seasons_tab_class %}{% endblock %}">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Seasons<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              {% for season in last_seasons %}
+              <li><a href="{% url 'season' season_id=season.id %}">{{ season.name }}</a></li>
+              {% endfor %}
+              <li role="separator" class="divider"></li>
+              <li><a href="#">More seasons</a></li>
+            </ul>
           </li>
           <li class="{% block instructions_tab_class %}{% endblock %}">
             <a href="{% url 'instructions' %}">Instructions</a>

@@ -18,11 +18,18 @@ class IndexView(RedirectView):
             return reverse('unranked')
 
 
-class SeasonView(TemplateView):
+class BaseView(TemplateView):
+    def get_context_data(self, **kwargs):
+        context = super(BaseView, self).get_context_data(**kwargs)
+        context['last_seasons'] = Season.objects.order_by('-id')
+        return context
+
+
+class SeasonView(BaseView):
     template_name = 'front/season.html'
 
     def get_context_data(self, season_id, **kwargs):
-        context = super(TemplateView, self).get_context_data(**kwargs)
+        context = super(SeasonView, self).get_context_data(**kwargs)
         season = get_object_or_404(Season, pk=season_id)
 
         context['season'] = season
@@ -45,21 +52,21 @@ class SeasonView(TemplateView):
         return context
 
 
-class UnrankedView(TemplateView):
+class UnrankedView(BaseView):
     template_name = 'front/unranked.html'
 
     def get_context_data(self, **kwargs):
-        context = super(TemplateView, self).get_context_data(**kwargs)
+        context = super(UnrankedView, self).get_context_data(**kwargs)
         context['games'] = Game.objects.filter(
             phase=GamePhase.Unranked).select_related().order_by('-date')[:20]
         return context
 
 
-class PlayerView(TemplateView):
+class PlayerView(BaseView):
     template_name = 'front/player.html'
 
     def get_context_data(self, name, **kwargs):
-        context = super(TemplateView, self).get_context_data(**kwargs)
+        context = super(PlayerView, self).get_context_data(**kwargs)
         player = get_object_or_404(Player, name=name)
 
         opponents = {}
