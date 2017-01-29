@@ -1,0 +1,29 @@
+{% extends "front/base.html" %}
+{% load static %}
+{% load ranking %}
+{% block ranking_tab_class %}active{% endblock %}
+{%block body %}
+<div class="container">
+  <div class="header clearfix">
+    <h1 class="text-muted">All seasons</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <table class="table table-condensed table-striped">
+        <tr>
+          <th class="col-md-6">Name</td>
+          <th class="col-md-3">Start date</td>
+          <th class="col-md-3">End date</td>
+        </tr>
+        {% for season in seasons %}
+        <tr>
+          <td class="col-md-6"><a href="{% url 'season' season_id=season.id %}">{{ season.name }}</a></td>
+          <td class="col-md-3">{{ season.start_date|date }}</td>
+          <td class="col-md-3">{{ season.end_date|date }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

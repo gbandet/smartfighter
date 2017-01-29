@@ -25,6 +25,15 @@ class BaseView(TemplateView):
         return context
 
 
+class SeasonListView(BaseView):
+    template_name = 'front/season_list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SeasonListView, self).get_context_data(**kwargs)
+        context['seasons'] = Season.objects.order_by('-id')
+        return context
+
+
 class SeasonView(BaseView):
     template_name = 'front/season.html'
 

@@ -21,7 +21,7 @@
               <li><a href="{% url 'season' season_id=season.id %}">{{ season.name }}</a></li>
               {% endfor %}
               <li role="separator" class="divider"></li>
-              <li><a href="#">More seasons</a></li>
+              <li><a href="{% url 'season-list' %}">More seasons</a></li>
             </ul>
           </li>
           <li class="{% block instructions_tab_class %}{% endblock %}">
