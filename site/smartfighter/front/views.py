@@ -74,6 +74,18 @@ class UnrankedView(BaseView):
 class PlayerView(BaseView):
     template_name = 'front/player.html'
 
+    def _get_game_filters(self):
+        param = self.request.GET.get('season')
+        if param is None:
+            return {}
+        if param == 'unranked':
+            return {'season': None, 'phase': GamePhase.Unranked}
+        try:
+            season = Season.objects.get(pk=param)
+        except ValueError, Season.DoesNotExist:
+            return {}
+        return {'season': season, 'phase': GamePhase.Ranked}
+
     def get_context_data(self, name, **kwargs):
         context = super(PlayerView, self).get_context_data(**kwargs)
         player = get_object_or_404(Player, name=name)
@@ -85,21 +97,31 @@ class PlayerView(BaseView):
                 opponents[player.name]['player'] = player
             return opponents[player.name]
 
-        for game in player.games_as_first_player.select_related():
+        game_filters = self._get_game_filters()
+        context['season'] = game_filters.get('season')
+        context['unranked'] = game_filters.get('phase') == GamePhase.Unranked
+        context['player_seasons'] = Season.objects.filter(player_results__player=player).order_by('-id')
+        if game_filters.get('season'):
+            context['result'] = player.season_results.get(season=game_filters['season'])
+
+        for game in player.games_as_first_player.filter(**game_filters).select_related():
             opponent = get_opponent(game.player2)
             opponent['total'] += 1
             opponent['win'] += 1 if game.result == MatchResult.Player1 else 0
             opponent['draw'] += 1 if game.result == MatchResult.Draw else 0
             opponent['lose'] += 1 if game.result == MatchResult.Player2 else 0
 
-        for game in player.games_as_second_player.select_related():
+        for game in player.games_as_second_player.filter(**game_filters).select_related():
             opponent = get_opponent(game.player1)
             opponent['total'] += 1
             opponent['win'] += 1 if game.result == MatchResult.Player2 else 0
             opponent['draw'] += 1 if game.result == MatchResult.Draw else 0
             opponent['lose'] += 1 if game.result == MatchResult.Player1 else 0
 
-        for round_ in Round.objects.filter(Q(game__player1=player) | Q(game__player2=player)).select_related():
+        round_filters = {'game__' + k: v for k,v in game_filters.items()}
+        for round_ in Round.objects.filter(
+                    Q(game__player1=player, **round_filters) | Q(game__player2=player, **round_filters)
+                ).select_related():
             if round_.game.player1 == player:
                 opponent = get_opponent(round_.game.player2)
                 opponent['round_total'] += 1

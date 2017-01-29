@@ -4,8 +4,26 @@
 <div class="container">
   <div class="header clearfix">
     <h1 class="text-muted">{{ player.name }}</h1>
+
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="season-select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        {% if season %}{{ season.name }}{% elif unranked %}Unranked games{% else %}All games{% endif %}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="season-select">
+        {% for season in player_seasons %}
+        <li><a href="{% url 'player' name=player.name %}?season={{ season.pk }}">{{ season.name }}</a></li>
+        {% endfor %}
+        <li role="separator" class="divider"></li>
+        <li><a href="{% url 'player' name=player.name %}">All games</a></li>
+        <li><a href="{% url 'player' name=player.name %}?season=unranked">Unranked games</a></li>
+      </ul>
+    </div>
+
     <h3>
-      <span class="label label-primary">Score&nbsp;<span class="badge">{{ player.elo_rating }}</span></span>
+      {% if result %}
+      <span class="label label-primary">Score&nbsp;<span class="badge">{{ result.elo_rating }}</span></span>
+      {% endif %}
       <span class="label label-primary">Win rate&nbsp;<span class="badge">{{ win_rate | floatformat:0 }}%</span></span>
     </h3>
   </div>

@@ -13,7 +13,9 @@
       <table class="table table-condensed">
         {% for game in games %}
         <tr>
-          <td class="col-md-4{% if game.result == 0 %} bg-success{% endif %}">{{ game.player1 }}</td>
+          <td class="col-md-4{% if game.result == 0 %} bg-success{% endif %}">
+            <a href="{% url 'player' name=game.player1.name %}?season=unranked">{{ game.player1.name }}</a>
+          </td>
           <td class="col-md-2{% if game.result == 0 %} bg-success{% endif %}">
             {% for round in game.rounds %}
             {% if round.player1 == 1 %}
@@ -56,7 +58,9 @@
             {% endif %}
             {% endfor %}
           </td>
-          <td class="col-md-4 text-right{% if game.result == 1 %} bg-success{% endif %}">{{ game.player2 }}</td>
+          <td class="col-md-4 text-right{% if game.result == 1 %} bg-success{% endif %}">
+            <a href="{% url 'player' name=game.player2.name %}?season=unranked">{{ game.player2.name }}</a>
+          </td>
         </tr>
         {% endfor %}
       </table>
