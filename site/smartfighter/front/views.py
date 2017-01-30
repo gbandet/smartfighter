@@ -13,7 +13,7 @@ from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Playe
 
 class IndexView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        season = Season.get_current_season()
+        season = Season.objects.order_by('-id').first()
         if season:
             return reverse('season', kwargs={'season_id': season.pk})
         else:
