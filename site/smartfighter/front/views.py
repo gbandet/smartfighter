@@ -1,9 +1,11 @@
 from collections import defaultdict
+import json
 from operator import itemgetter
 
 from django.db.models import Count, F, Prefetch, Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.utils import timezone
 from django.views.generic import RedirectView, TemplateView
 
 from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Player, PlayerResults, Round, RoundResult, Season
@@ -58,6 +60,13 @@ class SeasonView(BaseView):
                 context['ranking'].append(results)
             elif games_played > 0:
                 context['placement'].append(results)
+
+        context['is_finished'] = season.end_date and season.end_date < timezone.now()
+        if season.playoff_data:
+            try:
+                context['playoffs'] = json.loads(season.playoff_data)
+            except ValueError:
+                pass
         return context
 
 
