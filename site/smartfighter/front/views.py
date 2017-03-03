@@ -76,7 +76,7 @@ class UnrankedView(BaseView):
     def get_context_data(self, **kwargs):
         context = super(UnrankedView, self).get_context_data(**kwargs)
         context['games'] = Game.objects.filter(
-            phase=GamePhase.Unranked).select_related().order_by('-date')[:20]
+            phase=GamePhase.Unranked).select_related().order_by('-date')[:50]
         return context
 
 
