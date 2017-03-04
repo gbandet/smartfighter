@@ -56,7 +56,7 @@ class SeasonView(BaseView):
                 Prefetch('player__games_as_second_player',
                          queryset=Game.objects.filter(season=season))).order_by('-elo_rating'):
             games_played = results.player.games_as_first_player.count() + results.player.games_as_second_player.count()
-            if games_played >= 15:
+            if games_played >= season.placement_games:
                 context['ranking'].append(results)
             elif games_played > 0:
                 context['placement'].append(results)

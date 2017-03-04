@@ -43,6 +43,7 @@ class Season(models.Model):
     name = models.CharField(max_length=255)
     start_date = models.DateTimeField(null=True)
     end_date = models.DateTimeField(null=True)
+    placement_games = models.IntegerField(default=15)
     playoff_data = models.TextField()
 
     def __str__(self):
@@ -95,7 +96,7 @@ class Game(models.Model):
 
         if Game.objects.filter(
                 season=result.season, phase=GamePhase.Ranked).filter(
-                    models.Q(player1=result.player)|models.Q(player2=result.player)).count() >= 15:
+                    models.Q(player1=result.player)|models.Q(player2=result.player)).count() >= result.season.placement_games:
             result.min_rating = min(result.min_rating, new_rating) if result.min_rating is not None else new_rating
             result.max_rating = max(result.max_rating, new_rating) if result.max_rating is not None else new_rating
         result.save()

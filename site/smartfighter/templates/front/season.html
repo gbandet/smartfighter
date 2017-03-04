@@ -382,7 +382,8 @@
         {% endwith %}
         {% endfor %}
       </table>
-      <h4>Unranked (15 games need to be played)</h4>
+      {% if season.placement_games > 0 %}
+      <h4>Unranked ({{season.placement_games}} games need to be played)</h4>
       <table class="table table-condensed">
         <tr>
           <th>Name</th>
@@ -401,6 +402,7 @@
         {% endwith %}
         {% endfor %}
       </table>
+      {% endif %}
     </div>
     <div class="col-md-6 col-md-offset-1">
       <h4>Last Games</h4>
