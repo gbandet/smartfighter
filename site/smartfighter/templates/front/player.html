@@ -18,11 +18,17 @@
         <li><a href="{% url 'player' name=player.name %}">All games</a></li>
         <li><a href="{% url 'player' name=player.name %}?season=unranked">Unranked games</a></li>
       </ul>
+      {% if result %}
+      <h3 class="visible-lg-inline">
+        <span class="label label-primary">Score&nbsp;<span class="badge">{{ result.elo_rating }}</span></span>
+      </h3>
+      {% endif %}
     </div>
 
     <h3>
       {% if result %}
-      <span class="label label-primary">Score&nbsp;<span class="badge">{{ result.elo_rating }}</span></span>
+      <span class="label label-warning">Min&nbsp;<span class="badge">{{ result.min_rating }}</span></span>
+      <span class="label label-success">Max&nbsp;<span class="badge">{{ result.max_rating }}</span></span>
       {% endif %}
       <span class="label label-primary">Win rate&nbsp;<span class="badge">{{ win_rate | floatformat:0 }}%</span></span>
     </h3>
