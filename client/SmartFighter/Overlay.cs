@@ -12,6 +12,7 @@ namespace SmartFighter {
     public partial class Overlay : Form {
         public Overlay() {
             InitializeComponent();
+            hideScores();
         }
 
         private const string MSG_SCAN = "Scan your card";
@@ -54,6 +55,18 @@ namespace SmartFighter {
             player2Info.Hide();
             player1Name.Show();
             player2Name.Show();
+        }
+
+        public void showScores() {
+            panel.BackgroundImage = Properties.Resources.smartfighter_bar_score;
+            player1Score.Show();
+            player2Score.Show();
+        }
+
+        public void hideScores() {
+            panel.BackgroundImage = Properties.Resources.smartfighter_bar;
+            player1Score.Hide();
+            player2Score.Hide();
         }
     }
 }

@@ -164,6 +164,7 @@
     <Content Include="..\packages\EasyHook.2.7.6035\content\net40\EasyLoad64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="smartfighter-bar-score.png" />
     <None Include="smartfighter-bar.png" />
   </ItemGroup>
   <ItemGroup>

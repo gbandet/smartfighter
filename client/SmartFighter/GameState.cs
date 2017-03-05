@@ -44,6 +44,8 @@ namespace SmartFighter {
         public const int DoubleKO = 8;
     }
 
+    public delegate void ScoresUpdatedHandler();
+
     public class GameState {
         private class Game {
             public string id;
@@ -68,6 +70,10 @@ namespace SmartFighter {
         public int roundTimer = 0;
         public string player1Id;
         public string player2Id;
+        public int player1Score = 0;
+        public int player2Score = 0;
+
+        public event ScoresUpdatedHandler ScoresUpdatedEvent;
 
         private Game currentGame;
         private bool gameStarted;
@@ -92,6 +98,13 @@ namespace SmartFighter {
                 if (currentGame.player1 != null && currentGame.player2 != null) {
                     currentGame.result = result;
                     Logger.Instance.log("SET MATCH {0} --> {1} ({2} vs. {3})", currentGame.id, result, currentGame.player1, currentGame.player2);
+                    if (result == MatchResult.Player1) {
+                        player1Score++;
+                    }
+                    if (result == MatchResult.Player2) {
+                        player2Score++;
+                    }
+                    ScoresUpdatedEvent();
                     ApiQueue.registerGame(currentGame.id, currentGame.player1, currentGame.player2, result, DateTime.UtcNow);
                 } else {
                     currentGame = null;
@@ -186,6 +199,11 @@ namespace SmartFighter {
                 return " D";
             }
             return " ?";
+        }
+
+        public void resetScores() {
+            player1Score = 0;
+            player2Score = 0;
         }
     }
 }

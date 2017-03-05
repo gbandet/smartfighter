@@ -23,40 +23,23 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.player1Name = new System.Windows.Forms.Label();
-            this.player2Name = new System.Windows.Forms.Label();
             this.panel = new System.Windows.Forms.Panel();
+            this.player2Score = new System.Windows.Forms.Label();
+            this.player1Score = new System.Windows.Forms.Label();
             this.player2Info = new System.Windows.Forms.Label();
             this.player1Info = new System.Windows.Forms.Label();
+            this.player1Name = new System.Windows.Forms.Label();
+            this.player2Name = new System.Windows.Forms.Label();
             this.panel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // player1Name
-            // 
-            this.player1Name.BackColor = System.Drawing.Color.Transparent;
-            this.player1Name.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.player1Name.ForeColor = System.Drawing.Color.White;
-            this.player1Name.Location = new System.Drawing.Point(15, 3);
-            this.player1Name.Name = "player1Name";
-            this.player1Name.Size = new System.Drawing.Size(300, 24);
-            this.player1Name.TabIndex = 0;
-            // 
-            // player2Name
-            // 
-            this.player2Name.BackColor = System.Drawing.Color.Transparent;
-            this.player2Name.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
-            this.player2Name.ForeColor = System.Drawing.Color.White;
-            this.player2Name.Location = new System.Drawing.Point(485, 3);
-            this.player2Name.Name = "player2Name";
-            this.player2Name.Size = new System.Drawing.Size(300, 24);
-            this.player2Name.TabIndex = 1;
-            this.player2Name.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // panel
             // 
             this.panel.BackColor = System.Drawing.Color.Transparent;
-            this.panel.BackgroundImage = global::SmartFighter.Properties.Resources.smartfighter_bar;
+            this.panel.BackgroundImage = global::SmartFighter.Properties.Resources.smartfighter_bar_score;
             this.panel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel.Controls.Add(this.player2Score);
+            this.panel.Controls.Add(this.player1Score);
             this.panel.Controls.Add(this.player2Info);
             this.panel.Controls.Add(this.player1Info);
             this.panel.Controls.Add(this.player1Name);
@@ -66,6 +49,26 @@
             this.panel.Name = "panel";
             this.panel.Size = new System.Drawing.Size(800, 30);
             this.panel.TabIndex = 2;
+            // 
+            // player2Score
+            // 
+            this.player2Score.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.player2Score.Location = new System.Drawing.Point(433, 3);
+            this.player2Score.Name = "player2Score";
+            this.player2Score.Size = new System.Drawing.Size(40, 24);
+            this.player2Score.TabIndex = 5;
+            this.player2Score.Text = "0";
+            this.player2Score.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // player1Score
+            // 
+            this.player1Score.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.player1Score.Location = new System.Drawing.Point(328, 3);
+            this.player1Score.Name = "player1Score";
+            this.player1Score.Size = new System.Drawing.Size(40, 24);
+            this.player1Score.TabIndex = 4;
+            this.player1Score.Text = "0";
+            this.player1Score.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // player2Info
             // 
@@ -89,6 +92,27 @@
             this.player1Info.Padding = new System.Windows.Forms.Padding(0, 2, 0, 0);
             this.player1Info.Size = new System.Drawing.Size(300, 24);
             this.player1Info.TabIndex = 2;
+            // 
+            // player1Name
+            // 
+            this.player1Name.BackColor = System.Drawing.Color.Transparent;
+            this.player1Name.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.player1Name.ForeColor = System.Drawing.Color.White;
+            this.player1Name.Location = new System.Drawing.Point(15, 3);
+            this.player1Name.Name = "player1Name";
+            this.player1Name.Size = new System.Drawing.Size(300, 24);
+            this.player1Name.TabIndex = 0;
+            // 
+            // player2Name
+            // 
+            this.player2Name.BackColor = System.Drawing.Color.Transparent;
+            this.player2Name.Font = new System.Drawing.Font("Tahoma", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Pixel, ((byte)(0)));
+            this.player2Name.ForeColor = System.Drawing.Color.White;
+            this.player2Name.Location = new System.Drawing.Point(485, 3);
+            this.player2Name.Name = "player2Name";
+            this.player2Name.Size = new System.Drawing.Size(300, 24);
+            this.player2Name.TabIndex = 1;
+            this.player2Name.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // Overlay
             // 
@@ -120,5 +144,7 @@
         private System.Windows.Forms.Panel panel;
         public System.Windows.Forms.Label player1Info;
         public System.Windows.Forms.Label player2Info;
+        public System.Windows.Forms.Label player1Score;
+        public System.Windows.Forms.Label player2Score;
     }
 }

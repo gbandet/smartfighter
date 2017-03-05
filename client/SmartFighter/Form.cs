@@ -65,6 +65,8 @@ namespace SmartFighter {
             inputWorker.RunWorkerAsync();
 
             gameState = new GameState();
+            gameState.ScoresUpdatedEvent += updateOverlayScores;
+
             connector = new Connector(gameState);
             connector.server.GameModeChangedEvent += onGameModeChanged;
             connector.SFVFocusChangedEvent += onFocusChanged;
@@ -87,6 +89,7 @@ namespace SmartFighter {
             if (playerSelection == 1) {
                 gameState.player1Id = null;
                 overlay.player1Name.Text = "";
+                overlay.hideScores();
             }
             playerSelection = 1;
             if (gameState.player1Id != null) {
@@ -109,6 +112,7 @@ namespace SmartFighter {
             if (playerSelection == 2) {
                 gameState.player2Id = null;
                 overlay.player2Name.Text = "";
+                overlay.hideScores();
             }
             playerSelection = 2;
             if (gameState.player2Id != null) {
@@ -140,6 +144,9 @@ namespace SmartFighter {
                     overlay.setScanPlayer2();
                 } else {
                     stopOverlayDisconnect();
+                    gameState.resetScores();
+                    updateOverlayScores();
+                    overlay.showScores();
                 }
             } else if (playerSelection == 2 && gameState.player1Id != uid) {
                 gameState.player2Id = uid;
@@ -149,6 +156,9 @@ namespace SmartFighter {
                     overlay.setScanPlayer1();
                 } else {
                     stopOverlayDisconnect();
+                    gameState.resetScores();
+                    updateOverlayScores();
+                    overlay.showScores();
                 }
             }
         }
@@ -164,6 +174,7 @@ namespace SmartFighter {
                 overlay.player1Name.Text = "";
                 overlay.player2Name.Text = "";
                 playerSelection = null;
+                overlay.hideScores();
             }
             updateOverlayVisibility();
         }
@@ -189,6 +200,15 @@ namespace SmartFighter {
             overlayTimer.Stop();
             playerSelection = null;
             overlay.hideInfoLabels();
+        }
+
+        private void updateOverlayScores() {
+            if (InvokeRequired) {
+                Invoke(new Action(updateOverlayScores));
+                return;
+            }
+            overlay.player1Score.Text = gameState.player1Score.ToString();
+            overlay.player2Score.Text = gameState.player2Score.ToString();
         }
 
         private void onConnectorExit(bool isSuccess) {
