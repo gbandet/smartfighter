@@ -35,7 +35,7 @@ class Player(models.Model):
     card_id = models.CharField(max_length=8, primary_key=True)
     name = models.CharField(max_length=255, db_index=True)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
 
@@ -46,7 +46,7 @@ class Season(models.Model):
     placement_games = models.IntegerField(default=15)
     playoff_data = models.TextField()
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
 
     @classmethod
