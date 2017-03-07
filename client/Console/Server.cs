@@ -42,5 +42,9 @@ namespace SmartFighter {
         public override void setGameStart() {
             writeLog("setGameStart");
         }
+
+        public override void setCharacters(string player1, string player2) {
+            writeLog("setCharacters -> {0} {1}", player1, player2);
+        }
     }
 }

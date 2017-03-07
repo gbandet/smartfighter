@@ -67,5 +67,9 @@ namespace SmartFighter.Hooks
         public static uint readUInt(long address) {
             return BitConverter.ToUInt32(Memory.readBytes(address, 4), 0);
         }
+
+        public static long readLong(long address) {
+            return BitConverter.ToInt64(Memory.readBytes(address, 8), 0);
+        }
     }
 }

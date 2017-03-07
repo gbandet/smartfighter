@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Text;
 
 
 namespace SmartFighter.Hooks
@@ -135,6 +136,29 @@ namespace SmartFighter.Hooks
             Communication.Interface.writeLog("Game starting...");
             Communication.Interface.setGameStart();
             return SetupMatchDelegate(address);
+        }
+
+        // SetupGameUI
+        [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
+        public delegate int DSetupGameUI(long address);
+        public static DSetupGameUI SetupGameUIDelegate;
+        public static HookAddress SetupGameUIAddress = new HookAddress();
+
+        public static int SetupGameUIHook(long address) {
+            if (SetupGameUIDelegate == null) {
+                SetupGameUIDelegate = Marshal.GetDelegateForFunctionPointer(new IntPtr(SetupGameUIAddress.address), typeof(DSetupGameUI)) as DSetupGameUI;
+            }
+
+            var pointer = Memory.readLong(address + 184) + 104;
+            pointer = Memory.readLong(pointer) + 24;
+            pointer = Memory.readLong(pointer) + 256;
+
+            var player1 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132, 6));
+            var player2 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132 + 1360, 6));
+
+            Communication.Interface.writeLog("Characters: {0} vs {1}", player1, player2);
+            Communication.Interface.setCharacters(player1, player2);
+            return SetupGameUIDelegate(address);
         }
     }
 }

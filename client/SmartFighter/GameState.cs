@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SmartFighter {
     public static class GameMode {
@@ -72,6 +73,8 @@ namespace SmartFighter {
         public string player2Id;
         public int player1Score = 0;
         public int player2Score = 0;
+        public string player1Character = null;
+        public string player2Character = null;
 
         public event ScoresUpdatedHandler ScoresUpdatedEvent;
 
@@ -93,6 +96,17 @@ namespace SmartFighter {
             }
         }
 
+        public void setCharacters(string player1, string player2) {
+            var regex = new Regex("[A-Z0-9]{3}");
+            if (isInVersus() && regex.IsMatch(player1) && regex.IsMatch(player2)) {
+                player1Character = player1;
+                player2Character = player2;
+            } else {
+                player1Character = null;
+                player2Character = null;
+            }
+        }
+
         public void setMatchResults(int result) {
             if (isGameStarted()) {
                 if (currentGame.player1 != null && currentGame.player2 != null) {
@@ -105,7 +119,7 @@ namespace SmartFighter {
                         player2Score++;
                     }
                     ScoresUpdatedEvent();
-                    ApiQueue.registerGame(currentGame.id, currentGame.player1, currentGame.player2, result, DateTime.UtcNow);
+                    ApiQueue.registerGame(currentGame.id, currentGame.player1, currentGame.player2, result, DateTime.UtcNow, player1Character, player2Character);
                 } else {
                     currentGame = null;
                 }

@@ -1,3 +1,4 @@
+using System;
 using SmartFighter.Common;
 
 
@@ -29,6 +30,8 @@ namespace SmartFighter {
 
         public override void setVersusMode(int mode) {
             game.versusMode = mode;
+            game.player1Character = null;
+            game.player2Character = null;
             GameModeChangedEvent();
         }
 
@@ -50,6 +53,10 @@ namespace SmartFighter {
 
         public override void setGameStart() {
             game.startGame();
+        }
+
+        public override void setCharacters(string player1, string player2) {
+            game.setCharacters(player1, player2);
         }
     }
 }

@@ -22,5 +22,7 @@ namespace SmartFighter.Common {
         public abstract void setRoundResults(int[] player1, int[] player2);
 
         public abstract void setGameStart();
+
+        public abstract void setCharacters(string player1, string player2);
     }
 }

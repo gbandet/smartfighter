@@ -32,7 +32,7 @@ namespace SmartFighter {
             return url;
         }
 
-        public static bool createGame(string id, string player1Id, string player2Id, int result, DateTime date) {
+        public static bool createGame(string id, string player1Id, string player2Id, int result, DateTime date, string player1Character, string player2Character) {
             try {
                 using (var response = makeRequest(
                         getApiUrl() + "game/", "POST", new {
@@ -40,7 +40,9 @@ namespace SmartFighter {
                             player1 = player1Id,
                             player2 = player2Id,
                             result = result,
-                            date = date.ToString("o")
+                            date = date.ToString("o"),
+                            player1_character = player1Character,
+                            player2_character = player2Character,
                         })) {
                     if (response.StatusCode == HttpStatusCode.Created) {
                         Logger.Instance.log("API [createGame]: Match {0} created", id);
