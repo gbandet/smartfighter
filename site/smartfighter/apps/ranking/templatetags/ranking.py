@@ -1,6 +1,6 @@
 from django import template
 
-from smartfighter.apps.ranking.models import MatchResult
+from smartfighter.apps.ranking.models import MatchResult, CHARACTERS
 
 
 register = template.Library()
@@ -22,3 +22,9 @@ def win_percentage(player):
     if match_total == 0:
         return '-'
     return int(round(100 * win_total / float(match_total)))
+
+@register.filter
+def character_name(code):
+    if not code:
+        return None
+    return CHARACTERS.get(code, 'Unknown')

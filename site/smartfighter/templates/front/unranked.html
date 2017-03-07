@@ -15,6 +15,7 @@
         <tr>
           <td class="col-md-4{% if game.result == 0 %} bg-success{% endif %}">
             <a href="{% url 'player' name=game.player1.name %}?season=unranked">{{ game.player1.name }}</a>
+            {% if game.player1_character != None %}<em class="text-danger">{{ game.player1_character|character_name }}</em>{% endif %}
           </td>
           <td class="col-md-2{% if game.result == 0 %} bg-success{% endif %}">
             {% for round in game.rounds %}
@@ -59,6 +60,7 @@
             {% endfor %}
           </td>
           <td class="col-md-4 text-right{% if game.result == 1 %} bg-success{% endif %}">
+            {% if game.player2_character != None %}<em class="text-danger">{{ game.player2_character|character_name }}</em>{% endif %}
             <a href="{% url 'player' name=game.player2.name %}?season=unranked">{{ game.player2.name }}</a>
           </td>
         </tr>

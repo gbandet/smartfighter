@@ -411,7 +411,8 @@
         <tr>
           <td class="col-md-4{% if game.result == 0 %} bg-success{% endif %}">
             {{ game.player1 }}
-            <span class="text-primary">({{game.player1_rating_change|stringformat:"+d"}})</span>
+            {% if game.player1_rating_change != None %}<span class="text-primary">({{game.player1_rating_change|stringformat:"+d"}})</span>{% endif %}
+            {% if game.player1_character != None %}<em class="text-danger">{{ game.player1_character|character_name }}</em>{% endif %}
           </td>
           <td class="col-md-2{% if game.result == 0 %} bg-success{% endif %}">
             {% for round in game.rounds %}
@@ -456,8 +457,9 @@
             {% endfor %}
           </td>
           <td class="col-md-4 text-right{% if game.result == 1 %} bg-success{% endif %}">
+            {% if game.player2_character != None %}<em class="text-danger">{{ game.player2_character|character_name }}</em>{% endif %}
             {{ game.player2 }}
-            <span class="text-primary">({{game.player2_rating_change|stringformat:"+d"}})</span>
+            {% if game.player2_rating_change != None %}<span class="text-primary">({{game.player2_rating_change|stringformat:"+d"}})</span>{% endif %}
           </td>
         </tr>
         {% endfor %}
