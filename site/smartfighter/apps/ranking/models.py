@@ -66,6 +66,34 @@ class PlayerResults(models.Model):
         unique_together = (('season', 'player'),)
 
 
+CHARACTERS = {
+    'ALX': 'Alex',
+    'BLR': 'Vega',
+    'BRD': 'Birdie',
+    'BSN': 'Balrog',
+    'CMY': 'Cammy',
+    'CNL': 'Chun-Li',
+    'DSM': 'Dahlsim',
+    'FAN': 'F.A.N.G',
+    'GUL': 'Guile',
+    'IBK': 'Ibuki',
+    'JRI': 'Juri',
+    'KEN': 'Ken',
+    'KRN': 'Karin',
+    'LAR': 'Laura',
+    'NCL': 'Necalli',
+    'NSH': 'Nash',
+    'RMK': 'R. Mika',
+    'RSD': 'Rashid',
+    'RYU': 'Ryu',
+    'URN': 'Urien',
+    'VEG': 'M. Bison',
+    'ZGF': 'Zangief',
+    'Z20': 'Kolin',
+    'Z21': 'Akuma',
+}
+
+
 class Game(models.Model):
     id = models.CharField(max_length=32, primary_key=True)
     season = models.ForeignKey(Season, related_name="games", null=True)
@@ -73,6 +101,8 @@ class Game(models.Model):
     player1 = models.ForeignKey(Player, related_name="games_as_first_player")
     player2 = models.ForeignKey(Player, related_name="games_as_second_player")
     result = models.IntegerField(choices=MatchResult.choices)
+    player1_character = models.CharField(max_length=3, null=True)
+    player2_character = models.CharField(max_length=3, null=True)
     player1_rating_change = models.IntegerField(null=True, blank=True)
     player2_rating_change = models.IntegerField(null=True, blank=True)
     date = models.DateTimeField(db_index=True)
