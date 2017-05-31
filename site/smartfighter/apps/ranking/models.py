@@ -91,6 +91,7 @@ CHARACTERS = {
     'ZGF': 'Zangief',
     'Z20': 'Kolin',
     'Z21': 'Akuma',
+    'Z22': 'Ed',
 }
 
 
