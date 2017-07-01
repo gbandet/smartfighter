@@ -227,6 +227,7 @@
             <bracket-player match="Final" team="1"></bracket-player>
             <span>
               <span>{{ playoffs.finals.0.player1 }}</span>
+              {% if playoffs.finals.1 %}<span class="badge pull-right">{{ playoffs.finals.1.score1|default_if_none:"&nbsp;"}}</span>{% endif %}
               <span class="badge pull-right">{{ playoffs.finals.0.score1|default_if_none:"&nbsp;"}}</span>
             </span>
           </td><!-- Final -->
@@ -239,6 +240,7 @@
           <td class="player">
             <span>
               <span>{{ playoffs.finals.0.player2 }}</span>
+              {% if playoffs.finals.1 %}<span class="badge pull-right">{{ playoffs.finals.1.score2|default_if_none:"&nbsp;"}}</span>{% endif %}
               <span class="badge pull-right">{{ playoffs.finals.0.score2|default_if_none:"&nbsp;"}}</span>
             </span>
           </td><!-- Final -->
