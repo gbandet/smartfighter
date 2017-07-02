@@ -370,6 +370,7 @@
         <tr>
           <th class="col-md-1">Rank</th>
           <th>Name</th>
+          <th class="col-md-2">Main character (by win rate)</th>
           <th class="col-md-1 text-center">Score</th>
           <th class="col-md-3 text-center">Win rate</th>
         </tr>
@@ -378,6 +379,7 @@
         <tr{% if forloop.counter < 9 %} class="bg-info"{% endif %}>
           <td>{% ifchanged results.elo_rating %}{{ forloop.counter }}{% else %}-{% endifchanged %}</td>
           <td><a href="{% url 'player' name=player.name %}?season={{ season.id }}">{{ player.name }}</a></td>
+          <td>{{ player | best_character_of_player }}</td>
           <td class="text-center">{{ results.elo_rating }}</td>
           <td class="text-center">{{ player | win_percentage }}%</td>
         </tr>
