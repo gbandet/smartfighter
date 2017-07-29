@@ -12,6 +12,7 @@
 /coverage
 /libpeerconnection.log
 npm-debug.log
+proxy.conf.json
 testem.log
 /typings
 
