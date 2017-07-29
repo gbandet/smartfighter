@@ -7,8 +7,16 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import RedirectView, TemplateView
+from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Player, PlayerResults, Round, RoundResult, Season
+from smartfighter.apps.ranking.serializers import SeasonSerializer
+
+
+class SeasonViewSet(ReadOnlyModelViewSet):
+    queryset = Season.objects.all()
+    serializer_class = SeasonSerializer
+    pagination_class = None
 
 
 class IndexView(RedirectView):
