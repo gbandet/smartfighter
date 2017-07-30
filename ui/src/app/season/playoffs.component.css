@@ -1,0 +1,13 @@
+.bracket > tbody > tr > td {
+  border: 0px;
+  padding: 2px;
+}
+.bracket .player {
+  border: solid 1px black;
+}
+.bracket .hline {
+  border-top: solid 1px black;
+}
+.bracket .vline {
+  border-right: solid 1px black;
+}

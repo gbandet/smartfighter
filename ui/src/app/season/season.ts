@@ -6,3 +6,18 @@ export class Season {
   placement_games: number;
   playoff_data: any;
 }
+
+export class RankingPlayer {
+  name: string;
+  rank: number;
+  rating: number;
+  games: number;
+  wins: number;
+  draws: number;
+  losses: number;
+}
+
+export class SeasonRanking {
+  ranking: RankingPlayer[];
+  placement: RankingPlayer[];
+}

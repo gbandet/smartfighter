@@ -3,7 +3,7 @@ import { Headers, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 
-import { Season } from './season';
+import { Season, SeasonRanking } from './season';
 
 @Injectable()
 export class SeasonService {
@@ -13,10 +13,9 @@ export class SeasonService {
   constructor(private http: Http) { }
 
   getSeasons(): Promise<Season[]> {
-    console.log('getSeasons');
     return this.http.get(this.url)
       .toPromise()
-    .then(response => response.json() as Season[])
+      .then(response => response.json() as Season[])
       .catch(this.handleError);
   }
 
@@ -25,6 +24,14 @@ export class SeasonService {
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as Season)
+      .catch(this.handleError);
+  }
+
+  getSeasonRanking(id: number): Promise<SeasonRanking> {
+    const url = `${this.url}/${id}/ranking/`;
+    return this.http.get(url)
+      .toPromise()
+      .then(response => response.json() as SeasonRanking)
       .catch(this.handleError);
   }
 
