@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
 
+import { Game } from '../game/game';
 import { Season, RankingPlayer } from './season';
 import { SeasonService } from './season.service';
 
@@ -14,6 +15,7 @@ export class SeasonComponent implements OnInit {
   season: Season = new Season();
   ranking: RankingPlayer[] = [];
   placement: RankingPlayer[] = [];
+  games: Game[] = [];
 
   constructor(
     private seasonService: SeasonService,
@@ -30,6 +32,9 @@ export class SeasonComponent implements OnInit {
         this.ranking = ranking.ranking;
         this.placement = ranking.placement;
       });
+    this.route.paramMap
+      .switchMap((params: ParamMap) => this.seasonService.getSeasonGames(+params.get('id')))
+      .subscribe(games => this.games = games);
   }
 
   isSeasonFinished(season: Season) {
