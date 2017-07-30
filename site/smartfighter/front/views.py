@@ -12,7 +12,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Player, PlayerResults, Round, RoundResult, Season
-from smartfighter.apps.ranking.serializers import SeasonSerializer
+from smartfighter.apps.ranking.serializers import GameSerializer, SeasonSerializer
 
 
 class SeasonViewSet(ReadOnlyModelViewSet):
@@ -77,6 +77,14 @@ class SeasonViewSet(ReadOnlyModelViewSet):
                 response['placement'].append(data)
 
         return Response(response)
+
+    @detail_route(methods=['get'])
+    def games(self, request, pk=None):
+        season = self.get_object()
+        games = Game.objects.filter(
+            season=season, phase=GamePhase.Ranked).select_related().order_by('-date')[:20]
+        serializer = GameSerializer(games, many=True)
+        return Response(serializer.data)
 
 
 class IndexView(RedirectView):
