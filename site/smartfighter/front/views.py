@@ -7,6 +7,8 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import RedirectView, TemplateView
+from rest_framework.decorators import detail_route
+from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Player, PlayerResults, Round, RoundResult, Season
@@ -17,6 +19,64 @@ class SeasonViewSet(ReadOnlyModelViewSet):
     queryset = Season.objects.all()
     serializer_class = SeasonSerializer
     pagination_class = None
+
+    @detail_route(methods=['get'])
+    def ranking(self, request, pk=None):
+        season = self.get_object()
+        response = {
+            'ranking': [],
+            'placement': [],
+        }
+
+        current_rank = 0
+        next_rank = 0
+        current_elo = None
+        for results in PlayerResults.objects.filter(season=season).select_related(
+            'player').prefetch_related(
+                Prefetch('player__games_as_first_player',
+                         queryset=Game.objects.filter(season=season)),
+                Prefetch('player__games_as_second_player',
+                         queryset=Game.objects.filter(season=season))).order_by('-elo_rating'):
+
+            total = 0
+            wins = 0
+            draws = 0
+            losses = 0
+            for game in results.player.games_as_first_player.all():
+                total += 1
+                if game.result == MatchResult.Player1:
+                    wins += 1
+                elif game.result == MatchResult.Draw:
+                    draws += 1
+                else:
+                    losses += 1
+            for game in results.player.games_as_second_player.all():
+                total += 1
+                if game.result == MatchResult.Player2:
+                    wins += 1
+                elif game.result == MatchResult.Draw:
+                    draws += 1
+                else:
+                    losses += 1
+            data = {
+                'name': results.player.name,
+                'rating': results.elo_rating,
+                'games': total,
+                'wins': wins,
+                'draws': draws,
+                'losses': losses,
+            }
+            if total >= season.placement_games:
+                next_rank += 1
+                if not current_elo or results.elo_rating != current_elo:
+                    current_rank = next_rank
+                    current_elo = results.elo_rating
+                data['rank'] = current_rank
+                response['ranking'].append(data)
+            elif total > 0:
+                response['placement'].append(data)
+
+        return Response(response)
 
 
 class IndexView(RedirectView):
