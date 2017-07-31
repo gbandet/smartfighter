@@ -18,21 +18,21 @@ export class GameListComponent implements OnInit {
   getStatusClass(status: number) {
     switch (status) {
       case 1:
-        return 'badge-default';
+        return 'label-default';
       case 2:
-        return 'badge-success';
+        return 'label-success';
       case 3:
-        return 'badge-warning';
+        return 'label-warning';
       case 4:
-        return 'badge-primary';
+        return 'label-primary';
       case 5:
-        return 'badge-default';
+        return 'label-default';
       case 6:
-        return 'badge-danger';
+        return 'label-danger';
       case 7:
-        return 'badge-default';
+        return 'label-default';
       case 8:
-        return 'badge-info';
+        return 'label-info';
     }
     return '';
   }

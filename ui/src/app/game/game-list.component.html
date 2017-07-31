@@ -6,10 +6,14 @@
       <em *ngIf="game.player1_character" class="text-danger">{{ game.player1_character }}</em>
     </td>
     <td class="col-md-2" [ngClass]="{'bg-success': game.result == 0}">
-      <span *ngFor="let round of game.rounds" class="badge" [ngClass]="getStatusClass(round.player1)" [innerHTML]="getStatusLabel(round.player1)" ></span>
+      <span *ngFor="let round of game.rounds">
+        <span class="label" [ngClass]="getStatusClass(round.player1)" [innerHTML]="getStatusLabel(round.player1)" ></span>
+      </span>
     </td>
     <td class="col-md-2 text-right" [ngClass]="{'bg-success': game.result == 1}">
-      <span *ngFor="let round of game.rounds" class="badge" [ngClass]="getStatusClass(round.player2)" [innerHTML]="getStatusLabel(round.player2)"></span>
+      <span *ngFor="let round of game.rounds">
+        <span class="label" [ngClass]="getStatusClass(round.player2)" [innerHTML]="getStatusLabel(round.player2)"></span>
+      </span>
     </td>
     <td class="col-md-4 text-right" [ngClass]="{'bg-success': game.result == 1}">
       <em *ngIf="game.player2_character" class="text-danger">{{ game.player2_character }}</em>

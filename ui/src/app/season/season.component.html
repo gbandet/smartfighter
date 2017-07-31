@@ -1,6 +1,8 @@
 <div class="container">
-  <h1 class="mt-3 text-muted">{{ season.name}}</h1>
-  <h4 *ngIf="!isSeasonFinished(season)">Qualifications from {{ season.start_date|date }} to {{ season.end_date|date }}</h4>
+  <div class="header clearfix">
+    <h1 class="mt-3 text-muted">{{ season.name}}</h1>
+    <h4 *ngIf="!isSeasonFinished(season)">Qualifications from {{ season.start_date|date }} to {{ season.end_date|date }}</h4>
+  </div>
 
   <playoffs [data]="season.playoff_data"></playoffs>
 

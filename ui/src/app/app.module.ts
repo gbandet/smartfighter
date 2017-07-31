@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpModule }    from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BsDropdownModule } from 'ngx-bootstrap';
 
 import { RoutingModule } from './routing.module';
 
@@ -24,8 +24,8 @@ import { SeasonService } from './season/season.service';
   ],
   imports: [
     BrowserModule,
+    BsDropdownModule.forRoot(),
     HttpModule,
-    NgbModule.forRoot(),
     RoutingModule,
   ],
   providers: [SeasonService],
