@@ -6,7 +6,9 @@
         <li dropdown>
           <a dropdownToggle>Seasons<span class="caret"></span></a>
           <ul *dropdownMenu class="dropdown-menu">
-            <li><a class="dropdown-item" href="/seasons/1">S1</a></li>
+            <li *ngFor="let season of seasons">
+              <a class="dropdown-item" [routerLink]="['/seasons', season.id]">{{ season.name }}</a>
+            </li>
             <li role="separator" class="divider"></li>
             <li><a class="dropdown-item" href="/seasons">More seasons</a></li>
           </ul>

@@ -1,10 +1,19 @@
 import { Component } from '@angular/core';
 
+import { Season } from './season/season';
+import { SeasonService } from './season/season.service';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  title = 'SmartFighter';
+  seasons: Season[];
+
+  constructor(private seasonService: SeasonService) {}
+
+  ngOnInit() {
+    this.seasonService.getSeasons().then(seasons => this.seasons = seasons.slice(-5));
+  }
 }
