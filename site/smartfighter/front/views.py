@@ -87,6 +87,15 @@ class SeasonViewSet(ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 
+class GameViewSet(ReadOnlyModelViewSet):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
+    pagination_class = None
+
+    def filter_queryset(self, query):
+        return query.filter(phase=GamePhase.Unranked).select_related().order_by('-date')[:50]
+
+
 class IndexView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         season = Season.objects.order_by('-id').first()
