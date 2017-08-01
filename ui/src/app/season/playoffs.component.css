@@ -1,13 +1,13 @@
-.bracket > tbody > tr > td {
+.table td {
   border: 0px;
   padding: 2px;
 }
-.bracket .player {
+.table td.player {
   border: solid 1px black;
 }
-.bracket .hline {
+.table td.hline {
   border-top: solid 1px black;
 }
-.bracket .vline {
+.table td.vline {
   border-right: solid 1px black;
 }

@@ -1,1 +1,334 @@
-<h3>Playoffs data: {{ playoffs }}</h3>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th width="200px"></th>
+        <th width="25px"></th>
+        <th width="25px"></th>
+        <th width="200px"></th>
+        <th width="25px"></th>
+        <th width="25px"></th>
+        <th width="200px"></th>
+        <th width="25px"></th>
+        <th width="25px"></th>
+        <th width="200px"></th>
+        <th width="25px"></th>
+        <th width="25px"></th>
+        <th width="200px"></th>
+        <th width="25px"></th>
+        <th width="25px"></th>
+        <th width="200px"></th>
+      </tr>
+
+      <!-- Winner Bracket -->
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][0].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][0].score1 }}</span>
+          </span>
+        </td><!-- WB R1 M1 -->
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][0].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][0].score2 }}</span>
+          </span>
+        </td><!-- WB R1 M1 -->
+        <td class="hline vline"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="vline"></td>
+        <td></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[1][0].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[1][0].score1 }}</span>
+          </span>
+        </td><!-- WB R2 M1 -->
+      </tr>
+      <tr>
+        <td></td>
+        <td class="vline"></td>
+        <td class="hline"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[1][0].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[1][0].score2 }}</span>
+          </span>
+        </td><!-- WB R2 M1 -->
+        <td class="hline vline" colspan="4"></td>
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][1].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][1].score1 }}</span>
+          </span>
+        </td><!-- WB R1 M2 -->
+        <td class="vline"></td>
+        <td colspan="5"></td>
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][1].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][1].score2 }}</span>
+          </span>
+        </td><!-- WB R1 M2 -->
+        <td class="hline"></td>
+        <td colspan="5"></td>
+        <td class="vline"></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="6"></td>
+        <td class="vline"></td>
+        <td></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[2][0].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[2][0].score1 }}</span>
+          </span>
+        </td><!-- WB R3 -->
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="6"></td>
+        <td class="vline"></td>
+        <td class="hline"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[2][0].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[2][0].score2 }}</span>
+          </span>
+        </td><!-- WB R3 -->
+        <td class="hline vline"></td>
+      </tr>
+
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][2].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][2].score1 }}</span>
+          </span>
+        </td><!-- WB R1 M3 -->
+        <td></td>
+        <td></td>
+        <td colspan="4"></td>
+        <td class="vline"></td>
+        <td colspan="2"></td>
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][2].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][2].score2 }}</span>
+          </span>
+        </td><!-- WB R1 M3 -->
+        <td class="hline vline"></td>
+        <td colspan="5"></td>
+        <td class="vline"></td>
+        <td colspan="2"></td>
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="vline"></td>
+        <td></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[1][1].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[1][1].score1 }}</span>
+          </span>
+        </td><!-- WB R2 M2 -->
+        <td colspan="3"></td>
+        <td class="vline"></td>
+        <td colspan="2"></td>
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="vline"></td>
+        <td class="hline"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[1][1].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[1][1].score2 }}</span>
+          </span>
+        </td><!-- WB R2 M2 -->
+        <td class="hline" colspan="4"></td>
+        <td colspan="2"></td>
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][3].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][3].score1 }}</span>
+          </span>
+        </td><!-- WB R1 M4 -->
+        <td class="vline"></td>
+        <td colspan="8"></td>
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.winner[0][3].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.winner[0][3].score2 }}</span>
+          </span>
+        </td><!-- WB R1 M4 -->
+        <td class="hline"></td>
+        <td colspan="8"></td>
+        <td class="vline"></td>
+      </tr>
+
+      <!-- Final -->
+      <tr>
+        <td></td>
+        <td colspan="9"></td>
+        <td class="vline"></td>
+        <td></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.finals[0].player1 || "&nbsp;" }}</span>
+            <span *ngIf="playoffs.finals[1]" class="badge pull-right">{{ playoffs.finals[1].score1 }}</span>
+            <span class="badge pull-right">{{ playoffs.finals[0].score1 }}</span>
+          </span>
+        </td><!-- Final -->
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="9"></td>
+        <td class="vline"></td>
+        <td class="hline"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.finals[0].player2 || "&nbsp;" }}</span>
+            <span *ngIf="playoffs.finals[1]" class="badge pull-right">{{ playoffs.finals[1].score2 }}</span>
+            <span class="badge pull-right">{{ playoffs.finals[0].score2 }}</span>
+          </span>
+        </td><!-- Final -->
+      </tr>
+
+      <!-- Loser Bracket -->
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[0][0].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[0][0].score1 }}</span>
+          </span>
+        </td><!-- LB R1 M1 -->
+        <td colspan="2"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[1][0].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[1][0].score1 }}</span>
+          </span>
+        </td><!-- LB R2 M1 -->
+        <td></td>
+        <td colspan="5"></td>
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[0][0].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[0][0].score2 }}</span>
+          </span>
+        </td><!-- LB R1 M1 -->
+        <td class="hline" colspan="2"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[1][0].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[1][0].score2 }}</span>
+          </span>
+        </td><!-- LB R2 M1 -->
+        <td class="hline vline"></td>
+        <td colspan="5"></td>
+        <td class="vline"></td>
+      </tr>
+
+      <tr>
+        <td></td>
+        <td colspan="2"></td>
+        <td></td>
+        <td class="vline"></td>
+        <td></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[2][0].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[2][0].score1 }}</span>
+          </span>
+        </td><!-- LB R3 M1 -->
+        <td colspan="2"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[3][0].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[3][0].score1 }}</span>
+          </span>
+        </td><!-- LB R4 M1 -->
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td colspan="3"></td>
+        <td class="vline"></td>
+        <td class="hline"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[2][0].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[2][0].score2 }}</span>
+          </span>
+        </td><!-- LB R3 M1 -->
+        <td class="hline" colspan="2"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[3][0].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[3][0].score2 }}</span>
+          </span>
+        </td><!-- LB R4 M1 -->
+        <td class="hline"></td>
+      </tr>
+
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[0][1].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[0][1].score1 }}</span>
+          </span>
+        </td><!-- LB R1 M2 -->
+        <td colspan="2"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[1][1].player1 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[1][1].score1 }}</span>
+          </span>
+        </td><!-- LB R2 M2 -->
+        <td class="vline"></td>
+      </tr>
+      <tr>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[0][1].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[0][1].score2 }}</span>
+          </span>
+        </td><!-- LB R1 M2 -->
+        <td class="hline" colspan="2"></td>
+        <td class="player">
+          <span>
+            <span>{{ playoffs.loser[1][1].player2 || "&nbsp;" }}</span>
+            <span class="badge pull-right">{{ playoffs.loser[1][1].score2 }}</span>
+          </span>
+        </td><!-- LB R2 M2 -->
+        <td class="hline"></td>
+      </tr>
+    </table>
+  </div>
+</div>
