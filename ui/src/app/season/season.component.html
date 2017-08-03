@@ -4,7 +4,7 @@
     <h4 *ngIf="!isSeasonFinished(season)">Qualifications from {{ season.start_date|date }} to {{ season.end_date|date }}</h4>
   </div>
 
-  <playoffs [data]="season.playoff_data"></playoffs>
+  <playoffs [data]="season.playoffs_data"></playoffs>
 
   <div class="row">
     <div class="col-md-5">

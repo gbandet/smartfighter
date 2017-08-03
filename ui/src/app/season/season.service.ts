@@ -4,19 +4,20 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { Game } from '../game/game';
+import { Page } from '../paging';
 import { Season, SeasonRanking } from './season';
 
 @Injectable()
 export class SeasonService {
   private headers = new Headers({'Content-Type': 'application/json'});
-  private url = '/ui/seasons/';
+  private url = '/ui/seasons';
 
   constructor(private http: Http) { }
 
-  getSeasons(): Promise<Season[]> {
+  getSeasons(): Promise<Page<Season>> {
     return this.http.get(this.url)
       .toPromise()
-      .then(response => response.json() as Season[])
+      .then(response => new Page<Season>(response.json()))
       .catch(this.handleError);
   }
 
@@ -29,18 +30,18 @@ export class SeasonService {
   }
 
   getSeasonRanking(id: number): Promise<SeasonRanking> {
-    const url = `${this.url}/${id}/ranking/`;
+    const url = `${this.url}/${id}/ranking`;
     return this.http.get(url)
       .toPromise()
       .then(response => response.json() as SeasonRanking)
       .catch(this.handleError);
   }
 
-  getSeasonGames(id: number): Promise<Game[]> {
-    const url = `${this.url}/${id}/games/`;
+  getSeasonGames(id: number): Promise<Page<Game>> {
+    const url = `${this.url}/${id}/games`;
     return this.http.get(url)
       .toPromise()
-      .then(response => response.json() as Game[])
+      .then(response => new Page<Game>(response.json()))
       .catch(this.handleError);
   }
 

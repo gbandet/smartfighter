@@ -13,6 +13,6 @@ export class SeasonListComponent implements OnInit {
   constructor(private seasonService: SeasonService) {}
 
   ngOnInit() {
-    this.seasonService.getSeasons().then(seasons => this.seasons = seasons);
+    this.seasonService.getSeasons().then(page => this.seasons = page.data);
   }
 }

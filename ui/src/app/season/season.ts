@@ -4,7 +4,7 @@ export class Season {
   start_date: string;
   end_date: string;
   placement_games: number;
-  playoff_data: any;
+  playoffs_data: any;
 }
 
 export class RankingPlayer {

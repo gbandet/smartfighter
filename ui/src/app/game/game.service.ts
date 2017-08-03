@@ -4,6 +4,7 @@ import { Headers, Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 
 import { Game } from './game';
+import { Page } from '../paging';
 
 @Injectable()
 export class GameService {
@@ -12,10 +13,10 @@ export class GameService {
 
   constructor(private http: Http) { }
 
-  getGames(): Promise<Game[]> {
+  getGames(): Promise<Page<Game>> {
     return this.http.get(this.url)
       .toPromise()
-      .then(response => response.json() as Game[])
+      .then(response => new Page<Game>(response.json()))
       .catch(this.handleError);
   }
 

@@ -34,7 +34,7 @@ export class SeasonComponent implements OnInit {
       });
     this.route.paramMap
       .switchMap((params: ParamMap) => this.seasonService.getSeasonGames(+params.get('id')))
-      .subscribe(games => this.games = games);
+      .subscribe(page => this.games = page.data);
   }
 
   isSeasonFinished(season: Season) {
