@@ -170,6 +170,8 @@ class RoundResult(object):
         (DoubleKO, 'D'),
     )
 
+    choices_dict = dict(choices)
+
 
 class Round(models.Model):
     game = models.ForeignKey(Game)

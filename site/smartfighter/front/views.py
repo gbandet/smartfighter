@@ -7,18 +7,183 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import RedirectView, TemplateView
+from django_filters import FilterSet
 from rest_framework.decorators import detail_route
+from rest_framework.mixins import ListModelMixin
 from rest_framework.response import Response
-from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
+from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Player, PlayerResults, Round, RoundResult, Season
-from smartfighter.apps.ranking.serializers import GameSerializer, SeasonSerializer
+from smartfighter.front.serializers import GameSerializer, PlayerSerializer, SeasonSerializer, SimpleSeasonSerializer
 
 
-class SeasonViewSet(ReadOnlyModelViewSet):
+class GameFilter(FilterSet):
+    class Meta:
+        model = Game
+        fields = {
+            'season': ['exact', 'isnull'],
+            'phase': ['exact'],
+            'date': ['gt', 'gte', 'lt', 'lte'],
+        }
+
+
+class GameViewSet(ReadOnlyModelViewSet):
+    queryset = Game.objects.all()
+    serializer_class = GameSerializer
+    ordering_fields = ('date',)
+    ordering = '-date'
+    filter_class = GameFilter
+
+
+class PlayerFilter(FilterSet):
+    class Meta:
+        model = Player
+        fields = {
+            'name': ['exact', 'icontains'],
+        }
+
+
+class PlayerViewSet(ReadOnlyModelViewSet):
+    queryset = Player.objects.all()
+    serializer_class = PlayerSerializer
+    ordering_fields = ('id', 'name')
+    ordering = 'name'
+    filter_class = PlayerFilter
+
+    @detail_route(methods=['get'])
+    def stats(self, request, pk=None):
+        player = self.get_object()
+        game_filters = self._get_game_filters()
+
+        response = {}
+        season = game_filters.get('season')
+        if season:
+            result = player.season_results.get(season=season)
+            response['season'] = {
+                'id': season.id,
+                'name': season.name,
+                'rating': result.elo_rating,
+                'min_rating': result.min_rating,
+                'max_rating': result.max_rating,
+
+            }
+
+        opponents = {}
+        def get_opponent(player):
+            return opponents.setdefault(player.card_id, defaultdict(int, {
+                'id': player.card_id,
+                'name': player.name,
+                'round_statuses': {},
+            }))
+
+        for game in player.games_as_first_player.filter(**game_filters).select_related():
+            opponent = get_opponent(game.player2)
+            opponent['count'] += 1
+            opponent['wins'] += 1 if game.result == MatchResult.Player1 else 0
+            opponent['draws'] += 1 if game.result == MatchResult.Draw else 0
+            opponent['losses'] += 1 if game.result == MatchResult.Player2 else 0
+
+        for game in player.games_as_second_player.filter(**game_filters).select_related():
+            opponent = get_opponent(game.player1)
+            opponent['count'] += 1
+            opponent['wins'] += 1 if game.result == MatchResult.Player2 else 0
+            opponent['draws'] += 1 if game.result == MatchResult.Draw else 0
+            opponent['losses'] += 1 if game.result == MatchResult.Player1 else 0
+
+        round_filters = {'game__' + k: v for k,v in game_filters.items()}
+        for round_ in Round.objects.filter(
+                    Q(game__player1=player, **round_filters) | Q(game__player2=player, **round_filters)
+                ).select_related():
+            if round_.game.player1 == player:
+                opponent = get_opponent(round_.game.player2)
+                opponent['round_count'] += 1
+                opponent['round_wins'] += 1 if round_.result == MatchResult.Player1 else 0
+                opponent['round_draws'] += 1 if round_.result == MatchResult.Draw else 0
+                opponent['round_losses'] += 1 if round_.result == MatchResult.Player2 else 0
+                round_status = opponent['round_statuses'].setdefault(round_.player1, defaultdict(int, {
+                    'code': round_.player1,
+                    'label': RoundResult.choices_dict.get(round_.player1),
+                }))
+                round_status['count'] += 1
+            else:
+                opponent = get_opponent(round_.game.player1)
+                opponent['round_count'] += 1
+                opponent['round_wins'] += 1 if round_.result == MatchResult.Player2 else 0
+                opponent['round_draws'] += 1 if round_.result == MatchResult.Draw else 0
+                opponent['round_losses'] += 1 if round_.result == MatchResult.Player1 else 0
+                round_status = opponent['round_statuses'].setdefault(round_.player2, defaultdict(int, {
+                    'code': round_.player2,
+                    'label': RoundResult.choices_dict.get(round_.player2),
+                }))
+                round_status['count'] += 1
+
+        opponents = sorted(opponents.values(), key=itemgetter('count'), reverse=True)
+
+        totals = defaultdict(int)
+        totals['round_statuses'] = {}
+        for opponent in opponents:
+            totals['count'] += opponent['count']
+            totals['wins'] += opponent['wins']
+            totals['draws'] += opponent['draws']
+            totals['losses'] += opponent['losses']
+            totals['round_count'] += opponent['round_count']
+            totals['round_wins'] += opponent['round_wins']
+            totals['round_draws'] += opponent['round_draws']
+            totals['round_losses'] += opponent['round_losses']
+            for status_code, round_status in opponent['round_statuses'].items():
+                total_status = totals['round_statuses'].setdefault(status_code, defaultdict(int, {
+                    'code': round_status['code'],
+                    'label': round_status['label'],
+                }))
+                total_status['count'] += round_status['count']
+
+        response['opponents'] = opponents
+        response['global'] = totals
+
+        return Response(response)
+
+    def _get_game_filters(self):
+        param = self.request.GET.get('season')
+        if param is None:
+            return {}
+        if param == 'unranked':
+            return {'season': None, 'phase': GamePhase.Unranked}
+        try:
+            season = Season.objects.get(pk=param)
+        except ValueError, Season.DoesNotExist:
+            return {}
+        return {'season': season, 'phase': GamePhase.Ranked}
+
+
+class SeasonFilter(FilterSet):
+    class Meta:
+        model = Season
+        fields = {
+            'name': ['exact', 'icontains'],
+            'start_date': ['gt', 'gte', 'lt', 'lte'],
+            'end_date': ['gt', 'gte', 'lt', 'lte'],
+        }
+
+
+class SeasonGameViewSet(NestedViewSetMixin, ListModelMixin, GenericViewSet):
+    queryset = Game.objects.filter(phase=GamePhase.Ranked).select_related()
+    serializer_class = GameSerializer
+    ordering_fields = ('date',)
+    ordering = '-date'
+    filter_class = GameFilter
+
+
+class SeasonViewSet(NestedViewSetMixin, ReadOnlyModelViewSet):
     queryset = Season.objects.all()
     serializer_class = SeasonSerializer
-    pagination_class = None
+    ordering_fields = ('id', 'name', 'start_date', 'end_date')
+    ordering = '-start_date'
+    filter_class = SeasonFilter
+
+    def list(self, request, *args, **kwargs):
+        self.serializer_class = SimpleSeasonSerializer
+        return super(SeasonViewSet, self).list(request, *args, **kwargs)
 
     @detail_route(methods=['get'])
     def ranking(self, request, pk=None):
@@ -77,23 +242,6 @@ class SeasonViewSet(ReadOnlyModelViewSet):
                 response['placement'].append(data)
 
         return Response(response)
-
-    @detail_route(methods=['get'])
-    def games(self, request, pk=None):
-        season = self.get_object()
-        games = Game.objects.filter(
-            season=season, phase=GamePhase.Ranked).select_related().order_by('-date')[:20]
-        serializer = GameSerializer(games, many=True)
-        return Response(serializer.data)
-
-
-class GameViewSet(ReadOnlyModelViewSet):
-    queryset = Game.objects.all()
-    serializer_class = GameSerializer
-    pagination_class = None
-
-    def filter_queryset(self, query):
-        return query.filter(phase=GamePhase.Unranked).select_related().order_by('-date')[:50]
 
 
 class IndexView(RedirectView):
