@@ -1,7 +1,7 @@
 import { Injectable }    from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
 
 import { Player } from './player';
 
@@ -12,24 +12,15 @@ export class PlayerService {
 
   constructor(private http: Http) { }
 
-  getPlayer(name: string): Promise<Player> {
+  getPlayer(name: string): Observable<Player> {
     const url = `${this.url}/${name}`;
     return this.http.get(url)
-      .toPromise()
-      .then(response => response.json() as Player)
-      .catch(this.handleError);
+      .map(response => response.json() as Player);
   }
 
-  getPlayerStats(name: string, search?: object) : Promise<any> {
+  getPlayerStats(name: string, search?: object) : Observable<any> {
     const url = `${this.url}/${name}/stats`;
     return this.http.get(url, {search: search})
-      .toPromise()
-      .then(response => response.json())
-      .catch(this.handleError);
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+      .map(response => response.json());
   }
 }

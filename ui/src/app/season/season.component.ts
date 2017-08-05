@@ -17,6 +17,7 @@ export class SeasonComponent implements OnInit {
   placement: RankingPlayer[] = [];
   games: Game[] = [];
   loading: any = {ranking: true, games: true};
+  error: any = {ranking: null, games: null};
 
   constructor(
     private seasonService: SeasonService,
@@ -26,26 +27,41 @@ export class SeasonComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap
       .switchMap((params: ParamMap) => this.seasonService.getSeason(+params.get('id')))
-      .subscribe(season => this.season = season);
+      .subscribe(
+        season => this.season = season,
+        error => this.season = new Season()
+      );
     this.route.paramMap
       .switchMap((params: ParamMap) => {
         this.loading.ranking = true;
+        this.error.ranking = null;
         return this.seasonService.getSeasonRanking(+params.get('id'));
       })
-      .subscribe(ranking => {
-        this.ranking = ranking.ranking;
-        this.placement = ranking.placement;
-        this.loading.ranking = false;
-      });
+      .subscribe(
+        ranking => {
+          this.ranking = ranking.ranking;
+          this.placement = ranking.placement;
+          this.loading.ranking = false;
+        },
+        error => {
+          this.error.ranking = error;
+          this.loading.ranking = false;
+        });
     this.route.paramMap
       .switchMap((params: ParamMap) => {
         this.loading.games = true;
+        this.error.games = null;
         return this.seasonService.getSeasonGames(+params.get('id'), {limit: 20});
       })
-      .subscribe(page => {
-        this.games = page.data;
-        this.loading.games = false;
-      });
+      .subscribe(
+        page => {
+          this.games = page.data;
+          this.loading.games = false;
+        },
+        error => {
+          this.error.games = error;
+          this.loading.games = false;
+        });
   }
 
   isSeasonFinished(season: Season) {

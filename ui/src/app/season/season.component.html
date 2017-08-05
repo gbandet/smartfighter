@@ -19,7 +19,10 @@
         <tr *ngIf="loading.ranking">
           <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
         </tr>
-        <ng-container *ngIf="!loading.ranking">
+        <tr *ngIf="error.ranking">
+          <td colspan="4" class="bg-danger">Loading error.</td>
+        </tr>
+        <ng-container *ngIf="!loading.ranking && !error.ranking">
           <tr *ngFor="let player of ranking; index as index" [ngClass]="{'bg-info': index < 8}">
             <td>{{ player.rank }}</td>
             <td><a [routerLink]="['/players', player.name]" [queryParams]="{season: season.id}">{{ player.name }}</a></td>
@@ -28,7 +31,7 @@
           </tr>
         </ng-container>
       </table>
-      <ng-container *ngIf="!loading.ranking && season.placement_games > 0">
+      <ng-container *ngIf="!loading.ranking && !error.ranking && season.placement_games > 0">
         <h4>Unranked ({{ season.placement_games }} games need to be played)</h4>
         <table class="table table-condensed">
           <tr>
@@ -51,7 +54,8 @@
       <p *ngIf="loading.games">
         <i class="fa fa-spinner fa-spin"></i>
       </p>
-      <game-list *ngIf="!loading.games" [games]="games"></game-list>
+      <p *ngIf="error.games" class="bg-danger">Loading error.</p>
+      <game-list *ngIf="!loading.games && !error.games" [games]="games"></game-list>
     </div>
   </div>
 </div>

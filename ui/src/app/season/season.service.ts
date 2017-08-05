@@ -1,7 +1,7 @@
 import { Injectable }    from '@angular/core';
 import { Headers, Http } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
+import {Observable} from 'rxjs/Observable';
 
 import { Game } from '../game/game';
 import { Page } from '../paging';
@@ -14,39 +14,26 @@ export class SeasonService {
 
   constructor(private http: Http) { }
 
-  getSeasons(search?: object): Promise<Page<Season>> {
+  getSeasons(search?: object): Observable<Page<Season>> {
     return this.http.get(this.url, {search: search})
-      .toPromise()
-      .then(response => new Page<Season>(response.json()))
-      .catch(this.handleError);
+      .map(response => new Page<Season>(response.json()));
   }
 
-  getSeason(id: number): Promise<Season> {
+  getSeason(id: number): Observable<Season> {
     const url = `${this.url}/${id}`;
     return this.http.get(url)
-      .toPromise()
-      .then(response => response.json() as Season)
-      .catch(this.handleError);
+      .map(response => response.json() as Season);
   }
 
-  getSeasonRanking(id: number): Promise<SeasonRanking> {
+  getSeasonRanking(id: number): Observable<SeasonRanking> {
     const url = `${this.url}/${id}/ranking`;
     return this.http.get(url)
-      .toPromise()
-      .then(response => response.json() as SeasonRanking)
-      .catch(this.handleError);
+      .map(response => response.json() as SeasonRanking);
   }
 
-  getSeasonGames(id: number, search?: object): Promise<Page<Game>> {
+  getSeasonGames(id: number, search?: object): Observable<Page<Game>> {
     const url = `${this.url}/${id}/games`;
     return this.http.get(url, {search: search})
-      .toPromise()
-      .then(response => new Page<Game>(response.json()))
-      .catch(this.handleError);
-  }
-
-  private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
-    return Promise.reject(error.message || error);
+      .map(response => new Page<Game>(response.json()));
   }
 }

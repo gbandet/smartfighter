@@ -14,7 +14,7 @@ export class IndexComponent {
   ) {}
 
   ngOnInit() {
-    this.seasonService.getSeasons({limit: 1}).then(page => {
+    this.seasonService.getSeasons({limit: 1}).subscribe(page => {
       if (page.data) {
         this.router.navigate(['/seasons', page.data[0].id])
       } else {

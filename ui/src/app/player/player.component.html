@@ -24,7 +24,7 @@
       <ng-container *ngIf="!loading.stats">
         <span *ngIf="stats.season?.min_rating !== null" class="label label-warning">Min&nbsp;<span class="badge">{{ stats.season.min_rating }}</span></span>
         <span *ngIf="stats.season?.max_rating !== null" class="label label-success">Max&nbsp;<span class="badge">{{ stats.season.max_rating }}</span></span>
-        <span class="label label-primary">Win rate&nbsp;<span class="badge">{{ stats.global.wins / stats.global.count | percent:'1.0-0' }}</span></span>
+        <span *ngIf="stats.global" class="label label-primary">Win rate&nbsp;<span class="badge">{{ stats.global.wins / stats.global.count | percent:'1.0-0' }}</span></span>
       </ng-container>
     </h3>
   </div>
@@ -52,7 +52,10 @@
         <tr *ngIf="loading.stats">
           <td colspan="10"><i class="fa fa-spinner fa-spin"></i></td>
         </tr>
-        <ng-container *ngIf="!loading.stats">
+        <tr *ngIf="error.stats" class="bg-danger">
+          <td colspan="10">Loading error.</td>
+        </tr>
+        <ng-container *ngIf="!loading.stats && !error.stats">
           <tr *ngFor="let opponent of stats.opponents">
             <td><a [routerLink]="['/players',  opponent.name]" [queryParams]="{'season': seasonParam }">{{ opponent.name }}</a></td>
             <td class="text-center active">{{ opponent.count }}</td>

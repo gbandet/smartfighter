@@ -14,6 +14,6 @@ export class AppComponent {
   constructor(private seasonService: SeasonService) {}
 
   ngOnInit() {
-    this.seasonService.getSeasons({limit: 5}).then(page => this.seasons = page.data);
+    this.seasonService.getSeasons({limit: 5}).subscribe(page => this.seasons = page.data);
   }
 }
