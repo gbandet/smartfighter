@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="header clearfix">
+    <h1 class="text-muted">{{ player.name }}</h1>
+
+    <div dropdown class="dropdown">
+      <button class="btn btn-default" dropdownToggle type="button" id="season-select">
+        {{ stats.season ? stats.season.name : (seasonParam == 'unranked' ? 'Unranked games' : 'All games') }}
+        <span class="caret"></span>
+      </button>
+      <ul *dropdownMenu class="dropdown-menu" aria-labelledby="season-select">
+        <li *ngFor="let season of player.seasons">
+          <a [routerLink]="['/players', player.name]" [queryParams]="{season: season.id}">{{ season.name }}</a>
+        </li>
+        <li role="separator" class="divider"></li>
+        <li><a [routerLink]="['/players', player.name]">All games</a></li>
+        <li><a [routerLink]="['/players', player.name]" [queryParams]="{season: 'unranked'}">Unranked games</a></li>
+      </ul>
+      <h3 *ngIf="stats.season" style="display: inline">
+        <span class="label label-primary">Score&nbsp;<span class="badge">{{ stats.season.rating }}</span></span>
+      </h3>
+    </div>
+
+    <h3>
+      <span *ngIf="stats.season" class="label label-warning">Min&nbsp;<span class="badge">{{ stats.season.min_rating }}</span></span>
+      <span *ngIf="stats.season" class="label label-success">Max&nbsp;<span class="badge">{{ stats.season.max_rating }}</span></span>
+      <span class="label label-primary">Win rate&nbsp;<span class="badge">{{ stats.global.wins / stats.global.count | percent:'1.0-0' }}</span></span>
+    </h3>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table class="table table-condensed">
+        <tr>
+          <th class="col-md-2"></th>
+          <th class="col-md-4 text-center active" colspan="4">Games</th>
+          <th class="col-md-6 text-center" colspan="5">Rounds</th>
+        </tr>
+        <tr>
+          <th class="col-md-2">Opponent</th>
+          <th class="col-md-1 text-center active">Played</th>
+          <th class="col-md-1 text-center active">Win</th>
+          <th class="col-md-1 text-center active">Draw</th>
+          <th class="col-md-1 text-center active">Lose</th>
+          <th class="col-md-1 text-center">Played</th>
+          <th class="col-md-1 text-center">Win</th>
+          <th class="col-md-1 text-center">Draw</th>
+          <th class="col-md-1 text-center">Lose</th>
+          <th class="col-md-2 text-center"></th>
+        </tr>
+        <tr *ngFor="let opponent of stats.opponents">
+          <td><a [routerLink]="['/players',  opponent.name]" [queryParams]="{'season': seasonParam }">{{ opponent.name }}</a></td>
+          <td class="text-center active">{{ opponent.count }}</td>
+          <td class="text-center active">{{ opponent.wins }}</td>
+          <td class="text-center active">{{ opponent.draws }}</td>
+          <td class="text-center active">{{ opponent.losses }}</td>
+          <td class="text-center">{{ opponent.round_count }}</td>
+          <td class="text-center">{{ opponent.round_wins }}</td>
+          <td class="text-center">{{ opponent.round_draws }}</td>
+          <td class="text-center">{{ opponent.round_losses }}</td>
+          <td>
+            <span *ngFor="let status of [6, 3, 4, 2, 5, 7, 8]">
+              <span *ngIf="opponent.round_statuses[status]" class="label" [ngClass]="status | roundStatusClass">{{ opponent.round_statuses[status].label }}&nbsp;{{ opponent.round_statuses[status].count }}</span>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>Total</strong></td>
+          <td class="text-center active"><strong>{{ stats.global.count }}</strong></td>
+          <td class="text-center active"><strong>{{ stats.global.wins }}</strong></td>
+          <td class="text-center active"><strong>{{ stats.global.draws }}</strong></td>
+          <td class="text-center active"><strong>{{ stats.global.losses }}</strong></td>
+          <td class="text-center"><strong>{{ stats.global.round_count }}</strong></td>
+          <td class="text-center"><strong>{{ stats.global.round_wins }}</strong></td>
+          <td class="text-center"><strong>{{ stats.global.round_draws }}</strong></td>
+          <td class="text-center"><strong>{{ stats.global.round_losses }}</strong></td>
+          <td>
+            <strong>
+              <span *ngFor="let status of [6, 3, 4, 2, 5, 7, 8]">
+                <span *ngIf="stats.global.round_statuses[status]" class="label" [ngClass]="status | roundStatusClass">{{ stats.global.round_statuses[status].label }}&nbsp;{{ stats.global.round_statuses[status].count }}</span>
+              </span>
+            </strong>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

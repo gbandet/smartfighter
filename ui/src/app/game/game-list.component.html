@@ -7,12 +7,12 @@
     </td>
     <td class="col-md-2" [ngClass]="{'bg-success': game.result == 0}">
       <span *ngFor="let round of game.rounds">
-        <span class="label" [ngClass]="getStatusClass(round.player1_status.code)">{{ round.player1_status.label || "&nbsp;" }}</span>
+        <span class="label" [ngClass]="round.player1_status.code | roundStatusClass">{{ round.player1_status.label || "&nbsp;" }}</span>
       </span>
     </td>
     <td class="col-md-2 text-right" [ngClass]="{'bg-success': game.result == 1}">
       <span *ngFor="let round of game.rounds">
-        <span class="label" [ngClass]="getStatusClass(round.player2_status.code)">{{ round.player2_status.label || "&nbsp;" }}</span>
+        <span class="label" [ngClass]="round.player2_status.code | roundStatusClass">{{ round.player2_status.label || "&nbsp;" }}</span>
       </span>
     </td>
     <td class="col-md-4 text-right" [ngClass]="{'bg-success': game.result == 1}">
