@@ -13,6 +13,6 @@ export class UnrankedComponent implements OnInit {
   constructor(private gameService: GameService) { }
 
   ngOnInit() {
-    this.gameService.getGames().then(page => this.games = page.data);
+    this.gameService.getGames(undefined, 0).then(page => this.games = page.data);
   }
 }

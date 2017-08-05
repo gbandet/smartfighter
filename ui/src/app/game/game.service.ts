@@ -9,12 +9,17 @@ import { Page } from '../paging';
 @Injectable()
 export class GameService {
   private headers = new Headers({'Content-Type': 'application/json'});
-  private url = '/ui/games/';
+  private url = '/ui/games';
 
   constructor(private http: Http) { }
 
-  getGames(): Promise<Page<Game>> {
-    return this.http.get(this.url)
+  getGames(season: number, phase: number): Promise<Page<Game>> {
+    return this.http.get(this.url, {
+      search: {
+        season: season,
+        phase: phase,
+      },
+    })
       .toPromise()
       .then(response => new Page<Game>(response.json()))
       .catch(this.handleError);
