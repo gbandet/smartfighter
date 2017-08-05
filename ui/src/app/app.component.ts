@@ -14,6 +14,6 @@ export class AppComponent {
   constructor(private seasonService: SeasonService) {}
 
   ngOnInit() {
-    this.seasonService.getSeasons().then(page => this.seasons = page.data.slice(-5));
+    this.seasonService.getSeasons({limit: 5}).then(page => this.seasons = page.data);
   }
 }

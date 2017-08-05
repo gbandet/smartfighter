@@ -13,13 +13,8 @@ export class GameService {
 
   constructor(private http: Http) { }
 
-  getGames(season: number, phase: number): Promise<Page<Game>> {
-    return this.http.get(this.url, {
-      search: {
-        season: season,
-        phase: phase,
-      },
-    })
+  getGames(search?: object): Promise<Page<Game>> {
+    return this.http.get(this.url, {search: search})
       .toPromise()
       .then(response => new Page<Game>(response.json()))
       .catch(this.handleError);

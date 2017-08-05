@@ -14,8 +14,8 @@ export class SeasonService {
 
   constructor(private http: Http) { }
 
-  getSeasons(): Promise<Page<Season>> {
-    return this.http.get(this.url)
+  getSeasons(search?: object): Promise<Page<Season>> {
+    return this.http.get(this.url, {search: search})
       .toPromise()
       .then(response => new Page<Season>(response.json()))
       .catch(this.handleError);
@@ -37,9 +37,9 @@ export class SeasonService {
       .catch(this.handleError);
   }
 
-  getSeasonGames(id: number): Promise<Page<Game>> {
+  getSeasonGames(id: number, search?: object): Promise<Page<Game>> {
     const url = `${this.url}/${id}/games`;
-    return this.http.get(url)
+    return this.http.get(url, {search: search})
       .toPromise()
       .then(response => new Page<Game>(response.json()))
       .catch(this.handleError);

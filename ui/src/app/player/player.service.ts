@@ -20,12 +20,9 @@ export class PlayerService {
       .catch(this.handleError);
   }
 
-  getPlayerStats(name: string, season: string) : Promise<any> {
-    let url = `${this.url}/${name}/stats`;
-    if (season) {
-      url = `${url}?season=${season}`;
-    }
-    return this.http.get(url)
+  getPlayerStats(name: string, search?: object) : Promise<any> {
+    const url = `${this.url}/${name}/stats`;
+    return this.http.get(url, {search: search})
       .toPromise()
       .then(response => response.json())
       .catch(this.handleError);

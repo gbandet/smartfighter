@@ -30,7 +30,7 @@ export class PlayerComponent implements OnInit {
     Observable.combineLatest(this.route.paramMap, this.route.queryParamMap)
       .switchMap(([params, queryParams]: [ParamMap, ParamMap]) => {
         this.seasonParam = queryParams.get('season');
-        return this.playerService.getPlayerStats(params.get('name'), queryParams.get('season'));
+        return this.playerService.getPlayerStats(params.get('name'), {season: queryParams.get('season')});
       })
       .subscribe(stats => this.stats = stats);
   }

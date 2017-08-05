@@ -33,7 +33,7 @@ export class SeasonComponent implements OnInit {
         this.placement = ranking.placement;
       });
     this.route.paramMap
-      .switchMap((params: ParamMap) => this.seasonService.getSeasonGames(+params.get('id')))
+      .switchMap((params: ParamMap) => this.seasonService.getSeasonGames(+params.get('id'), {limit: 20}))
       .subscribe(page => this.games = page.data);
   }
 
