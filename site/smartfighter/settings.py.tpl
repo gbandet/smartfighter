@@ -9,6 +9,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = ''
 DEBUG = True
 ALLOWED_HOSTS = []
+USE_X_FORWARDED_HOST = True
+APPEND_SLASH = False
 
 INSTALLED_APPS = [
     'django.contrib.auth',
@@ -16,6 +18,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
 
     'smartfighter.apps.ranking',
 ]
@@ -35,9 +38,7 @@ ROOT_URLCONF = 'smartfighter.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'smartfighter', 'templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
