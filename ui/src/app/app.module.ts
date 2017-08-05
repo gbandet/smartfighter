@@ -12,6 +12,7 @@ import { RoundStatusClassPipe } from './game/pipes';
 import { UnrankedComponent } from './game/unranked.component';
 import { IndexComponent } from './index.component';
 import { InstructionsComponent } from './instructions.component';
+import { WithSignPipe } from './pipes';
 import { PlayerComponent } from './player/player.component';
 import { PlayerService } from './player/player.service';
 import { PlayoffsComponent } from './season/playoffs.component';
@@ -31,6 +32,7 @@ import { SeasonService } from './season/season.service';
     SeasonComponent,
     SeasonListComponent,
     UnrankedComponent,
+    WithSignPipe,
   ],
   imports: [
     BrowserModule,

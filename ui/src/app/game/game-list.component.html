@@ -2,7 +2,7 @@
   <tr *ngFor="let game of games">
     <td class="col-md-4" [ngClass]="{'bg-success': game.result == 0}">
       {{ game.player1.name }}
-      <span *ngIf="game.player1.rating_change !== null" class="text-primary">({{ game.player1.rating_change }})</span>
+      <span *ngIf="game.player1.rating_change !== null" class="text-primary">({{ game.player1.rating_change | withSign }})</span>
       <em *ngIf="game.player1.character_name" class="text-danger">{{ game.player1.character_name }}</em>
     </td>
     <td class="col-md-2" [ngClass]="{'bg-success': game.result == 0}">
@@ -18,7 +18,7 @@
     <td class="col-md-4 text-right" [ngClass]="{'bg-success': game.result == 1}">
       <em *ngIf="game.player2.character_name" class="text-danger">{{ game.player2.character_name }}</em>
       {{ game.player2.name }}
-      <span *ngIf="game.player2.rating_change !== null" class="text-primary">({{ game.player2.rating_change }})</span>
+      <span *ngIf="game.player2.rating_change !== null" class="text-primary">({{ game.player2.rating_change | withSign }})</span>
     </td>
   </tr>
 </table>
