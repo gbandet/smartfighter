@@ -49,14 +49,6 @@ class GameSerializer(serializers.ModelSerializer):
         }
 
 
-class PlayerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Player
-        fields = ('id', 'name')
-
-    id = fields.CharField(source='card_id')
-
-
 class SimpleSeasonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Season
@@ -74,3 +66,24 @@ class SeasonSerializer(serializers.ModelSerializer):
         if season.playoff_data:
             return json.loads(season.playoff_data)
         return None
+
+
+class PlayerSeasonField(serializers.RelatedField):
+    season_serializer = SimpleSeasonSerializer
+
+    def to_representation(self, value):
+        return self.season_serializer(value.season).data
+
+
+class SimplePlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        fields = ('name',)
+
+
+class PlayerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Player
+        fields = ('name', 'seasons')
+
+    seasons = PlayerSeasonField(source='season_results', many=True, read_only=True)

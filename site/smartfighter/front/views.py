@@ -15,7 +15,7 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from smartfighter.apps.ranking.models import Game, GamePhase, MatchResult, Player, PlayerResults, Round, RoundResult, Season
-from smartfighter.front.serializers import GameSerializer, PlayerSerializer, SeasonSerializer, SimpleSeasonSerializer
+from smartfighter.front.serializers import GameSerializer, PlayerSerializer, SeasonSerializer, SimplePlayerSerializer, SimpleSeasonSerializer
 
 
 class GameFilter(FilterSet):
@@ -47,12 +47,17 @@ class PlayerFilter(FilterSet):
 class PlayerViewSet(ReadOnlyModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
-    ordering_fields = ('id', 'name')
+    lookup_field = 'name'
+    ordering_fields = ('name',)
     ordering = 'name'
     filter_class = PlayerFilter
 
+    def list(self, request, *args, **kwargs):
+        self.serializer_class = SimplePlayerSerializer
+        return super(PlayerViewSet, self).list(request, *args, **kwargs)
+
     @detail_route(methods=['get'])
-    def stats(self, request, pk=None):
+    def stats(self, request, name=None):
         player = self.get_object()
         game_filters = self._get_game_filters()
 
