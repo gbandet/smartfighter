@@ -1,10 +1,10 @@
 <div class="container">
   <div class="header clearfix">
     <h1 class="mt-3 text-muted">{{ season.name}}</h1>
-    <h4 *ngIf="!isSeasonFinished(season)">Qualifications from {{ season.start_date|date }} to {{ season.end_date|date }}</h4>
+    <h4 *ngIf="season.id && !isSeasonFinished(season)">Qualifications from {{ season.start_date|date }} to {{ season.end_date|date }}</h4>
   </div>
 
-  <playoffs [data]="season.playoffs_data"></playoffs>
+  <playoffs *ngIf="season.playoffs_data" [data]="season.playoffs_data"></playoffs>
 
   <div class="row">
     <div class="col-md-5">
@@ -16,14 +16,19 @@
           <th class="col-md-1 text-center">Score</th>
           <th class="col-md-3 text-center">Win rate</th>
         </tr>
-        <tr *ngFor="let player of ranking; index as index" [ngClass]="{'bg-info': index < 8}">
-          <td>{{ player.rank }}</td>
-          <td><a [routerLink]="['/players', player.name]" [queryParams]="{season: season.id}">{{ player.name }}</a></td>
-          <td class="text-center">{{ player.rating }}</td>
-          <td class="text-center">{{ player.wins / player.games | percent:'1.0-0' }}</td>
+        <tr *ngIf="loading.ranking">
+          <td colspan="4"><i class="fa fa-spinner fa-spin"></i></td>
         </tr>
+        <ng-container *ngIf="!loading.ranking">
+          <tr *ngFor="let player of ranking; index as index" [ngClass]="{'bg-info': index < 8}">
+            <td>{{ player.rank }}</td>
+            <td><a [routerLink]="['/players', player.name]" [queryParams]="{season: season.id}">{{ player.name }}</a></td>
+            <td class="text-center">{{ player.rating }}</td>
+            <td class="text-center">{{ player.wins / player.games | percent:'1.0-0' }}</td>
+          </tr>
+        </ng-container>
       </table>
-      <div *ngIf="season.placement_games > 0">
+      <ng-container *ngIf="!loading.ranking && season.placement_games > 0">
         <h4>Unranked ({{ season.placement_games }} games need to be played)</h4>
         <table class="table table-condensed">
           <tr>
@@ -39,11 +44,14 @@
             <td class="text-center">{{ player.wins / player.games | percent:'1.0-0' }}</td>
           </tr>
         </table>
-      </div>
+      </ng-container>
     </div>
     <div class="col-md-6 col-md-offset-1">
       <h4>Last Games</h4>
-      <game-list [games]="games"></game-list>
+      <p *ngIf="loading.games">
+        <i class="fa fa-spinner fa-spin"></i>
+      </p>
+      <game-list *ngIf="!loading.games" [games]="games"></game-list>
     </div>
   </div>
 </div>

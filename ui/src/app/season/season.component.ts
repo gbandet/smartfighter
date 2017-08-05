@@ -16,6 +16,7 @@ export class SeasonComponent implements OnInit {
   ranking: RankingPlayer[] = [];
   placement: RankingPlayer[] = [];
   games: Game[] = [];
+  loading: any = {ranking: true, games: true};
 
   constructor(
     private seasonService: SeasonService,
@@ -27,14 +28,24 @@ export class SeasonComponent implements OnInit {
       .switchMap((params: ParamMap) => this.seasonService.getSeason(+params.get('id')))
       .subscribe(season => this.season = season);
     this.route.paramMap
-      .switchMap((params: ParamMap) => this.seasonService.getSeasonRanking(+params.get('id')))
+      .switchMap((params: ParamMap) => {
+        this.loading.ranking = true;
+        return this.seasonService.getSeasonRanking(+params.get('id'));
+      })
       .subscribe(ranking => {
         this.ranking = ranking.ranking;
         this.placement = ranking.placement;
+        this.loading.ranking = false;
       });
     this.route.paramMap
-      .switchMap((params: ParamMap) => this.seasonService.getSeasonGames(+params.get('id'), {limit: 20}))
-      .subscribe(page => this.games = page.data);
+      .switchMap((params: ParamMap) => {
+        this.loading.games = true;
+        return this.seasonService.getSeasonGames(+params.get('id'), {limit: 20});
+      })
+      .subscribe(page => {
+        this.games = page.data;
+        this.loading.games = false;
+      });
   }
 
   isSeasonFinished(season: Season) {

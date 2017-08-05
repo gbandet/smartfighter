@@ -16,6 +16,7 @@ export class PlayerComponent implements OnInit {
   player: Player;
   stats: any;
   seasonParam: string;
+  loading: any = {player: true, stats: true};
 
   constructor(
     private playerService: PlayerService,
@@ -24,14 +25,28 @@ export class PlayerComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap
-      .switchMap((params: ParamMap) => this.playerService.getPlayer(params.get('name')))
-      .subscribe(player => this.player = player);
+      .switchMap((params: ParamMap) => {
+        this.loading.player = true;
+        return this.playerService.getPlayer(params.get('name'));
+      })
+      .subscribe(player => {
+        this.player = player;
+        this.loading.player = false;
+      });
 
     Observable.combineLatest(this.route.paramMap, this.route.queryParamMap)
       .switchMap(([params, queryParams]: [ParamMap, ParamMap]) => {
+        this.loading.stats = true;
+        let search: any = {};
         this.seasonParam = queryParams.get('season');
-        return this.playerService.getPlayerStats(params.get('name'), {season: queryParams.get('season')});
+        if (this.seasonParam) {
+          search.season = this.seasonParam;
+        }
+        return this.playerService.getPlayerStats(params.get('name'), search);
       })
-      .subscribe(stats => this.stats = stats);
+      .subscribe(stats => {
+        this.stats = stats;
+        this.loading.stats = false;
+      });
   }
 }

@@ -9,10 +9,14 @@ import { SeasonService } from './season.service';
 })
 export class SeasonListComponent implements OnInit {
   seasons: Season[];
+  loading: boolean = true;
 
   constructor(private seasonService: SeasonService) {}
 
   ngOnInit() {
-    this.seasonService.getSeasons().then(page => this.seasons = page.data);
+    this.seasonService.getSeasons().then(page => {
+      this.seasons = page.data;
+      this.loading = false;
+    });
   }
 }

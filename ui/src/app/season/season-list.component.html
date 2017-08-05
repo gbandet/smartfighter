@@ -10,11 +10,16 @@
           <th class="col-md-3">Start date</th>
           <th class="col-md-3">End date</th>
         </tr>
-        <tr *ngFor="let season of seasons">
-          <td class="col-md-6"><a [routerLink]="['/seasons', season.id]">{{ season.name }}</a></td>
-          <td class="col-md-3">{{ season.start_date | date }}</td>
-          <td class="col-md-3">{{ season.end_date | date }}</td>
+        <tr *ngIf="loading">
+          <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
         </tr>
+        <ng-container *ngIf="!loading">
+          <tr *ngFor="let season of seasons">
+            <td class="col-md-6"><a [routerLink]="['/seasons', season.id]">{{ season.name }}</a></td>
+            <td class="col-md-3">{{ season.start_date | date }}</td>
+            <td class="col-md-3">{{ season.end_date | date }}</td>
+          </tr>
+        </ng-container>
       </table>
     </div>
   </div>
