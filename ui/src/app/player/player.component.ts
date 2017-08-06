@@ -11,10 +11,12 @@ import { PlayerService } from './player.service';
 @Component({
   selector: 'player',
   templateUrl: './player.component.html',
+  styleUrls: ['./player.component.css'],
 })
 export class PlayerComponent implements OnInit {
-  player: Player;
+  player: Player = new Player();
   stats: any = {};
+  opponentCharacters: any[] = [];
   seasonParam: string = '';
   loading: any = {player: true, stats: true};
   error: any = {player: null, stats: null};
@@ -55,11 +57,29 @@ export class PlayerComponent implements OnInit {
       .subscribe(
         stats => {
           this.stats = stats;
+          this.opponentCharacters = this.getOpponentList(stats.characters);
           this.loading.stats = false;
         },
         error => {
           this.error.stats = error;
           this.loading.stats = false;
         });
+  }
+
+  getOpponentList(characters: any) : any[] {
+    let opponents: any = {};
+    for (let character of characters) {
+      for (let code in character.opponents) {
+        opponents[code] = {
+          code: code,
+          name: character.opponents[code].name,
+        };
+      }
+    }
+    let list = []
+    for (let code in opponents) {
+      list.push(opponents[code]);
+    }
+    return list.sort((a, b) => a.name < b.name ? -1 : (a.name == b.name ? 0 : 1));
   }
 }

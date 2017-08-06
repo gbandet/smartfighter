@@ -15,7 +15,7 @@
         <li><a [routerLink]="['/players', player.name]">All games</a></li>
         <li><a [routerLink]="['/players', player.name]" [queryParams]="{season: 'unranked'}">Unranked games</a></li>
       </ul>
-      <h3 *ngIf="!loading.stats && stats.season" style="display: inline">
+      <h3 *ngIf="!loading.stats && stats.season" class="inline">
         <span class="label label-primary">Score&nbsp;<span class="badge">{{ stats.season.rating }}</span></span>
       </h3>
     </div>
@@ -31,6 +31,7 @@
 
   <div class="row">
     <div class="col-md-12">
+      <h4>Per player</h4>
       <table class="table table-condensed">
         <tr>
           <th class="col-md-2"></th>
@@ -91,6 +92,40 @@
             </td>
           </tr>
         </ng-container>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Per character</h4>
+      <p *ngIf="loading.stats"><i class="fa fa-spinner fa-spin"></i></p>
+      <p *ngIf="error.stats" class="bg-danger">Loading error.</p>
+      <p *ngIf="!stats.characters.length">No available data.</p>
+      <table *ngIf="!loading.stats && !error.stats && stats.characters.length" class="table table-condensed table-striped characters">
+        <tr>
+          <th class="col-md-2">Character</th>
+          <th class="col-md-1 text-center"><span class="vertical-text text-nowrap">Games</span></th>
+          <th class="col-md-1 text-center" class="right-border"><span class="vertical-text text-nowrap">Win rate</span></th>
+          <th *ngFor="let opponent of opponentCharacters" class="col-md-1 text-center">
+            <small class="vertical-text text-nowrap">{{ opponent.name }}</small>
+          </th>
+        </tr>
+        <tr *ngFor="let character of stats.characters">
+          <td>{{ character.name }}</td>
+          <td>{{ character.count }}</td>
+          <td class="right-border">{{ character.wins / character.count | percent:'1.0-0' }}</td>
+          <td *ngFor="let opponent of opponentCharacters" class="text-center">
+            <ng-template #characterStatsTooltip>
+              Total: {{ character.opponents[opponent.code].count }} Wins: {{ character.opponents[opponent.code].wins }}<br/>
+              Draws: {{ character.opponents[opponent.code].draws }} Losses: {{ character.opponents[opponent.code].losses }}
+            </ng-template>
+            <span *ngIf="character.opponents[opponent.code]" [tooltip]="characterStatsTooltip">
+              {{ character.opponents[opponent.code].wins / character.opponents[opponent.code].count | percent:'1.0-0' }}
+            </span>
+            <span *ngIf="!character.opponents[opponent.code]">-</span>
+          </td>
+        </tr>
       </table>
     </div>
   </div>

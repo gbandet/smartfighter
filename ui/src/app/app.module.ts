@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpModule }    from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
 
 import { RoutingModule } from './routing.module';
 
@@ -39,6 +39,7 @@ import { SeasonService } from './season/season.service';
     BsDropdownModule.forRoot(),
     HttpModule,
     RoutingModule,
+    TooltipModule.forRoot(),
   ],
   providers: [
     GameService,
