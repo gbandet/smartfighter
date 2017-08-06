@@ -10,6 +10,7 @@ from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 from rest_framework_extensions.mixins import NestedViewSetMixin
 
 from smartfighter.apps.ranking.models import (
+    CHARACTERS,
     Game,
     GamePhase,
     MatchResult,
@@ -85,6 +86,7 @@ class PlayerViewSet(ReadOnlyModelViewSet):
             }
 
         opponents = {}
+        characters = {}
         def get_opponent(player):
             return opponents.setdefault(player.card_id, defaultdict(int, {
                 'id': player.card_id,
@@ -92,12 +94,35 @@ class PlayerViewSet(ReadOnlyModelViewSet):
                 'round_statuses': {},
             }))
 
+        def get_characters_stats(player, opponent):
+            player_stats = characters.setdefault(player, defaultdict(int, {
+                'code': player,
+                'name': CHARACTERS.get(player),
+                'opponents': {},
+            }))
+            opponent_stats = player_stats['opponents'].setdefault(opponent, defaultdict(int, {
+                'code': opponent,
+                'name': CHARACTERS.get(opponent),
+            }))
+            return player_stats, opponent_stats
+
         for game in player.games_as_first_player.filter(**game_filters).select_related():
             opponent = get_opponent(game.player2)
             opponent['count'] += 1
             opponent['wins'] += 1 if game.result == MatchResult.Player1 else 0
             opponent['draws'] += 1 if game.result == MatchResult.Draw else 0
             opponent['losses'] += 1 if game.result == MatchResult.Player2 else 0
+            if game.player1_character and game.player2_character:
+                total_stats, stats = get_characters_stats(
+                    game.player1_character, game.player2_character)
+                total_stats['count'] += 1
+                stats['count'] += 1
+                total_stats['wins'] += 1 if game.result == MatchResult.Player1 else 0
+                stats['wins'] += 1 if game.result == MatchResult.Player1 else 0
+                total_stats['draws'] += 1 if game.result == MatchResult.Draw else 0
+                stats['draws'] += 1 if game.result == MatchResult.Draw else 0
+                total_stats['losses'] += 1 if game.result == MatchResult.Player2 else 0
+                stats['losses'] += 1 if game.result == MatchResult.Player2 else 0
 
         for game in player.games_as_second_player.filter(**game_filters).select_related():
             opponent = get_opponent(game.player1)
@@ -105,6 +130,17 @@ class PlayerViewSet(ReadOnlyModelViewSet):
             opponent['wins'] += 1 if game.result == MatchResult.Player2 else 0
             opponent['draws'] += 1 if game.result == MatchResult.Draw else 0
             opponent['losses'] += 1 if game.result == MatchResult.Player1 else 0
+            if game.player1_character and game.player2_character:
+                total_stats, stats = get_characters_stats(
+                    game.player2_character, game.player1_character)
+                total_stats['count'] += 1
+                stats['count'] += 1
+                total_stats['wins'] += 1 if game.result == MatchResult.Player2 else 0
+                stats['wins'] += 1 if game.result == MatchResult.Player2 else 0
+                total_stats['draws'] += 1 if game.result == MatchResult.Draw else 0
+                stats['draws'] += 1 if game.result == MatchResult.Draw else 0
+                total_stats['losses'] += 1 if game.result == MatchResult.Player1 else 0
+                stats['losses'] += 1 if game.result == MatchResult.Player1 else 0
 
         round_filters = {'game__' + k: v for k, v in game_filters.items()}
         for round_ in Round.objects.filter(Q(game__player1=player, **round_filters) |
@@ -134,6 +170,7 @@ class PlayerViewSet(ReadOnlyModelViewSet):
                 round_status['count'] += 1
 
         opponents = sorted(opponents.values(), key=itemgetter('count'), reverse=True)
+        characters = sorted(characters.values(), key=itemgetter('count'), reverse=True)
 
         totals = defaultdict(int)
         totals['round_statuses'] = {}
@@ -155,6 +192,7 @@ class PlayerViewSet(ReadOnlyModelViewSet):
 
         response['opponents'] = opponents
         response['global'] = totals
+        response['characters'] = characters
 
         return Response(response)
 
