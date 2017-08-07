@@ -5,11 +5,11 @@ import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/observable/combineLatest';
 import 'rxjs/add/operator/switchMap';
 
-import { Player }  from './player';
+import { Player } from './player';
 import { PlayerService } from './player.service';
 
 @Component({
-  selector: 'player',
+  selector: 'sf-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css'],
 })
@@ -17,9 +17,9 @@ export class PlayerComponent implements OnInit {
   player: Player = new Player();
   stats: any = {};
   opponentCharacters: any[] = [];
-  seasonParam: string = '';
-  loading: any = {player: true, stats: true};
-  error: any = {player: null, stats: null};
+  seasonParam = '';
+  loading = {player: true, stats: true};
+  error = {player: null, stats: null};
 
   constructor(
     private playerService: PlayerService,
@@ -47,7 +47,7 @@ export class PlayerComponent implements OnInit {
       .switchMap(([params, queryParams]: [ParamMap, ParamMap]) => {
         this.loading.stats = true;
         this.error.stats = null;
-        let search: any = {};
+        const search: any = {};
         this.seasonParam = queryParams.get('season');
         if (this.seasonParam) {
           search.season = this.seasonParam;
@@ -66,20 +66,20 @@ export class PlayerComponent implements OnInit {
         });
   }
 
-  getOpponentList(characters: any) : any[] {
-    let opponents: any = {};
-    for (let character of characters) {
-      for (let code in character.opponents) {
+  getOpponentList(characters: any): any[] {
+    const opponents: any = {};
+    for (const character of characters) {
+      for (const code of Object.keys(character.opponents)) {
         opponents[code] = {
           code: code,
           name: character.opponents[code].name,
         };
       }
     }
-    let list = []
-    for (let code in opponents) {
+    const list = [];
+    for (const code of Object.keys(opponents)) {
       list.push(opponents[code]);
     }
-    return list.sort((a, b) => a.name < b.name ? -1 : (a.name == b.name ? 0 : 1));
+    return list.sort((a, b) => a.name < b.name ? -1 : (a.name === b.name ? 0 : 1));
   }
 }

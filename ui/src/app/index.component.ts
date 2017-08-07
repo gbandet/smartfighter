@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { SeasonService } from './season/season.service';
 
 @Component({
-  selector: 'index',
+  selector: 'sf-index',
   templateUrl: './index.component.html',
 })
-export class IndexComponent {
+export class IndexComponent implements OnInit {
   constructor(
     private seasonService: SeasonService,
     private router: Router,
@@ -16,9 +16,9 @@ export class IndexComponent {
   ngOnInit() {
     this.seasonService.getSeasons({limit: 1}).subscribe(page => {
       if (page.data) {
-        this.router.navigate(['/seasons', page.data[0].id])
+        this.router.navigate(['/seasons', page.data[0].id]);
       } else {
-        this.router.navigate(['/instructions'])
+        this.router.navigate(['/instructions']);
       }
     });
   }

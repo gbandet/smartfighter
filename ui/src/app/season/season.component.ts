@@ -8,7 +8,7 @@ import { Season, RankingPlayer } from './season';
 import { SeasonService } from './season.service';
 
 @Component({
-  selector: 'season',
+  selector: 'sf-season',
   templateUrl: './season.component.html',
 })
 export class SeasonComponent implements OnInit {

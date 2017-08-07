@@ -4,12 +4,12 @@ import { Season } from './season';
 import { SeasonService } from './season.service';
 
 @Component({
-  selector: 'season-list',
+  selector: 'sf-season-list',
   templateUrl: './season-list.component.html',
 })
 export class SeasonListComponent implements OnInit {
-  seasons: Season[];
-  loading: boolean = true;
+  seasons: Season[] = [];
+  loading = true;
   error: any = null;
 
   constructor(private seasonService: SeasonService) {}

@@ -1,8 +1,8 @@
-import { NgModule }             from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { IndexComponent }   from './index.component';
-import { InstructionsComponent }   from './instructions.component';
+import { IndexComponent } from './index.component';
+import { InstructionsComponent } from './instructions.component';
 import { UnrankedComponent } from './game/unranked.component';
 import { PlayerComponent } from './player/player.component';
 import { SeasonComponent } from './season/season.component';

@@ -4,12 +4,12 @@ import { Game } from '../game/game';
 import { GameService } from './game.service';
 
 @Component({
-  selector: 'unranked',
+  selector: 'sf-unranked',
   templateUrl: './unranked.component.html',
 })
 export class UnrankedComponent implements OnInit {
   games: Game[] = [];
-  loading: boolean = true;
+  loading = true;
   error: any;
 
   constructor(private gameService: GameService) { }

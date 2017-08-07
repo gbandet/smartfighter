@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'instructions',
+    selector: 'sf-instructions',
     templateUrl: './instructions.component.html',
 })
 export class InstructionsComponent {}

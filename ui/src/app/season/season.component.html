@@ -4,7 +4,7 @@
     <h4 *ngIf="season.id && !isSeasonFinished(season)">Qualifications from {{ season.start_date|date }} to {{ season.end_date|date }}</h4>
   </div>
 
-  <playoffs *ngIf="season.playoffs_data" [data]="season.playoffs_data"></playoffs>
+  <sf-playoffs *ngIf="season.playoffs_data" [playoffs]="season.playoffs_data"></sf-playoffs>
 
   <div class="row">
     <div class="col-md-5">
@@ -55,7 +55,7 @@
         <i class="fa fa-spinner fa-spin"></i>
       </p>
       <p *ngIf="error.games" class="bg-danger">Loading error.</p>
-      <game-list *ngIf="!loading.games && !error.games" [games]="games"></game-list>
+      <sf-game-list *ngIf="!loading.games && !error.games" [games]="games"></sf-game-list>
     </div>
   </div>
 </div>

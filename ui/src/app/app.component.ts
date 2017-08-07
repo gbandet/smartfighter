@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Season } from './season/season';
 import { SeasonService } from './season/season.service';
 
 @Component({
-  selector: 'app-root',
+  selector: 'sf-root',
   templateUrl: './app.component.html',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'SmartFighter';
   seasons: Season[];
 
