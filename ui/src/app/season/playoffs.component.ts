@@ -11,4 +11,15 @@ export class PlayoffsComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  getRoundName(round:number, count:number): string {
+    if (round === count) {
+      return 'Final';
+    } else if (round === count - 1) {
+      return 'Semifinals';
+    } else if (round === count - 2) {
+      return 'Quarterfinals';
+    }
+    return 'Round ' + round;
+  }
 }

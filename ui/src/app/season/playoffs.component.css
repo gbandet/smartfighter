@@ -1,13 +1,148 @@
-.table td {
-  border: 0px;
-  padding: 2px;
+.tournament {
+  display: flex;
+  flex-direction: row;
 }
-.table td.player {
-  border: solid 1px black;
+
+.bracket {
+  display: flex;
+  flex-direction: row;
 }
-.table td.hline {
-  border-top: solid 1px black;
+
+.finals {
+  display: flex;
+  flex-direction: column;
 }
-.table td.vline {
-  border-right: solid 1px black;
+
+.round {
+  width: 190px;
+  display: flex;
+  flex-direction: column;
+}
+
+.round:first-child {
+  width: 170px;
+}
+
+.round:first-child .spacer {
+  width: 170px;
+}
+
+.round:first-child .round-header{
+  width: 170px;
+  padding-left: 0;
+}
+
+.round-header {
+  padding: 20px 0px 0px 20px;
+  box-sizing: border-box;
+  width: 190px;
+  height: 40px;
+}
+
+.round-header-content {
+  text-align: center;
+  width: 150px;
+}
+
+.match {
+}
+
+.spacer {
+  flex-grow: 1;
+  min-height: 20px;
+  width: 190px;
+}
+
+.spacer.border {
+  flex-grow: .5;
+  min-height: 10px;
+}
+
+.player-slot {
+  display: flex;
+  flex-direction: row;
+}
+
+.player {
+  box-sizing: border-box;
+  border: solid 1px grey;
+  padding: 1px 5px;
+  width: 150px;
+  height: 20px;
+}
+
+.top .player {
+  border-radius: 5px 5px 0 0;
+}
+
+.bottom .player {
+  border-radius: 0 0 5px 5px;
+}
+
+.player .badge {
+  font-size: 10px;
+  background-color: rgb(150, 150, 150);
+}
+
+.player.winner {
+  font-weight: bold;
+}
+
+.player.winner .badge {
+  background-color: green;
+}
+
+.player-empty {
+  height: 20px;
+}
+.player-line {
+  width: 190px;
+  height: 20px;
+  border-bottom: solid 1px rgb(155, 155, 155);
+}
+
+.player-slot.bottom .player {
+  border-top-width: 0;
+}
+
+.player-slot .bracket-lines {
+  box-sizing: border-box;
+  width: 20px;
+}
+
+.match.next-top .player-slot.top .bracket-lines,
+.match.next-bottom .player-slot.top .bracket-lines,
+.match.next-middle .player-slot.top .bracket-lines {
+  border-bottom: solid 1px rgb(155, 155, 155);
+}
+
+.match.next-bottom .player-slot.bottom .bracket-lines {
+  border-right: solid 1px rgb(155, 155, 155);
+}
+
+.match.next-top .player-slot.top .bracket-lines {
+  border-right: solid 1px rgb(155, 155, 155);
+}
+
+.round-header.bracket-lines,
+.spacer.bracket-lines {
+  border-right: solid 1px rgb(155, 155, 155);
+}
+
+.match.previous {
+  position: relative;
+}
+
+.match.previous .player-slot:before {
+  width: 20px;
+  height: 20px;
+  content: "";
+}
+
+.match.previous .player-slot.top:before,
+.match.previous .player-empty:before {
+/*  position: absolute; */
+/*  display: block; */
+/*  left: -20px; */
+  border-bottom: solid 1px rgb(155, 155, 155);
 }

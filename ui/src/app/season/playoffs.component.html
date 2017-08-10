@@ -1,334 +1,90 @@
+<ng-template #matchTemplate let-match="match">
+  <div class="player-slot top">
+    <div class="player" [class.winner]="match.score1 > match.score2" [class.loser]="match.score1 < match.score2">
+      <span>{{ match.player1 || "&nbsp;" }}</span>
+      <span class="badge pull-right">{{ match.score1 }}</span>
+    </div>
+    <div class="bracket-lines"></div>
+  </div>
+  <div class="player-slot bottom">
+    <div class="player" [class.winner]="match.score1 < match.score2" [class.loser]="match.score1 > match.score2">
+      <span>{{ match.player2 || "&nbsp;" }}</span>
+      <span class="badge pull-right">{{ match.score2 }}</span>
+    </div>
+    <div class="bracket-lines"></div>
+  </div>
+</ng-template>
+
 <div class="row">
   <div class="col-md-12">
-    <table class="table">
-      <tr>
-        <th width="200px"></th>
-        <th width="25px"></th>
-        <th width="25px"></th>
-        <th width="200px"></th>
-        <th width="25px"></th>
-        <th width="25px"></th>
-        <th width="200px"></th>
-        <th width="25px"></th>
-        <th width="25px"></th>
-        <th width="200px"></th>
-        <th width="25px"></th>
-        <th width="25px"></th>
-        <th width="200px"></th>
-        <th width="25px"></th>
-        <th width="25px"></th>
-        <th width="200px"></th>
-      </tr>
+    <div class="tournament">
+      <div class="brackets">
 
-      <!-- Winner Bracket -->
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][0].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][0].score1 }}</span>
-          </span>
-        </td><!-- WB R1 M1 -->
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][0].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][0].score2 }}</span>
-          </span>
-        </td><!-- WB R1 M1 -->
-        <td class="hline vline"></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="vline"></td>
-        <td></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[1][0].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[1][0].score1 }}</span>
-          </span>
-        </td><!-- WB R2 M1 -->
-      </tr>
-      <tr>
-        <td></td>
-        <td class="vline"></td>
-        <td class="hline"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[1][0].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[1][0].score2 }}</span>
-          </span>
-        </td><!-- WB R2 M1 -->
-        <td class="hline vline" colspan="4"></td>
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][1].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][1].score1 }}</span>
-          </span>
-        </td><!-- WB R1 M2 -->
-        <td class="vline"></td>
-        <td colspan="5"></td>
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][1].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][1].score2 }}</span>
-          </span>
-        </td><!-- WB R1 M2 -->
-        <td class="hline"></td>
-        <td colspan="5"></td>
-        <td class="vline"></td>
-      </tr>
+        <!-- Winner bracket -->
+        <div class="bracket">
+          <ng-container *ngFor="let round of playoffs.winner; index as r_index; last as r_last">
 
-      <tr>
-        <td></td>
-        <td colspan="6"></td>
-        <td class="vline"></td>
-        <td></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[2][0].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[2][0].score1 }}</span>
-          </span>
-        </td><!-- WB R3 -->
-      </tr>
-      <tr>
-        <td></td>
-        <td colspan="6"></td>
-        <td class="vline"></td>
-        <td class="hline"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[2][0].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[2][0].score2 }}</span>
-          </span>
-        </td><!-- WB R3 -->
-        <td class="hline vline"></td>
-      </tr>
+            <!-- Empty round for alignment with LB -->
+            <div *ngIf="r_index > 1" class="round">
+              <div class="round-header">
+                <div class="round-header-content"></div>
+              </div>
+              <div class="spacer border"></div>
+              <ng-container *ngFor="let match of round; even as m_even">
+                <div class="match previous" >
+                  <div class="player-line"></div>
+                  <div class="player-empty"></div>
+                </div>
+                <div class="spacer" [class.border]="r_last"></div>
+              </ng-container>
+            </div>
 
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][2].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][2].score1 }}</span>
-          </span>
-        </td><!-- WB R1 M3 -->
-        <td></td>
-        <td></td>
-        <td colspan="4"></td>
-        <td class="vline"></td>
-        <td colspan="2"></td>
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][2].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][2].score2 }}</span>
-          </span>
-        </td><!-- WB R1 M3 -->
-        <td class="hline vline"></td>
-        <td colspan="5"></td>
-        <td class="vline"></td>
-        <td colspan="2"></td>
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="vline"></td>
-        <td></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[1][1].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[1][1].score1 }}</span>
-          </span>
-        </td><!-- WB R2 M2 -->
-        <td colspan="3"></td>
-        <td class="vline"></td>
-        <td colspan="2"></td>
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td class="vline"></td>
-        <td class="hline"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[1][1].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[1][1].score2 }}</span>
-          </span>
-        </td><!-- WB R2 M2 -->
-        <td class="hline" colspan="4"></td>
-        <td colspan="2"></td>
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][3].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][3].score1 }}</span>
-          </span>
-        </td><!-- WB R1 M4 -->
-        <td class="vline"></td>
-        <td colspan="8"></td>
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.winner[0][3].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.winner[0][3].score2 }}</span>
-          </span>
-        </td><!-- WB R1 M4 -->
-        <td class="hline"></td>
-        <td colspan="8"></td>
-        <td class="vline"></td>
-      </tr>
+            <div class="round">
+              <div class="round-header">
+                <div class="round-header-content">{{ getRoundName(r_index + 1, playoffs.winner.length) }}</div>
+              </div>
+              <div class="spacer border"></div>
+              <ng-container *ngFor="let match of round; even as m_even; last as m_last">
+                <div class="match" [class.next-bottom]="m_even" [class.next-top]="!m_even" [class.previous]="r_index !== 0">
+                  <ng-container *ngTemplateOutlet="matchTemplate; context: {match: match}"></ng-container>
+                </div>
+                <div class="spacer" [class.bracket-lines]="m_even" [class.border]="m_last"></div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
 
-      <!-- Final -->
-      <tr>
-        <td></td>
-        <td colspan="9"></td>
-        <td class="vline"></td>
-        <td></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.finals[0].player1 || "&nbsp;" }}</span>
-            <span *ngIf="playoffs.finals[1]" class="badge pull-right">{{ playoffs.finals[1].score1 }}</span>
-            <span class="badge pull-right">{{ playoffs.finals[0].score1 }}</span>
-          </span>
-        </td><!-- Final -->
-      </tr>
-      <tr>
-        <td></td>
-        <td colspan="9"></td>
-        <td class="vline"></td>
-        <td class="hline"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.finals[0].player2 || "&nbsp;" }}</span>
-            <span *ngIf="playoffs.finals[1]" class="badge pull-right">{{ playoffs.finals[1].score2 }}</span>
-            <span class="badge pull-right">{{ playoffs.finals[0].score2 }}</span>
-          </span>
-        </td><!-- Final -->
-      </tr>
+        <!-- Loser bracket -->
+        <div class="bracket">
+          <ng-container *ngFor="let round of playoffs.loser; index as r_index; even as r_even; last as r_last">
+            <div class="round">
+              <div class="round-header" [class.bracket-lines]="r_last">
+                <div class="round-header-content">{{ getRoundName(r_index + 1, playoffs.loser.length) }}</div>
+              </div>
+              <div class="spacer border" [class.bracket-lines]="r_last"></div>
+              <ng-container *ngFor="let match of round; even as m_even; last as m_last">
+                <div class="match" [class.next-middle]="r_even" [class.next-bottom]="!r_even && !r_last && m_even" [class.next-top]="r_last || !r_even && !m_even" [class.previous]="r_index !== 0">
+                  <ng-container *ngTemplateOutlet="matchTemplate; context: {match: match}"></ng-container>
+                </div>
+                <div class="spacer" [class.bracket-lines]="!r_last && !r_even && m_even" [class.border]="m_last"></div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
 
-      <!-- Loser Bracket -->
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[0][0].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[0][0].score1 }}</span>
-          </span>
-        </td><!-- LB R1 M1 -->
-        <td colspan="2"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[1][0].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[1][0].score1 }}</span>
-          </span>
-        </td><!-- LB R2 M1 -->
-        <td></td>
-        <td colspan="5"></td>
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[0][0].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[0][0].score2 }}</span>
-          </span>
-        </td><!-- LB R1 M1 -->
-        <td class="hline" colspan="2"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[1][0].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[1][0].score2 }}</span>
-          </span>
-        </td><!-- LB R2 M1 -->
-        <td class="hline vline"></td>
-        <td colspan="5"></td>
-        <td class="vline"></td>
-      </tr>
+      <!-- Grand Finals -->
+      <div class="finals" *ngFor="let match of playoffs.finals; first as first; last as last">
+        <div class="round-header">
+          <div class="round-header-content"><ng-container *ngIf="first">Grand Final</ng-container></div>
+        </div>
+        <div class="spacer border"></div>
+        <div class="match previous" [class.next-middle]="!last">
+          <ng-container *ngTemplateOutlet="matchTemplate; context: {match: match}"></ng-container>
+        </div>
+        <div class="spacer border"></div>
+      </div>
 
-      <tr>
-        <td></td>
-        <td colspan="2"></td>
-        <td></td>
-        <td class="vline"></td>
-        <td></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[2][0].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[2][0].score1 }}</span>
-          </span>
-        </td><!-- LB R3 M1 -->
-        <td colspan="2"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[3][0].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[3][0].score1 }}</span>
-          </span>
-        </td><!-- LB R4 M1 -->
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td></td>
-        <td colspan="3"></td>
-        <td class="vline"></td>
-        <td class="hline"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[2][0].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[2][0].score2 }}</span>
-          </span>
-        </td><!-- LB R3 M1 -->
-        <td class="hline" colspan="2"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[3][0].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[3][0].score2 }}</span>
-          </span>
-        </td><!-- LB R4 M1 -->
-        <td class="hline"></td>
-      </tr>
-
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[0][1].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[0][1].score1 }}</span>
-          </span>
-        </td><!-- LB R1 M2 -->
-        <td colspan="2"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[1][1].player1 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[1][1].score1 }}</span>
-          </span>
-        </td><!-- LB R2 M2 -->
-        <td class="vline"></td>
-      </tr>
-      <tr>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[0][1].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[0][1].score2 }}</span>
-          </span>
-        </td><!-- LB R1 M2 -->
-        <td class="hline" colspan="2"></td>
-        <td class="player">
-          <span>
-            <span>{{ playoffs.loser[1][1].player2 || "&nbsp;" }}</span>
-            <span class="badge pull-right">{{ playoffs.loser[1][1].score2 }}</span>
-          </span>
-        </td><!-- LB R2 M2 -->
-        <td class="hline"></td>
-      </tr>
-    </table>
+    </div>
   </div>
 </div>
