@@ -101,8 +101,8 @@
       <h4>Per character</h4>
       <p *ngIf="loading.stats"><i class="fa fa-spinner fa-spin"></i></p>
       <p *ngIf="error.stats" class="bg-danger">Loading error.</p>
-      <p *ngIf="!stats.characters.length">No available data.</p>
-      <table *ngIf="!loading.stats && !error.stats && stats.characters.length" class="table table-condensed table-striped characters">
+      <p *ngIf="stats.characters && !stats.characters.length">No available data.</p>
+      <table *ngIf="!loading.stats && !error.stats && stats.characters?.length" class="table table-condensed table-striped characters">
         <tr>
           <th class="col-md-2">Character</th>
           <th class="col-md-1 text-center"><span class="vertical-text text-nowrap">Games</span></th>
