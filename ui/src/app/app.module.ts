@@ -19,6 +19,7 @@ import { PlayoffsComponent } from './season/playoffs.component';
 import { SeasonComponent } from './season/season.component';
 import { SeasonListComponent } from './season/season-list.component';
 import { SeasonService } from './season/season.service';
+import { TitleService } from './title.service';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { SeasonService } from './season/season.service';
     GameService,
     PlayerService,
     SeasonService,
+    TitleService,
   ],
   bootstrap: [AppComponent],
 })

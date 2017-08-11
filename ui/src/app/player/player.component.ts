@@ -7,6 +7,7 @@ import 'rxjs/add/operator/switchMap';
 
 import { Player } from './player';
 import { PlayerService } from './player.service';
+import { TitleService } from '../title.service';
 
 @Component({
   selector: 'sf-player',
@@ -24,6 +25,7 @@ export class PlayerComponent implements OnInit {
   constructor(
     private playerService: PlayerService,
     private route: ActivatedRoute,
+    private titleService: TitleService,
   ) {}
 
   ngOnInit() {
@@ -37,6 +39,7 @@ export class PlayerComponent implements OnInit {
         player => {
           this.player = player;
           this.loading.player = false;
+          this.titleService.setTitle(player.name);
         },
         error => {
           this.error.player = error;

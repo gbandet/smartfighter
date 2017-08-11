@@ -6,6 +6,7 @@ import 'rxjs/add/operator/switchMap';
 import { Game } from '../game/game';
 import { Season, RankingPlayer } from './season';
 import { SeasonService } from './season.service';
+import { TitleService } from '../title.service';
 
 @Component({
   selector: 'sf-season',
@@ -22,15 +23,18 @@ export class SeasonComponent implements OnInit {
   constructor(
     private seasonService: SeasonService,
     private route: ActivatedRoute,
+    private titleService: TitleService,
   ) {}
 
   ngOnInit() {
     this.route.paramMap
       .switchMap((params: ParamMap) => this.seasonService.getSeason(+params.get('id')))
       .subscribe(
-        season => this.season = season,
-        error => this.season = new Season()
-      );
+        season => {
+          this.season = season;
+          this.titleService.setTitle(season.name);
+        },
+        error => this.season = new Season());
     this.route.paramMap
       .switchMap((params: ParamMap) => {
         this.loading.ranking = true;
