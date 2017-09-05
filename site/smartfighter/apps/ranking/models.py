@@ -92,6 +92,7 @@ CHARACTERS = {
     'Z20': 'Kolin',
     'Z21': 'Akuma',
     'Z22': 'Ed',
+    'Z23': 'Menat',
     'Z24': 'Abigail',
 }
 
