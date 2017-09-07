@@ -1,0 +1,90 @@
+<ng-template #matchTemplate let-match="match">
+  <div class="player-slot top">
+    <div class="player" [class.winner]="match.score1 > match.score2" [class.loser]="match.score1 < match.score2">
+      <span>{{ match.player1 || "&nbsp;" }}</span>
+      <span class="badge pull-right">{{ match.score1 }}</span>
+    </div>
+    <div class="bracket-lines"></div>
+  </div>
+  <div class="player-slot bottom">
+    <div class="player" [class.winner]="match.score1 < match.score2" [class.loser]="match.score1 > match.score2">
+      <span>{{ match.player2 || "&nbsp;" }}</span>
+      <span class="badge pull-right">{{ match.score2 }}</span>
+    </div>
+    <div class="bracket-lines"></div>
+  </div>
+</ng-template>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="tournament">
+      <div class="brackets">
+
+        <!-- Winner bracket -->
+        <div class="bracket">
+          <ng-container *ngFor="let round of playoffs.winner; index as r_index; last as r_last">
+
+            <!-- Empty round for alignment with LB -->
+            <div *ngIf="r_index > 1" class="round">
+              <div class="round-header">
+                <div class="round-header-content"></div>
+              </div>
+              <div class="spacer border"></div>
+              <ng-container *ngFor="let match of round; even as m_even">
+                <div class="match previous" >
+                  <div class="player-line"></div>
+                  <div class="player-empty"></div>
+                </div>
+                <div class="spacer" [class.border]="r_last"></div>
+              </ng-container>
+            </div>
+
+            <div class="round">
+              <div class="round-header">
+                <div class="round-header-content">{{ getRoundName(r_index + 1, playoffs.winner.length) }}</div>
+              </div>
+              <div class="spacer border"></div>
+              <ng-container *ngFor="let match of round; even as m_even; last as m_last">
+                <div class="match" [class.next-bottom]="m_even" [class.next-top]="!m_even" [class.previous]="r_index !== 0">
+                  <ng-container *ngTemplateOutlet="matchTemplate; context: {match: match}"></ng-container>
+                </div>
+                <div class="spacer" [class.bracket-lines]="m_even" [class.border]="m_last"></div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- Loser bracket -->
+        <div class="bracket">
+          <ng-container *ngFor="let round of playoffs.loser; index as r_index; even as r_even; last as r_last">
+            <div class="round">
+              <div class="round-header" [class.bracket-lines]="r_last">
+                <div class="round-header-content">{{ getRoundName(r_index + 1, playoffs.loser.length) }}</div>
+              </div>
+              <div class="spacer border" [class.bracket-lines]="r_last"></div>
+              <ng-container *ngFor="let match of round; even as m_even; last as m_last">
+                <div class="match" [class.next-middle]="r_even" [class.next-bottom]="!r_even && !r_last && m_even" [class.next-top]="r_last || !r_even && !m_even" [class.previous]="r_index !== 0">
+                  <ng-container *ngTemplateOutlet="matchTemplate; context: {match: match}"></ng-container>
+                </div>
+                <div class="spacer" [class.bracket-lines]="!r_last && !r_even && m_even" [class.border]="m_last"></div>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Grand Finals -->
+      <div class="finals" *ngFor="let match of playoffs.finals; first as first; last as last">
+        <div class="round-header">
+          <div class="round-header-content"><ng-container *ngIf="first">Grand Final</ng-container></div>
+        </div>
+        <div class="spacer border"></div>
+        <div class="match previous" [class.next-middle]="!last">
+          <ng-container *ngTemplateOutlet="matchTemplate; context: {match: match}"></ng-container>
+        </div>
+        <div class="spacer border"></div>
+      </div>
+
+    </div>
+  </div>
+</div>

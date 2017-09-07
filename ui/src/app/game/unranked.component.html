@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="header clearfix">
+    <h1 class="text-muted">Unranked games</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Last Games</h4>
+      <p *ngIf="loading"><i class="fa fa-spinner fa-spin"></i></p>
+      <p *ngIf="error" class="bg-danger">Loading error.</p>
+      <sf-game-list [games]="games"></sf-game-list>
+    </div>
+  </div>
+</div>
+

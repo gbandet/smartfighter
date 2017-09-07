@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="header clearfix">
+    <h1 class="text-muted">All seasons</h1>
+  </div>
+  <div class="row">
+    <div class="col-md-8">
+      <table class="table table-condensed table-striped">
+        <tr>
+          <th class="col-md-6">Name</th>
+          <th class="col-md-3">Start date</th>
+          <th class="col-md-3">End date</th>
+        </tr>
+        <tr *ngIf="loading">
+          <td colspan="3"><i class="fa fa-spinner fa-spin"></i></td>
+        </tr>
+        <tr *ngIf="error">
+          <td colspan="3" class="bg-danger">Loading error.</td>
+        </tr>
+        <ng-container *ngIf="!loading">
+          <tr *ngFor="let season of seasons">
+            <td class="col-md-6"><a [routerLink]="['/seasons', season.id]">{{ season.name }}</a></td>
+            <td class="col-md-3">{{ season.start_date | date }}</td>
+            <td class="col-md-3">{{ season.end_date | date }}</td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+  </div>
+</div>

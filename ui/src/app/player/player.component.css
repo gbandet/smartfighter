@@ -1,0 +1,7 @@
+.characters th {
+  vertical-align: bottom;
+}
+
+.right-border {
+  border-right: solid 1px rgb(221, 221, 221);
+}

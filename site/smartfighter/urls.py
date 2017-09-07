@@ -1,9 +1,8 @@
 from django.conf.urls import include, url
 
-from smartfighter.api import router
-
+from smartfighter import api, front
 
 urlpatterns = [
-    url(r'^api/', include(router.urls)),
-    url(r'^', include('smartfighter.front.urls')),
+    url(r'^api/', include(api.router.urls)),
+    url(r'^ui/', include(front.router.urls)),
 ]
