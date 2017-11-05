@@ -117,7 +117,7 @@ namespace SmartFighter.Hooks
             if (SelectMenuDelegate == null) {
                 SelectMenuDelegate = Marshal.GetDelegateForFunctionPointer(new IntPtr(SelectMenuAddress.address), typeof(DSelectMenu)) as DSelectMenu;
             }
-            int selected = Memory.readInt(address + 1084);
+            int selected = Memory.readInt(address + 1092);
             Communication.Interface.writeLog("Menu selected: {0}", selected);
             Communication.Interface.setGameMode(selected);
             return SelectMenuDelegate(address);
