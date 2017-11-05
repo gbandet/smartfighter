@@ -35,7 +35,7 @@ namespace SmartFighter {
         public static bool createGame(string id, string player1Id, string player2Id, int result, DateTime date, string player1Character, string player2Character) {
             try {
                 using (var response = makeRequest(
-                        getApiUrl() + "game/", "POST", new {
+                        getApiUrl() + "game", "POST", new {
                             id = id,
                             player1 = player1Id,
                             player2 = player2Id,
@@ -59,7 +59,7 @@ namespace SmartFighter {
 
         public static bool updateRounds(string id, Round[] rounds) {
             try {
-                using (var response = makeRequest(getApiUrl() + "game/" + id + "/rounds/", "POST", rounds)) {
+                using (var response = makeRequest(getApiUrl() + "game/" + id + "/rounds", "POST", rounds)) {
                     if (response.StatusCode == HttpStatusCode.OK) {
                         Logger.Instance.log("API [updateRounds]: Rounds of match {0} updated", id);
                         return true;
@@ -75,7 +75,7 @@ namespace SmartFighter {
         public static bool createPlayer(string cardId, string name) {
             try {
                 using (var response = makeRequest(
-                        getApiUrl() + "player/", "POST", new {
+                        getApiUrl() + "player", "POST", new {
                             card_id = cardId,
                             name = name,
                         })) {
