@@ -94,6 +94,7 @@ CHARACTERS = {
     'Z22': 'Ed',
     'Z23': 'Menat',
     'Z24': 'Abigail',
+    'Z25': 'Zeku',
 }
 
 
