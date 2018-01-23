@@ -5,8 +5,8 @@ using System.Text.RegularExpressions;
 namespace SmartFighter {
     public static class GameMode {
         public const int Story = 2;
-        public const int Versus = 3;
-        public const int Survival = 4;
+        public const int Arcade = 3;
+        public const int Versus = 4;
         public const int Casual = 5;
         public const int BattleLounge = 6;
         public const int Ranked = 7;
@@ -18,6 +18,7 @@ namespace SmartFighter {
         public const int Challenge = 13;
         public const int Log = 14;
         public const int Informations = 15;
+        public const int Gallery = 17;
     }
 
     public static class VersusMode {

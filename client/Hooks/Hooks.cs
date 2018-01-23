@@ -117,7 +117,7 @@ namespace SmartFighter.Hooks
             if (SelectMenuDelegate == null) {
                 SelectMenuDelegate = Marshal.GetDelegateForFunctionPointer(new IntPtr(SelectMenuAddress.address), typeof(DSelectMenu)) as DSelectMenu;
             }
-            int selected = Memory.readInt(address + 1092);
+            int selected = Memory.readInt(address + 1108);
             Communication.Interface.writeLog("Menu selected: {0}", selected);
             Communication.Interface.setGameMode(selected);
             return SelectMenuDelegate(address);
@@ -140,25 +140,24 @@ namespace SmartFighter.Hooks
 
         // SetupGameUI
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode, SetLastError = true)]
-        public delegate int DSetupGameUI(long address);
+        public delegate int DSetupGameUI(long addr1, long addr2);
         public static DSetupGameUI SetupGameUIDelegate;
         public static HookAddress SetupGameUIAddress = new HookAddress();
 
-        public static int SetupGameUIHook(long address) {
+        public static int SetupGameUIHook(long addr1, long addr2) {
             if (SetupGameUIDelegate == null) {
                 SetupGameUIDelegate = Marshal.GetDelegateForFunctionPointer(new IntPtr(SetupGameUIAddress.address), typeof(DSetupGameUI)) as DSetupGameUI;
             }
-
-            var pointer = Memory.readLong(address + 184) + 104;
+            var pointer = Memory.readLong(addr1 + 184) + 96;
             pointer = Memory.readLong(pointer) + 24;
-            pointer = Memory.readLong(pointer) + 256;
+            pointer = Memory.readLong(pointer) + 272;
 
             var player1 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132, 6));
-            var player2 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132 + 1360, 6));
+            var player2 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132 + 1376, 6));
 
             Communication.Interface.writeLog("Characters: {0} vs {1}", player1, player2);
             Communication.Interface.setCharacters(player1, player2);
-            return SetupGameUIDelegate(address);
+            return SetupGameUIDelegate(addr1, addr2);
         }
     }
 }
