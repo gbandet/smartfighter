@@ -153,7 +153,7 @@ namespace SmartFighter.Hooks
             pointer = Memory.readLong(pointer) + 272;
 
             var player1 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132, 6));
-            var player2 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132 + 1376, 6));
+            var player2 = Encoding.Unicode.GetString(Memory.readBytes(pointer + 132 + 1408, 6));
 
             Communication.Interface.writeLog("Characters: {0} vs {1}", player1, player2);
             Communication.Interface.setCharacters(player1, player2);
